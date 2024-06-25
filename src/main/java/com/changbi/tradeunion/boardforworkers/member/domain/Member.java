@@ -49,12 +49,17 @@ public class Member {
     }
 
     @Builder
-    public Member (String memberName, String memberPassword,
-                   String department, String role){
+    public Member (
+            String memberName, String memberPassword,
+            String department, String role){
         this.memberName = memberName;
         this.memberPassword = memberPassword;
         this.department = Department.valueOf(department);
         this.role = Role.valueOf(role);
+
+    }
+
+    public void update(MemberSaveDto memberSaveDto) {
 
     }
 

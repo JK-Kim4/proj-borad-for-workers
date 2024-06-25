@@ -3,6 +3,7 @@ package com.changbi.tradeunion.boardforworkers.member.application;
 import com.changbi.tradeunion.boardforworkers.common.dto.MemberSaveDto;
 import com.changbi.tradeunion.boardforworkers.member.domain.Member;
 import com.changbi.tradeunion.boardforworkers.member.exception.MemberDuplicateException;
+import com.changbi.tradeunion.boardforworkers.member.exception.MemberNotFountException;
 import com.changbi.tradeunion.boardforworkers.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -29,6 +30,19 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.save(member);
     }
 
+    @Override
+    public void update(MemberSaveDto memberSaveDto){
+        Member member = memberRepository.findById(memberSaveDto.getMemberId());
+
+        if(member == null) {
+            throw new MemberNotFountException();
+        }
+
+        member.update(memberSaveDto);
+
+    }
+
+    @Transactional(readOnly = true)
     @Override
     public Member findById(Long memberId) {
         return memberRepository.findById(memberId);
