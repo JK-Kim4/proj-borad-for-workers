@@ -20,6 +20,8 @@ public class MemberSaveDto {
     @NotBlank(message = "패스워드를 입럭해주세요.")
     private String memberPassword;
 
+    private String memberNickName;
+
     @NotBlank(message = "부서를 선택해주세요.")
     private String department;
 
@@ -31,6 +33,7 @@ public class MemberSaveDto {
                 .memberName(this.memberName)
                 .memberPassword(this.memberPassword)
                 .department(this.department)
+                .memberNickName(this.memberNickName)
                 .role(this.role)
                 .build();
     }

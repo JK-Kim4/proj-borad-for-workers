@@ -39,7 +39,6 @@ public class MemberServiceImpl implements MemberService {
         }
 
         member.update(memberSaveDto);
-
     }
 
     @Transactional(readOnly = true)
