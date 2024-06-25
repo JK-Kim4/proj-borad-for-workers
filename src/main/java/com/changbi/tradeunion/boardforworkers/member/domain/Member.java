@@ -1,7 +1,7 @@
-package com.changbi.tradeunion.boardforworkers.domain;
+package com.changbi.tradeunion.boardforworkers.member.domain;
 
-import com.changbi.tradeunion.boardforworkers.domain.enum_type.Department;
-import com.changbi.tradeunion.boardforworkers.domain.enum_type.Role;
+import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.Department;
+import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.Role;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;

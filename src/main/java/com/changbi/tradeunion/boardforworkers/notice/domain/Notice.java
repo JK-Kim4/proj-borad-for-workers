@@ -1,4 +1,4 @@
-package com.changbi.tradeunion.boardforworkers.domain;
+package com.changbi.tradeunion.boardforworkers.notice.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
