@@ -12,3 +12,9 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: create-drop
+
+server:
+  servlet:
+    encoding:
+      charset: utf-8
+      force: true
