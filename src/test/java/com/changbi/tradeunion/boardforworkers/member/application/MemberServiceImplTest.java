@@ -3,6 +3,7 @@ package com.changbi.tradeunion.boardforworkers.member.application;
 import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.Department;
 import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.Role;
 import com.changbi.tradeunion.boardforworkers.common.dto.MemberSaveDto;
+import com.changbi.tradeunion.boardforworkers.common.dto.Pagination;
 import com.changbi.tradeunion.boardforworkers.member.domain.Member;
 import com.changbi.tradeunion.boardforworkers.member.exception.MemberDuplicateException;
 import jakarta.validation.ConstraintViolation;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -72,6 +74,69 @@ class MemberServiceImplTest {
 
                 //then
                 assertThrows(MemberDuplicateException.class, () -> memberService.save(dto));
+            }
+        }
+
+
+        @Nested
+        @DisplayName("사용자 엔티티 조회 테스트")
+        class member_select_test{
+
+            static int memberSize = 0;
+
+            @BeforeEach
+            void insert_member_data(){
+
+                System.out.println("insert member first");
+                MemberSaveDto dto1 =  new MemberSaveDto();
+                String name = "member1"; String password = "12345";
+                Department department = Department.HR; Role role = Role.USER;
+                dto1.setMemberName(name);
+                dto1.setMemberPassword(password);
+                dto1.setDepartment(department.name());
+                dto1.setRole(role.name());
+
+                MemberSaveDto dto2 =  new MemberSaveDto();
+                String name2 = "member2";
+                dto2.setMemberName(name2);
+                dto2.setMemberPassword(password);
+                dto2.setDepartment(department.name());
+                dto2.setRole(role.name());
+
+                MemberSaveDto dto3 =  new MemberSaveDto();
+                String name3 = "member3";
+                dto3.setMemberName(name3);
+                dto3.setMemberPassword(password);
+                dto3.setDepartment(department.name());
+                dto3.setRole(role.name());
+
+                memberService.save(dto1);
+                memberService.save(dto2);
+                memberService.save(dto3);
+
+                memberSize = 3;
+            }
+
+            @Test @Transactional
+            @DisplayName("등록된 회원 정보를 모두 조회한다.")
+            public void member_select_all(){
+                //given
+                Pagination pagination = Pagination.builder().pageNum(0).pageSize(10).build();
+                //when
+                List<Member> memberList = memberService.findAll(pagination);
+                //then
+                assertEquals(memberSize, memberList.size());
+            }
+
+            @Test @Transactional
+            @DisplayName("회원 이름(계정)으로 등록된 회원 계정을 조회한다.")
+            public void member_select_by_name(){
+                //given
+                String findMemberName = "member3";
+                //when
+                Member member = memberService.findByMemberName(findMemberName);
+                //then
+                assertEquals(findMemberName, member.getMemberName());
             }
         }
     }

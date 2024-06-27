@@ -1,9 +1,13 @@
 package com.changbi.tradeunion.boardforworkers.member.repository;
 
+import com.changbi.tradeunion.boardforworkers.common.dto.Pagination;
 import com.changbi.tradeunion.boardforworkers.member.domain.Member;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public class MemberRepository {
@@ -29,6 +33,17 @@ public class MemberRepository {
                 .getSingleResult();
     }
 
+    public List<Member> findAll(Pagination pagination) {
+        String query = "select m from Member m";
+
+        TypedQuery<Member> typedQuery = em.createQuery(query, Member.class);
+
+        return typedQuery
+                .setFirstResult(pagination.getPageNum())
+                .setMaxResults(pagination.getPageSize())
+                .getResultList();
+    }
+
     public boolean isAlreadyExistMemberName(Member member){
         String query =  "select count(m) > 0 " +
                         "from Member m " +
@@ -37,7 +52,5 @@ public class MemberRepository {
                 .setParameter("memberName", member.getMemberName())
                 .getSingleResult();
     }
-
-
 
 }

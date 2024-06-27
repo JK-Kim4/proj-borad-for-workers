@@ -1,6 +1,7 @@
 package com.changbi.tradeunion.boardforworkers.member.application;
 
 import com.changbi.tradeunion.boardforworkers.common.dto.MemberSaveDto;
+import com.changbi.tradeunion.boardforworkers.common.dto.Pagination;
 import com.changbi.tradeunion.boardforworkers.member.domain.Member;
 import com.changbi.tradeunion.boardforworkers.member.exception.MemberDuplicateException;
 import com.changbi.tradeunion.boardforworkers.member.exception.MemberNotFountException;
@@ -10,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -45,6 +48,18 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Member findById(Long memberId) {
         return memberRepository.findById(memberId);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Member> findAll(Pagination pagination) {
+        return memberRepository.findAll(pagination);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Member findByMemberName(String memberName) {
+        return memberRepository.findByMemberName(memberName);
     }
 
     private boolean isAlreadyExistMemberName(Member member) {
