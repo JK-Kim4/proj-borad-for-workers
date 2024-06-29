@@ -18,6 +18,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(null);
+                .body(ErrorResponse.from(request, exception));
     }
 }

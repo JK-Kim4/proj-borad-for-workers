@@ -13,4 +13,10 @@ public class HomeRouter {
         return "contents/index";
     }
 
+    @GetMapping("/global-error")
+    public String errorPage() throws Exception{
+
+        throw new Exception("Global Error Handler Test");
+    }
+
 }
