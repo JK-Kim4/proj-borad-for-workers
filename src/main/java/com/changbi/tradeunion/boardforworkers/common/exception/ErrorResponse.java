@@ -15,6 +15,13 @@ public class ErrorResponse {
         this.errorMessage = errorMessage;
     }
 
+    public static ErrorResponse from
+            (final Exception e) {
+        return ErrorResponse.builder()
+                .errorMessage(e.getMessage())
+                .build();
+    }
+
     public static ErrorResponse from(
             final HttpServletRequest request,
             final Exception exception) {

@@ -18,3 +18,8 @@ server:
     encoding:
       charset: utf-8
       force: true
+  error:
+    include-exception: true
+    include-message: always
+    include-binding-errors: always
+    include-stacktrace: always
