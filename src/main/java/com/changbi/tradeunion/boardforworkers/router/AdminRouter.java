@@ -17,4 +17,9 @@ public class AdminRouter {
     public String memberListPage(){
         return "admin/member/list";
     }
+
+    @GetMapping("/save")
+    public String adminSavePage(){
+        return "admin/save";
+    }
 }
