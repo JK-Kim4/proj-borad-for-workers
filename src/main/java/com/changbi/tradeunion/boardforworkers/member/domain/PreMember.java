@@ -61,12 +61,13 @@ public class PreMember {
         this.memberPassword = memberPassword;
         this.company = Company.valueOf(company);
         this.department = Department.valueOf(department);
+        this.requestDateTime = LocalDateTime.now();
         if(memberNickName != null){
             this.memberNickName = memberNickName;
         }
     }
 
-    public Member toMember(){
+    public Member toMember(Long adminId){
         return Member.builder()
                 .memberEmail(this.memberEmail)
                 .memberRealName(this.memberRealName)

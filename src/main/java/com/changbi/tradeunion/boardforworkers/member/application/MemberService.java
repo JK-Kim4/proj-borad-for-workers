@@ -27,5 +27,5 @@ public interface MemberService {
 
     List<Member> findAll(Pagination pagination);
 
-    Member findByMemberName(String memberName);
+    Member findByMemberEmail(String memberName);
 }

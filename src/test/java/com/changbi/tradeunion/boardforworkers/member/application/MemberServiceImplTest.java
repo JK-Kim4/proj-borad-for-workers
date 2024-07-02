@@ -8,12 +8,17 @@ import com.changbi.tradeunion.boardforworkers.common.dto.Pagination;
 import com.changbi.tradeunion.boardforworkers.member.domain.Member;
 import com.changbi.tradeunion.boardforworkers.member.domain.PreMember;
 import com.changbi.tradeunion.boardforworkers.member.exception.MemberDuplicateException;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.List;
 import java.util.Set;
@@ -30,9 +35,31 @@ class MemberServiceImplTest {
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
     class 사용자_엔티티_테스트{
 
+        @Autowired
+        HttpSession session;
+
         @Nested
         @DisplayName("사용자 등록 테스트")
         class member_insert_test{
+
+            @BeforeEach
+            void setUpSessionAdmin() {
+                MemberSaveDto dto = new MemberSaveDto();
+                dto.setCompany(Company.CHANGBI.name());
+                dto.setDepartment(Department.HR.name());
+                dto.setMemberEmail("admin@changbi.com");
+                dto.setRole(Role.ADMIN.name());
+                dto.setMemberRealName("관리자1");
+                dto.setMemberPassword("1234");
+
+                Long adminId = memberService.save(dto);
+
+                MockHttpSession session = new MockHttpSession();
+                session.setAttribute("admin", memberService.findById(adminId));
+                MockHttpServletRequest request = new MockHttpServletRequest();
+                request.setSession(session);
+                RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+            }
 
 
             @Test @Transactional
@@ -41,9 +68,11 @@ class MemberServiceImplTest {
                 //given
                 MemberSaveDto dto =  new MemberSaveDto();
                 String name = "member1"; String password = "12345";
+                Company company = Company.MEDIA_CHANGBI;
                 Department department = Department.HR; Role role = Role.USER;
                 dto.setMemberEmail(name);
                 dto.setMemberPassword(password);
+                dto.setCompany(company.name());
                 dto.setDepartment(department.name());
                 dto.setRole(role.name());
 
@@ -64,9 +93,11 @@ class MemberServiceImplTest {
                 //given
                 MemberSaveDto dto =  new MemberSaveDto();
                 String name = "member1"; String password = "12345";
+                Company company = Company.MEDIA_CHANGBI;
                 Department department = Department.HR; Role role = Role.USER;
                 dto.setMemberEmail(name);
                 dto.setMemberPassword(password);
+                dto.setCompany(company.name());
                 dto.setDepartment(department.name());
                 dto.setRole(role.name());
 
@@ -107,6 +138,7 @@ class MemberServiceImplTest {
             @Test @Transactional
             @DisplayName("PreMember 상태의 회원 가입 승인이 완료되면 Member 객체가 등록되고 이전 객체는 삭제된다.")
             public void member_insert_and_pre_member_delete_test(){
+
                 //given
                 MemberSaveDto dto =  new MemberSaveDto();
                 String email = "member1@changbi.com"; String password = "12345";
@@ -150,9 +182,11 @@ class MemberServiceImplTest {
                 System.out.println("insert member first");
                 MemberSaveDto dto1 =  new MemberSaveDto();
                 String name = "member1"; String password = "12345";
+                Company company = Company.MEDIA_CHANGBI;
                 Department department = Department.HR; Role role = Role.USER;
                 dto1.setMemberEmail(name);
                 dto1.setMemberPassword(password);
+                dto1.setCompany(company.name());
                 dto1.setDepartment(department.name());
                 dto1.setRole(role.name());
 
@@ -160,6 +194,7 @@ class MemberServiceImplTest {
                 String name2 = "member2";
                 dto2.setMemberEmail(name2);
                 dto2.setMemberPassword(password);
+                dto2.setCompany(company.name());
                 dto2.setDepartment(department.name());
                 dto2.setRole(role.name());
 
@@ -167,6 +202,7 @@ class MemberServiceImplTest {
                 String name3 = "member3";
                 dto3.setMemberEmail(name3);
                 dto3.setMemberPassword(password);
+                dto3.setCompany(company.name());
                 dto3.setDepartment(department.name());
                 dto3.setRole(role.name());
 
@@ -194,7 +230,7 @@ class MemberServiceImplTest {
                 //given
                 String findMemberName = "member3";
                 //when
-                Member member = memberService.findByMemberName(findMemberName);
+                Member member = memberService.findByMemberEmail(findMemberName);
                 //then
                 assertEquals(findMemberName, member.getMemberEmail());
             }

@@ -7,6 +7,8 @@ import com.changbi.tradeunion.boardforworkers.member.domain.PreMember;
 import com.changbi.tradeunion.boardforworkers.member.exception.MemberDuplicateException;
 import com.changbi.tradeunion.boardforworkers.member.exception.MemberNotFountException;
 import com.changbi.tradeunion.boardforworkers.member.repository.MemberRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Transactional
@@ -21,6 +24,7 @@ import java.util.List;
 public class MemberServiceImpl implements MemberService {
 
     private final Logger logger = LoggerFactory.getLogger(MemberServiceImpl.class);
+    private final HttpServletRequest request;
     private final MemberRepository memberRepository;
 
     @Override
@@ -48,7 +52,8 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Long saveMemberByPreMember(PreMember preMember) {
-        Member member = preMember.toMember();
+        Member admin = this.getSessionAdmin();
+        Member member = preMember.toMember(admin.getId());
 
         if(isAlreadyExistMemberEmail(member.getMemberEmail())){
             throw new MemberDuplicateException();
@@ -67,7 +72,7 @@ public class MemberServiceImpl implements MemberService {
     public void update(MemberSaveDto memberSaveDto){
         Member member = memberRepository.findById(memberSaveDto.getMemberId());
 
-        if(member == null) {
+        if(Objects.isNull(member)) {
             throw new MemberNotFountException();
         }
 
@@ -103,8 +108,8 @@ public class MemberServiceImpl implements MemberService {
 
     @Transactional(readOnly = true)
     @Override
-    public Member findByMemberName(String memberName) {
-        return memberRepository.findByMemberName(memberName);
+    public Member findByMemberEmail(String findByMemberEmail) {
+        return memberRepository.findByMemberEmail(findByMemberEmail);
     }
 
     private boolean isAlreadyExistMemberEmail(String memberEmail) {
@@ -113,5 +118,10 @@ public class MemberServiceImpl implements MemberService {
 
     private boolean isAlreadyExistPreMemberEmail(String memberEmail) {
         return memberRepository.isAlreadyExistPreMemberEmail(memberEmail);
+    }
+
+    private Member getSessionAdmin() {
+        HttpSession session = request.getSession();
+        return (Member) session.getAttribute("admin");
     }
 }

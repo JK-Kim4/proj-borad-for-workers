@@ -28,7 +28,7 @@ public class MemberRepository {
 
     public PreMember findPreMemberById(Long id) { return em.find(PreMember.class, id); }
 
-    public Member findByMemberName(String memberEmail) {
+    public Member findByMemberEmail(String memberEmail) {
         String query = "select m from Member m where m.memberEmail = :memberEmail";
 
         return em.createQuery(query, Member.class)

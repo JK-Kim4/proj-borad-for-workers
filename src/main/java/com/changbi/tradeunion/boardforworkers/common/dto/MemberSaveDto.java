@@ -41,6 +41,7 @@ public class MemberSaveDto {
                 .memberEmail(this.memberEmail)
                 .memberRealName(this.memberRealName)
                 .memberPassword(this.memberPassword)
+                .company(this.company)
                 .department(this.department)
                 .memberNickName(this.memberNickName)
                 .role(this.role)

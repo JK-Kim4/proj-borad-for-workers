@@ -69,7 +69,7 @@ public class Member {
             String memberEmail, String memberPassword,
             String memberNickName,String memberRealName,
             String company, String department,
-            String role){
+            String role, Long appendAdminId){
         this.memberEmail = memberEmail;
         this.memberRealName = memberRealName;
         this.memberPassword = memberPassword;
@@ -79,6 +79,8 @@ public class Member {
         if(memberNickName != null){
             this.memberNickName = memberNickName;
         }
+        this.appendDate = LocalDateTime.now();
+        this.appendAdminId = appendAdminId;
     }
 
     /*public method
