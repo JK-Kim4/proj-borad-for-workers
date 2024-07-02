@@ -1,5 +1,6 @@
 package com.changbi.tradeunion.boardforworkers.member.domain;
 
+import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.Company;
 import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.Department;
 import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.Role;
 import com.changbi.tradeunion.boardforworkers.common.dto.MemberSaveDto;
@@ -18,7 +19,10 @@ public class Member {
     private Long id;
 
     @Column(length = 32)
-    private String memberName;
+    private String memberEmail;
+
+    @Column(length = 32)
+    private String memberRealName;
 
     @Column(length = 64)
     private String memberNickName;
@@ -32,10 +36,17 @@ public class Member {
 
     @Column
     @Enumerated(EnumType.STRING)
+    private Company company;
+
+    @Column
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     @Column
     private LocalDateTime appendDate;
+
+    @Column
+    private Long appendAdminId;
 
     @Column
     private LocalDateTime updateDate;
@@ -43,8 +54,10 @@ public class Member {
 
     //constructor
     public Member (MemberSaveDto memberSaveDto){
-        this.memberName = memberSaveDto.getMemberName();
+        this.memberEmail = memberSaveDto.getMemberEmail();
+        this.memberRealName = memberSaveDto.getMemberRealName();
         this.memberPassword = memberSaveDto.getMemberPassword();
+        this.company = Company.valueOf(memberSaveDto.getCompany());
         this.department = Department.valueOf(memberSaveDto.getDepartment());
         this.role = Role.valueOf(memberSaveDto.getRole());
         this.appendDate = LocalDateTime.now();
@@ -53,11 +66,14 @@ public class Member {
 
     @Builder
     public Member (
-            String memberName, String memberPassword,
-            String memberNickName, String department,
+            String memberEmail, String memberPassword,
+            String memberNickName,String memberRealName,
+            String company, String department,
             String role){
-        this.memberName = memberName;
+        this.memberEmail = memberEmail;
+        this.memberRealName = memberRealName;
         this.memberPassword = memberPassword;
+        this.company = Company.valueOf(company);
         this.department = Department.valueOf(department);
         this.role = Role.valueOf(role);
         if(memberNickName != null){
@@ -72,7 +88,7 @@ public class Member {
 
     //회원 정보 수정
     public void update(MemberSaveDto memberSaveDto) {
-        this.memberName = memberSaveDto.getMemberName();
+        this.memberEmail = memberSaveDto.getMemberEmail();
         this.department = Department.valueOf(memberSaveDto.getDepartment());
         this.memberNickName = memberSaveDto.getMemberNickName();
         this.role = Role.valueOf(memberSaveDto.getRole());

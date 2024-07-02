@@ -25,11 +25,11 @@ public class MemberRepository {
         return em.find(Member.class, id);
     }
 
-    public Member findByMemberName(String memberName) {
-        String query = "select m from Member m where m.memberName = :memberName";
+    public Member findByMemberName(String memberEmail) {
+        String query = "select m from Member m where m.memberEmail = :memberEmail";
 
         return em.createQuery(query, Member.class)
-                .setParameter("memberName", memberName)
+                .setParameter("memberEmail", memberEmail)
                 .getSingleResult();
     }
 
@@ -47,9 +47,9 @@ public class MemberRepository {
     public boolean isAlreadyExistMemberName(Member member){
         String query =  "select count(m) > 0 " +
                         "from Member m " +
-                        "where m.memberName = :memberName";
+                        "where m.memberEmail = :memberEmail";
         return em.createQuery(query, Boolean.class)
-                .setParameter("memberName", member.getMemberName())
+                .setParameter("memberEmail", member.getMemberEmail())
                 .getSingleResult();
     }
 

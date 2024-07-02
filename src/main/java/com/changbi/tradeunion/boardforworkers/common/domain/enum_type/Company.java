@@ -1,9 +1,9 @@
 package com.changbi.tradeunion.boardforworkers.common.domain.enum_type;
 
-public enum Department {
+public enum Company {
 
-    PUBLISHING,
-    IT,
-    HR,
-    ETC
+    CHANGBI,
+    CHANGBI_EDU,
+    MEDIA_CHANGBI
+    
 }

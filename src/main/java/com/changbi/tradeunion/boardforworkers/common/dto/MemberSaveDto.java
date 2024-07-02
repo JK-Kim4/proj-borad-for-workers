@@ -14,13 +14,20 @@ public class MemberSaveDto {
     private Long memberId;
 
     @NotBlank(message = "사용자 계정을 입력해주세요.")
-    @Size(min= 6, max = 16, message = "계정은 6글자 이상 16자 이하의 공백없는 문자열만 가능합니다.")
-    private String memberName;
+    @Size(min= 6, max = 16, message = "[*@changbi.com]형식의 메일 주소를 입력해주세요.")
+    private String memberEmail;
+
+    @NotBlank(message = "사용자의 실명을 입력해주세요.")
+    @Size(min = 1, max = 20, message = "본명은 한글로 1글자 이상 20자 이하의 공백없는 문자열만 가능합니다.")
+    private String memberRealName;
 
     @NotBlank(message = "패스워드를 입럭해주세요.")
     private String memberPassword;
 
     private String memberNickName;
+
+    @NotBlank(message = "소속 회사를 선택해주세요")
+    private String company;
 
     @NotBlank(message = "부서를 선택해주세요.")
     private String department;
@@ -30,7 +37,8 @@ public class MemberSaveDto {
 
     public Member toEntity(){
         return Member.builder()
-                .memberName(this.memberName)
+                .memberEmail(this.memberEmail)
+                .memberRealName(this.memberRealName)
                 .memberPassword(this.memberPassword)
                 .department(this.department)
                 .memberNickName(this.memberNickName)
