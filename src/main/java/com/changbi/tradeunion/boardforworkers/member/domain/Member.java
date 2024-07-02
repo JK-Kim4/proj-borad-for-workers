@@ -79,7 +79,6 @@ public class Member {
         if(memberNickName != null){
             this.memberNickName = memberNickName;
         }
-
     }
 
     /*public method

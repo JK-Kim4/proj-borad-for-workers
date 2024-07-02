@@ -1,10 +1,12 @@
 package com.changbi.tradeunion.boardforworkers.member.application;
 
+import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.Company;
 import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.Department;
 import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.Role;
 import com.changbi.tradeunion.boardforworkers.common.dto.MemberSaveDto;
 import com.changbi.tradeunion.boardforworkers.common.dto.Pagination;
 import com.changbi.tradeunion.boardforworkers.member.domain.Member;
+import com.changbi.tradeunion.boardforworkers.member.domain.PreMember;
 import com.changbi.tradeunion.boardforworkers.member.exception.MemberDuplicateException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
@@ -16,8 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class MemberServiceImplTest {
@@ -41,7 +42,7 @@ class MemberServiceImplTest {
                 MemberSaveDto dto =  new MemberSaveDto();
                 String name = "member1"; String password = "12345";
                 Department department = Department.HR; Role role = Role.USER;
-                dto.setMemberName(name);
+                dto.setMemberEmail(name);
                 dto.setMemberPassword(password);
                 dto.setDepartment(department.name());
                 dto.setRole(role.name());
@@ -51,7 +52,7 @@ class MemberServiceImplTest {
                 Member member = memberService.findById(memberId);
 
                 //then
-                assertEquals(member.getMemberName(), name);
+                assertEquals(member.getMemberEmail(), name);
                 assertEquals(member.getMemberPassword(), password);
                 assertEquals(member.getDepartment(), department);
                 assertEquals(member.getRole(), role);
@@ -64,7 +65,7 @@ class MemberServiceImplTest {
                 MemberSaveDto dto =  new MemberSaveDto();
                 String name = "member1"; String password = "12345";
                 Department department = Department.HR; Role role = Role.USER;
-                dto.setMemberName(name);
+                dto.setMemberEmail(name);
                 dto.setMemberPassword(password);
                 dto.setDepartment(department.name());
                 dto.setRole(role.name());
@@ -74,6 +75,65 @@ class MemberServiceImplTest {
 
                 //then
                 assertThrows(MemberDuplicateException.class, () -> memberService.save(dto));
+            }
+
+            @Test @Transactional
+            @DisplayName("신규 회원 등록 요청 시 PreMember 객체가 우선 등록된다.")
+            public void pre_member_insert_test(){
+                //given
+                MemberSaveDto dto =  new MemberSaveDto();
+                String email = "member1@changbi.com"; String password = "12345";
+                String realName = "tester";
+                String company = Company.MEDIA_CHANGBI.name();
+                String department = Department.HR.name();
+                dto.setMemberEmail(email);
+                dto.setMemberPassword(password);
+                dto.setMemberRealName(realName);
+                dto.setCompany(company);
+                dto.setDepartment(department);
+
+                //when
+                Long preMemberId = memberService.savePreMember(dto);
+                PreMember preMember = memberService.findPreMemberById(preMemberId);
+
+                //then
+                assertEquals(email, preMember.getMemberEmail());
+                assertEquals(realName, preMember.getMemberRealName());
+                assertEquals(password, preMember.getMemberPassword());
+                assertEquals(company, preMember.getCompany().name());
+                assertEquals(department, preMember.getDepartment().name());
+            }
+
+            @Test @Transactional
+            @DisplayName("PreMember 상태의 회원 가입 승인이 완료되면 Member 객체가 등록되고 이전 객체는 삭제된다.")
+            public void member_insert_and_pre_member_delete_test(){
+                //given
+                MemberSaveDto dto =  new MemberSaveDto();
+                String email = "member1@changbi.com"; String password = "12345";
+                String realName = "tester";
+                String company = Company.MEDIA_CHANGBI.name();
+                String department = Department.HR.name();
+                dto.setMemberEmail(email);
+                dto.setMemberPassword(password);
+                dto.setMemberRealName(realName);
+                dto.setCompany(company);
+                dto.setDepartment(department);
+
+                //when
+                Long preMemberId = memberService.savePreMember(dto);
+                PreMember preMember = memberService.findPreMemberById(preMemberId);
+                Long memberId = memberService.saveMemberByPreMember(preMember);
+                Member member = memberService.findById(memberId);
+
+
+                //then
+                assertNull(memberService.findPreMemberById(preMemberId));
+                assertEquals(email, member.getMemberEmail());
+                assertEquals(realName, member.getMemberRealName());
+                assertEquals(password, member.getMemberPassword());
+                assertEquals(company, member.getCompany().name());
+                assertEquals(department, member.getDepartment().name());
+                assertEquals(Role.USER, member.getRole());
             }
         }
 
@@ -91,21 +151,21 @@ class MemberServiceImplTest {
                 MemberSaveDto dto1 =  new MemberSaveDto();
                 String name = "member1"; String password = "12345";
                 Department department = Department.HR; Role role = Role.USER;
-                dto1.setMemberName(name);
+                dto1.setMemberEmail(name);
                 dto1.setMemberPassword(password);
                 dto1.setDepartment(department.name());
                 dto1.setRole(role.name());
 
                 MemberSaveDto dto2 =  new MemberSaveDto();
                 String name2 = "member2";
-                dto2.setMemberName(name2);
+                dto2.setMemberEmail(name2);
                 dto2.setMemberPassword(password);
                 dto2.setDepartment(department.name());
                 dto2.setRole(role.name());
 
                 MemberSaveDto dto3 =  new MemberSaveDto();
                 String name3 = "member3";
-                dto3.setMemberName(name3);
+                dto3.setMemberEmail(name3);
                 dto3.setMemberPassword(password);
                 dto3.setDepartment(department.name());
                 dto3.setRole(role.name());
@@ -136,7 +196,7 @@ class MemberServiceImplTest {
                 //when
                 Member member = memberService.findByMemberName(findMemberName);
                 //then
-                assertEquals(findMemberName, member.getMemberName());
+                assertEquals(findMemberName, member.getMemberEmail());
             }
         }
     }
@@ -156,7 +216,7 @@ class MemberServiceImplTest {
         @DisplayName("사용자 디티오 필드 Validation 테스트")
         public void member_save_dto_validation(){
             MemberSaveDto dto = new MemberSaveDto();
-            dto.setMemberName("username1234");
+            dto.setMemberEmail("username1234");
 
             Set<ConstraintViolation<MemberSaveDto>> constraintViolations = validator.validate(dto);
 

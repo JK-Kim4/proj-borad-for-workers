@@ -2,7 +2,10 @@ package com.changbi.tradeunion.boardforworkers.member.domain;
 
 import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.Company;
 import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.Department;
+import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.Role;
 import jakarta.persistence.*;
+import lombok.Builder;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
@@ -17,6 +20,7 @@ import java.time.LocalDateTime;
  * (회원 가입 거절 시) 삭제
  * */
 @Entity
+@Getter
 public class PreMember {
 
     @Id
@@ -46,4 +50,33 @@ public class PreMember {
 
     @Column
     private LocalDateTime requestDateTime;
+
+    @Builder
+    public PreMember (
+            String memberEmail, String memberPassword,
+            String memberNickName,String memberRealName,
+            String company, String department){
+        this.memberEmail = memberEmail;
+        this.memberRealName = memberRealName;
+        this.memberPassword = memberPassword;
+        this.company = Company.valueOf(company);
+        this.department = Department.valueOf(department);
+        if(memberNickName != null){
+            this.memberNickName = memberNickName;
+        }
+    }
+
+    public Member toMember(){
+        return Member.builder()
+                .memberEmail(this.memberEmail)
+                .memberRealName(this.memberRealName)
+                .memberNickName(this.memberNickName)
+                .memberPassword(this.memberPassword)
+                .company(this.company.name())
+                .department(this.department.name())
+                .role(Role.USER.name())
+                .build();
+
+
+    }
 }

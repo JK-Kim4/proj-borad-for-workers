@@ -3,6 +3,7 @@ package com.changbi.tradeunion.boardforworkers.member.application;
 import com.changbi.tradeunion.boardforworkers.common.dto.MemberSaveDto;
 import com.changbi.tradeunion.boardforworkers.common.dto.Pagination;
 import com.changbi.tradeunion.boardforworkers.member.domain.Member;
+import com.changbi.tradeunion.boardforworkers.member.domain.PreMember;
 import com.changbi.tradeunion.boardforworkers.member.exception.MemberDuplicateException;
 import com.changbi.tradeunion.boardforworkers.member.exception.MemberNotFountException;
 import com.changbi.tradeunion.boardforworkers.member.repository.MemberRepository;
@@ -26,11 +27,40 @@ public class MemberServiceImpl implements MemberService {
     public Long save(MemberSaveDto memberSaveDto) {
         Member member = memberSaveDto.toEntity();
 
-        if(isAlreadyExistMemberName(member)){
+        if(isAlreadyExistMemberEmail(member.getMemberEmail())){
             throw new MemberDuplicateException();
         }
 
         return memberRepository.save(member);
+    }
+
+    @Override
+    public Long savePreMember(MemberSaveDto memberSaveDto) {
+        PreMember preMember = memberSaveDto.toPreEntity();
+
+        if(isAlreadyExistMemberEmail(preMember.getMemberEmail()) ||
+                isAlreadyExistPreMemberEmail(preMember.getMemberEmail())){
+            throw new MemberDuplicateException();
+        }
+
+        return memberRepository.savePreMember(preMember);
+    }
+
+    @Override
+    public Long saveMemberByPreMember(PreMember preMember) {
+        Member member = preMember.toMember();
+
+        if(isAlreadyExistMemberEmail(member.getMemberEmail())){
+            throw new MemberDuplicateException();
+        }
+
+        //insert Member
+        memberRepository.save(member);
+
+        //delete PreMember
+        memberRepository.deletePreMember(preMember);
+
+        return member.getId();
     }
 
     @Override
@@ -44,10 +74,25 @@ public class MemberServiceImpl implements MemberService {
         member.update(memberSaveDto);
     }
 
+    @Override
+    public void delete(Member member) {
+        memberRepository.delete(member);
+    }
+
+    @Override
+    public void deletePreMember(PreMember preMember) {
+        memberRepository.deletePreMember(preMember);
+    }
+
     @Transactional(readOnly = true)
     @Override
     public Member findById(Long memberId) {
         return memberRepository.findById(memberId);
+    }
+
+    @Override
+    public PreMember findPreMemberById(Long preMemberId) {
+        return memberRepository.findPreMemberById(preMemberId);
     }
 
     @Transactional(readOnly = true)
@@ -62,7 +107,11 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.findByMemberName(memberName);
     }
 
-    private boolean isAlreadyExistMemberName(Member member) {
-        return memberRepository.isAlreadyExistMemberName(member);
+    private boolean isAlreadyExistMemberEmail(String memberEmail) {
+        return memberRepository.isAlreadyExistMemberEmail(memberEmail);
+    }
+
+    private boolean isAlreadyExistPreMemberEmail(String memberEmail) {
+        return memberRepository.isAlreadyExistPreMemberEmail(memberEmail);
     }
 }
