@@ -17,6 +17,9 @@ public class ErrorResponse {
 
     public static ErrorResponse from
             (final Exception e) {
+
+        logger.error("[ERROR-NOT FOUND]\t{}", e.getMessage());
+
         return ErrorResponse.builder()
                 .errorMessage(e.getMessage())
                 .build();
