@@ -24,7 +24,7 @@ public class MemberController {
         ResultDto<Long> resultDto = new ResultDto<>();
 
         resultDto.setResultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT);
-        resultDto.setResultMessage(CommonValues.RESULT_CODE_SUCCESS_DEFAULT);
+        resultDto.setResultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_INSERT);
         resultDto.setData(memberService.save(memberDto));
 
         return ResponseEntity.ok(resultDto);

@@ -12,17 +12,13 @@
                 관리자 계정 생성
             </div>
             <div class="card-body">
-                <div class="col-sm-8">
-                    <label for="firstName" class="form-label">관리자 계정</label>
-                    <div class="row">
-                        <div class="col-8">
-                            <input type="email" class="form-control" id="inputMail" placeholder="" value="" required>
-                            <div class="invalid-feedback">
-                                Valid first name is required.
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <button class="btn btn-success" id="emailRequestButton"> 인증 번호 발송 </button>
+
+                <div class="row">
+                    <div class="col-6">
+                        <label for="firstName" class="form-label">관리자 계정</label>
+                        <input type="email" class="form-control" id="inputMail" placeholder="" value="" required>
+                        <div class="invalid-feedback">
+                            Valid first name is required.
                         </div>
                     </div>
                 </div>
@@ -30,26 +26,27 @@
                 <div class="row">
                     <div class="col-6">
                         <label for="username" class="form-label">비밀번호</label>
-                        <span style="color:red;">에러 메세지</span>
                         <input type="password" class="form-control" id="inputPassword" placeholder="비밀번호 입 (영 대소문자, 숫자, 특수문자 포함 8 ~ 20자)" required>
                     </div>
                     <div class="col-6">
-                        <label for="username" class="form-label">비밀번호 확인</label>
-                        <span style="color:red;">에러 메세지</span>
-                        <input type="password" class="form-control" id="inputPassword" placeholder="비밀번호 재입력">
+                        <label for="username" class="form-label">권한</label>
+                        <select class="form-select" aria-label="Default select example" id="inputRole">
+                            <option value="" selected disabled> 관리자 계정 권한 선택 </option>
+                            <option value="SUPER_ADMIN"> SUPER_ADMIN </option>
+                            <option value="ADMIN"> ADMIN </option>
+                            <option value="USER"> USER </option>
+                        </select>
                     </div>
                 </div>
 
                 <div class="row mt-3">
                     <div class="col-6">
                         <label for="username" class="form-label">실명(필수)</label>
-                        <span style="color:red;">에러 메세지</span>
-                        <input type="text" class="form-control" id="inputPassword" placeholder="비밀번호 재입력">
+                        <input type="text" class="form-control" id="inputRealName" placeholder="비밀번호 재입력">
                     </div>
                     <div class="col-6">
                         <label for="username" class="form-label">닉네임(선택)</label>
-                        <span style="color:red;">에러 메세지</span>
-                        <input type="text" class="form-control" id="inputPassword" placeholder="비밀번호 재입력">
+                        <input type="text" class="form-control" id="inputNickName" placeholder="비밀번호 재입력">
                     </div>
                 </div>
 
@@ -57,7 +54,7 @@
                 <div class="row mt-3">
                     <div class="col-6">
                         <label for="username" class="form-label">소속</label>
-                        <select class="form-select" aria-label="Default select example">
+                        <select class="form-select" aria-label="Default select example" id="inputCompany">
                             <option value="" selected disabled> 소속을 선택해주세요. </option>
                             <option value="CHANGBI"> 창비 </option>
                             <option value="CHANGBI_EDU"> 창비교육 </option>
@@ -66,7 +63,7 @@
                     </div>
                     <div class="col-6">
                         <label for="username" class="form-label">부서</label>
-                        <select class="form-select" aria-label="Default select example">
+                        <select class="form-select" aria-label="Default select example" id="inputDepartment">
                             <option value="" selected  disabled> 부서를 선택해주세요. </option>
                             <option value="PUBLISHING"> 출판 </option>
                             <option value="IT"> IT </option>
@@ -78,11 +75,12 @@
 
             </div>
             <div class="card-footer">
-                <button class="btn btn-primary">등록</button>
-                <button class="btn btn-dark">뒤로가기</button>
+                <button class="btn btn-primary" id="adminRegistrationButton">등록</button>
+                <button class="btn btn-dark" onclick="history.back()">뒤로가기</button>
             </div>
 
         </div>
     </div>
 
+    <script src="/js/admin/member.js"></script>
 {{>layout/admin-footer}}
