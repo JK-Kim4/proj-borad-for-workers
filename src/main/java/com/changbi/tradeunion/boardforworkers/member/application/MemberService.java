@@ -4,6 +4,7 @@ import com.changbi.tradeunion.boardforworkers.common.dto.MemberSaveDto;
 import com.changbi.tradeunion.boardforworkers.common.dto.Pagination;
 import com.changbi.tradeunion.boardforworkers.member.domain.Member;
 import com.changbi.tradeunion.boardforworkers.member.domain.PreMember;
+import com.changbi.tradeunion.boardforworkers.member.presentation.dto.MemberDetailDto;
 import com.changbi.tradeunion.boardforworkers.member.presentation.dto.MemberListDto;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public interface MemberService {
 
     void deletePreMember(PreMember preMember);
 
-    Member findById(Long memberId);
+    MemberDetailDto findById(Long memberId);
 
     PreMember findPreMemberById(Long memberId);
 

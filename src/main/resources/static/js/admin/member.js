@@ -45,7 +45,7 @@ let main = {
             url: "/api/member/members",
             method: "GET",
             data: {
-                pageNum: pageNum,
+                //pageNum: pageNum,
                 pageSize: pageSize
             },
             success: function (result){

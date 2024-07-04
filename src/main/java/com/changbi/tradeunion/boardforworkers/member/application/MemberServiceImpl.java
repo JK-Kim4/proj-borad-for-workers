@@ -6,6 +6,7 @@ import com.changbi.tradeunion.boardforworkers.member.domain.Member;
 import com.changbi.tradeunion.boardforworkers.member.domain.PreMember;
 import com.changbi.tradeunion.boardforworkers.member.exception.MemberDuplicateException;
 import com.changbi.tradeunion.boardforworkers.member.exception.MemberNotFountException;
+import com.changbi.tradeunion.boardforworkers.member.presentation.dto.MemberDetailDto;
 import com.changbi.tradeunion.boardforworkers.member.presentation.dto.MemberListDto;
 import com.changbi.tradeunion.boardforworkers.member.repository.MemberRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -92,8 +93,8 @@ public class MemberServiceImpl implements MemberService {
 
     @Transactional(readOnly = true)
     @Override
-    public Member findById(Long memberId) {
-        return memberRepository.findById(memberId);
+    public MemberDetailDto findById(Long memberId) {
+        return MemberDetailDto.builder().member(memberRepository.findById(memberId)).build();
     }
 
     @Override

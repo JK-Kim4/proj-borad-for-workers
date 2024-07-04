@@ -74,4 +74,17 @@ public class MemberController {
 
         return ResponseEntity.ok(resultDto);
     }
+
+    @GetMapping("/{memberId}")
+    public ResponseEntity<ResultDto> findById(
+            @NotNull @PathVariable(name = "memberId") Long memberId) {
+
+        ResultDto resultDto = ResultDto.builder()
+                .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
+                .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
+                .data(memberService.findById(memberId))
+                .build();
+
+        return ResponseEntity.ok(resultDto);
+    }
 }
