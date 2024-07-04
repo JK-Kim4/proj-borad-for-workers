@@ -11,20 +11,14 @@
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/checkout/">
 
-
+    <!-- JQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 
     <!-- Bootstrap core CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
     <!-- Favicons -->
-    <link rel="apple-touch-icon" href="/docs/5.0/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
-    <link rel="icon" href="/docs/5.0/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
-    <link rel="icon" href="/docs/5.0/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
-    <link rel="manifest" href="/docs/5.0/assets/img/favicons/manifest.json">
-    <link rel="mask-icon" href="/docs/5.0/assets/img/favicons/safari-pinned-tab.svg" color="#7952b3">
-    <link rel="icon" href="/docs/5.0/assets/img/favicons/favicon.ico">
     <meta name="theme-color" content="#7952b3">
-
 
     <style>
         .bd-placeholder-img {
@@ -48,10 +42,10 @@
 </head>
 <body class="bg-light">
 
-<div class="container">
+<div class="container col-6">
     <main>
         <div class="py-5 text-center">
-            <img class="d-block mx-auto mb-4" src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+            <img class="d-block mx-auto mb-4" alt="" width="72" height="57">
             <h2>계정 생성하기</h2>
             <p class="lead">창비그룹 노동조합 게시판 회원 계정 생성하기</p>
             <p class="lead">계정은 창비 그룹웨어 메일 주소(@changbi.com)로만 가입이 가능합니다.</p>
@@ -60,97 +54,80 @@
         <div class="row g-5">
             <div class="col-md-12 col-lg-12">
                 <h4 class="mb-3">회원 정보</h4>
-                <form class="needs-validation" novalidate>
-                    <div class="row g-3">
-                        <div class="col-sm-8">
-                            <label for="firstName" class="form-label">그룹웨어 메일 주소</label>
-                            <div class="row">
-                                <div class="col-8">
-                                    <input type="email" class="form-control" id="inputMail" placeholder="" value="" required>
-                                    <div class="invalid-feedback">
-                                        Valid first name is required.
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <button class="btn btn-success" id="emailRequestButton"> 인증 번호 발송 </button>
+                <div class="row g-3">
+                    <div class="col-9">
+                        <label for="firstName" class="form-label">그룹웨어 메일 주소</label>
+                        <div class="row">
+                            <div class="col-8">
+                                <input type="email" class="form-control" id="inputMail" placeholder="" value="" required>
+                                <div class="invalid-feedback">
+                                    Valid first name is required.
                                 </div>
                             </div>
-                            <!--<div class="row mt-1">
-                                <div class="col-7">
-                                    <input type="text" class="form-control" placeholder="발송된 인증번호 6자리를 입력해주세요.">
-                                </div>
-                                <div class="col-3">
-                                    <span class="form-control">잔여 시간</span>
-                                </div>
-                            </div>-->
+                            <div class="col-4">
+                                <button class="btn btn-success" id="emailRequestButton"> 인증 번호 발송 </button>
+                            </div>
                         </div>
-
-                        <div class="col-12">
+                        <!--<div class="row mt-1">
+                            <div class="col-7">
+                                <input type="text" class="form-control" placeholder="발송된 인증번호 6자리를 입력해주세요.">
+                            </div>
+                            <div class="col-3">
+                                <span class="form-control">잔여 시간</span>
+                            </div>
+                        </div>-->
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-6">
                             <label for="username" class="form-label">비밀번호</label>
                             <span style="color:red;">에러 메세지</span>
-                            <div class="row">
-                                <div class="col-6">
-                                    <input type="password" class="form-control" id="inputPassword" placeholder="비밀번호 입 (영 대소문자, 숫자, 특수문자 포함 8 ~ 20자)" required>
-                                </div>
-                            </div>
+                            <input type="password" class="form-control" id="inputPassword" placeholder="비밀번호 입 (영 대소문자, 숫자, 특수문자 포함 8 ~ 20자)" required>
                         </div>
 
-                        <div class="col-12">
+                        <div class="col-6">
                             <label for="username" class="form-label">비밀번호 확인</label>
                             <span style="color:red;">에러 메세지</span>
-                            <div class="row">
-                                <div class="col-6">
-                                    <input type="password" class="form-control" id="inputPassword" placeholder="비밀번호 재입력">
-                                </div>
-                            </div>
+                            <input type="password" class="form-control" id="checkPassword" placeholder="비밀번호 재입력">
                         </div>
-
-                        <div class="row mt-3">
-                            <div class="col-6">
-                                <label for="username" class="form-label">실명(필수)</label>
-                                <span style="color:red;">에러 메세지</span>
-                                <input type="text" class="form-control" id="inputPassword" placeholder="비밀번호 재입력">
-                            </div>
-                            <div class="col-6">
-                                <label for="username" class="form-label">닉네임(선택)</label>
-                                <span style="color:red;">에러 메세지</span>
-                                <input type="text" class="form-control" id="inputPassword" placeholder="비밀번호 재입력">
-                            </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-6">
+                            <label for="username" class="form-label">실명(필수)</label>
+                            <span style="color:red;">에러 메세지</span>
+                            <input type="text" class="form-control" id="inputRealName" placeholder="비밀번호 재입력">
                         </div>
-
-
-                        <div class="row mt-3">
-                            <div class="col-6">
-                                <label for="username" class="form-label">소속</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option value="" selected disabled> 소속을 선택해주세요. </option>
-                                    <option value="CHANGBI"> 창비 </option>
-                                    <option value="CHANGBI_EDU"> 창비교육 </option>
-                                    <option value="MEDIA_CHANGBI"> 미디어창비 </option>
-                                </select>
-                            </div>
-                            <div class="col-6">
-                                <label for="username" class="form-label">부서</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option value="" selected  disabled> 부서를 선택해주세요. </option>
-                                    <option value="PUBLISHING"> 출판 </option>
-                                    <option value="IT"> IT </option>
-                                    <option value="HR"> 인사/총무 </option>
-                                    <option value="ETC"> 기타 </option>
-                                </select>
-                            </div>
+                        <div class="col-6">
+                            <label for="username" class="form-label">닉네임(선택)</label>
+                            <span style="color:red;">에러 메세지</span>
+                            <input type="text" class="form-control" id="inputNickName" placeholder="비밀번호 재입력">
                         </div>
+                    </div>
 
 
-
-
-                        <div class="col-12">
-                            <label for="email" class="form-label">부서 <span class="text-muted">(Optional)</span></label>
+                    <div class="row mt-3">
+                        <div class="col-6">
+                            <label for="username" class="form-label">소속</label>
+                            <select class="form-select" id="inputCompany">
+                                <option value="" selected disabled> 소속을 선택해주세요. </option>
+                                <option value="CHANGBI"> 창비 </option>
+                                <option value="CHANGBI_EDU"> 창비교육 </option>
+                                <option value="MEDIA_CHANGBI"> 미디어창비 </option>
+                            </select>
                         </div>
-                    <hr class="my-4">
-
-                    <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
-                </form>
+                        <div class="col-6">
+                            <label for="username" class="form-label">부서</label>
+                            <select class="form-select" id="inputDepartment">
+                                <option value="" selected  disabled> 부서를 선택해주세요. </option>
+                                <option value="PUBLISHING"> 출판 </option>
+                                <option value="IT"> IT </option>
+                                <option value="HR"> 인사/총무 </option>
+                                <option value="ETC"> 기타 </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <hr class="my-4">
+                <button class="w-100 btn btn-primary btn-lg" id="requestRegistrationButton">가입 요청</button>
             </div>
         </div>
     </main>
@@ -167,7 +144,7 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
-<script src="/js/form-validation.js"></script>
+<script src="/js/commonValues.js"></script>
+<script src="/js/member.js"></script>
 </body>
 </html>

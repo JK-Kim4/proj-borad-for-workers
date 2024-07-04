@@ -8,6 +8,7 @@ import com.changbi.tradeunion.boardforworkers.member.exception.MemberDuplicateEx
 import com.changbi.tradeunion.boardforworkers.member.exception.MemberNotFountException;
 import com.changbi.tradeunion.boardforworkers.member.presentation.dto.MemberDetailDto;
 import com.changbi.tradeunion.boardforworkers.member.presentation.dto.MemberListDto;
+import com.changbi.tradeunion.boardforworkers.member.presentation.dto.PreMemberDto;
 import com.changbi.tradeunion.boardforworkers.member.repository.MemberRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -41,8 +42,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Long savePreMember(MemberSaveDto memberSaveDto) {
-        PreMember preMember = memberSaveDto.toPreEntity();
+    public Long savePreMember(PreMemberDto preMemberDto) {
+        PreMember preMember = preMemberDto.toPreEntity();
 
         if(isAlreadyExistMemberEmail(preMember.getMemberEmail()) ||
                 isAlreadyExistPreMemberEmail(preMember.getMemberEmail())){
@@ -93,8 +94,29 @@ public class MemberServiceImpl implements MemberService {
 
     @Transactional(readOnly = true)
     @Override
+    public List<MemberListDto> findMembers(Pagination pagination) {
+        return memberRepository.findMembers(pagination)
+                .stream()
+                .map(member -> MemberListDto.builder()
+                        .member(member)
+                        .build())
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
     public MemberDetailDto findById(Long memberId) {
         return MemberDetailDto.builder().member(memberRepository.findById(memberId)).build();
+    }
+
+    @Override
+    public List<PreMemberDto> findPreMembers() {
+        return memberRepository.findPreMembers()
+                .stream()
+                .map(preMember -> PreMemberDto.builder()
+                        .preMember(preMember)
+                        .build())
+                .toList();
     }
 
     @Override
@@ -104,21 +126,12 @@ public class MemberServiceImpl implements MemberService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<MemberListDto> findAll(Pagination pagination) {
-        return memberRepository.findAll(pagination)
-                .stream()
-                .map(member -> MemberListDto.builder()
-                                        .member(member)
-                                    .build())
-                .toList();
-
-    }
-    @Transactional(readOnly = true)
-    @Override
     public Member findByMemberEmail(String findByMemberEmail) {
         return memberRepository.findByMemberEmail(findByMemberEmail);
     }
 
+
+    /*PRIVATE METHODS*/
     private boolean isAlreadyExistMemberEmail(String memberEmail) {
         return memberRepository.isAlreadyExistMemberEmail(memberEmail);
     }

@@ -28,16 +28,17 @@
     <div class="table-responsive mt-3">
         <table class="table">
             <thead>
-                <tr>
-                    <th scope="col">회원 고유번호</th>
-                    <th scope="col">아이디</th>
-                    <th scope="col">이름(닉네임)</th>
-                    <th scope="col">소속</th>
-                    <th scope="col">등급</th>
-                    <th scope="col">가입일</th>
-                </tr>
+            <tr>
+                <th scope="col">가입 요청일</th>
+                <th scope="col">아이디</th>
+                <th scope="col">이름(닉네임)</th>
+                <th scope="col">소속</th>
+                <th scope="col">등급</th>
+                <th scope="col">승인</th>
+                <th scope="col">거절</th>
+            </tr>
             </thead>
-            <tbody id="memberListBody">
+            <tbody id="preMemberListBody">
 
             </tbody>
         </table>
@@ -52,13 +53,13 @@
             <li class="page-item"><a class="page-link" href="#">Next</a></li>
         </ul>
     </nav>-->
-    </main>
-    </div>
+</main>
+</div>
 
-<script src="/js/admin/member.js"></script>
+<script src="/js/admin/pre-member.js"></script>
 <script type="application/javascript">
     $(document).ready(function (){
-        main.findMembers(0, 20);
+        main.findPreMembers(0 ,20);
     });
 </script>
 </div>

@@ -6,6 +6,7 @@ import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.Role;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -21,6 +22,7 @@ import java.time.LocalDateTime;
  * */
 @Entity
 @Getter
+@NoArgsConstructor
 public class PreMember {
 
     @Id
@@ -77,7 +79,5 @@ public class PreMember {
                 .department(this.department.name())
                 .role(Role.USER.name())
                 .build();
-
-
     }
 }

@@ -36,7 +36,7 @@ public class MemberRepository {
                 .getSingleResult();
     }
 
-    public List<Member> findAll(Pagination pagination) {
+    public List<Member> findMembers(Pagination pagination) {
         String query = "select m from Member m";
 
         TypedQuery<Member> typedQuery = em.createQuery(query, Member.class);
@@ -45,26 +45,6 @@ public class MemberRepository {
                 .setFirstResult(pagination.getPageNum())
                 .setMaxResults(pagination.getPageSize())
                 .getResultList();
-    }
-
-    public boolean isAlreadyExistMemberEmail(String  memberEmail){
-        String query =  "select count(m) > 0 " +
-                        "from Member m " +
-                        "where m.memberEmail = :memberEmail";
-        return em.createQuery(query, Boolean.class)
-                .setParameter("memberEmail", memberEmail)
-                .getSingleResult();
-    }
-
-    public boolean isAlreadyExistPreMemberEmail(String memberEmail){
-        String query =  "select count(pm) > 0 " +
-                        "from PreMember pm " +
-                        "where pm.memberEmail = :memberEmail";
-
-        return em.createQuery(query, Boolean.class)
-                .setParameter("memberEmail", memberEmail)
-                .getSingleResult();
-
     }
 
     public Long savePreMember(PreMember preMember) {
@@ -78,5 +58,30 @@ public class MemberRepository {
 
     public void deletePreMember(PreMember preMember) {
         em.remove(preMember);
+    }
+
+    public List<PreMember> findPreMembers() {
+        String query = "select pm from PreMember pm";
+
+        return em.createQuery(query, PreMember.class).getResultList();
+    }
+
+    public boolean isAlreadyExistMemberEmail(String  memberEmail){
+        String query =  "select count(m) > 0 " +
+                "from Member m " +
+                "where m.memberEmail = :memberEmail";
+        return em.createQuery(query, Boolean.class)
+                .setParameter("memberEmail", memberEmail)
+                .getSingleResult();
+    }
+
+    public boolean isAlreadyExistPreMemberEmail(String memberEmail){
+        String query =  "select count(pm) > 0 " +
+                "from PreMember pm " +
+                "where pm.memberEmail = :memberEmail";
+
+        return em.createQuery(query, Boolean.class)
+                .setParameter("memberEmail", memberEmail)
+                .getSingleResult();
     }
 }

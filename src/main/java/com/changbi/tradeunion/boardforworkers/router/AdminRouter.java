@@ -22,4 +22,9 @@ public class AdminRouter {
     public String adminSavePage(){
         return "admin/save";
     }
+
+    @GetMapping("/pre-member/list")
+    public String preMemberListPage(){
+        return "admin/member/pre-member-list";
+    }
 }

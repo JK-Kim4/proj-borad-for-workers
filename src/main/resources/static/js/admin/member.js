@@ -39,18 +39,40 @@ let main = {
             }
         });
     },
-    findMemberAll: function (pageNum, pageSize){
+    findMembers: function (pageNum, pageSize){
 
         $.ajax({
             url: "/api/member/members",
             method: "GET",
             data: {
-                //pageNum: pageNum,
+                pageNum: pageNum,
                 pageSize: pageSize
             },
             success: function (result){
                 //TODO render member list
-                console.log(result);
+                let html = "";
+                if (RESULT_CODE.SUCCESS_DEFAULT === result.resultCode){
+                    if(result.data.length > 0){
+                        $.each(result.data, function (index, element){
+                            html += "<tr>" +
+                                        "<td>"+element.memberId+"</td>" +
+                                        "<td>"+element.memberEmail+"</td>" +
+                                        "<td>"+element.memberRealName+"("+element.memberNickName+")</td>" +
+                                        "<td>"+element.company+"</td>" +
+                                        "<td>"+element.department+"</td>" +
+                                        "<td>"+element.appendDate+"</td>" +
+                                    "</tr>"
+                        });
+                    } else {
+                        html = "<tr><td colspan='6'>"+RESULT_MESSAGE.SUCCESS_NO_RESULT+"</td></tr>"
+                    }
+
+                }else{
+                    html = "<tr><td colspan='6'>"+RESULT_MESSAGE.FAIL_SELECT_LIST+" ["+result.resultCode+"]</td></tr>"
+                }
+
+                $("#memberListBody").html(html);
+
             },
             error: function (x,h,r){
                 console.error(x);

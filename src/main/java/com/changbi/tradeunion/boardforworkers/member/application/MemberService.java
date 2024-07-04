@@ -6,6 +6,7 @@ import com.changbi.tradeunion.boardforworkers.member.domain.Member;
 import com.changbi.tradeunion.boardforworkers.member.domain.PreMember;
 import com.changbi.tradeunion.boardforworkers.member.presentation.dto.MemberDetailDto;
 import com.changbi.tradeunion.boardforworkers.member.presentation.dto.MemberListDto;
+import com.changbi.tradeunion.boardforworkers.member.presentation.dto.PreMemberDto;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public interface MemberService {
 
     Long save(MemberSaveDto memberSaveDto);
 
-    Long savePreMember(MemberSaveDto memberSaveDto);
+    Long savePreMember(PreMemberDto preMemberDto);
 
     Long saveMemberByPreMember(PreMember preMember);
 
@@ -23,11 +24,15 @@ public interface MemberService {
 
     void deletePreMember(PreMember preMember);
 
+    List<MemberListDto> findMembers(Pagination pagination);
+
     MemberDetailDto findById(Long memberId);
+
+    List<PreMemberDto> findPreMembers();
 
     PreMember findPreMemberById(Long memberId);
 
-    List<MemberListDto> findAll(Pagination pagination);
-
     Member findByMemberEmail(String memberName);
+
+
 }

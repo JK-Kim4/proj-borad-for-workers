@@ -1,7 +1,6 @@
 package com.changbi.tradeunion.boardforworkers.common.dto;
 
 import com.changbi.tradeunion.boardforworkers.member.domain.Member;
-import com.changbi.tradeunion.boardforworkers.member.domain.PreMember;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -45,17 +44,6 @@ public class MemberSaveDto {
                 .department(this.department)
                 .memberNickName(this.memberNickName)
                 .role(this.role)
-                .build();
-    }
-
-    public PreMember toPreEntity(){
-        return PreMember.builder()
-                .memberEmail(this.memberEmail)
-                .company(this.company)
-                .memberRealName(this.memberRealName)
-                .memberPassword(this.memberPassword)
-                .memberNickName(this.memberNickName)
-                .department(this.department)
                 .build();
     }
 
