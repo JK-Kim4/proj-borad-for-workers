@@ -38,7 +38,26 @@ let main = {
                 alert("시스템 오류 발생. 관리자에게 문의해주세요.")
             }
         });
-    }
+    },
+    findMemberAll: function (pageNum, pageSize){
+
+        $.ajax({
+            url: "/api/member/members",
+            method: "GET",
+            data: {
+                pageNum: pageNum,
+                pageSize: pageSize
+            },
+            success: function (result){
+                //TODO render member list
+                console.log(result);
+            },
+            error: function (x,h,r){
+                console.error(x);
+                alert("시스템 오류 발생, 관리자에게 문의해주세요.")
+            }
+        });
+    },
 
 }
 

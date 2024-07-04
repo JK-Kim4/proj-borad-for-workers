@@ -2,8 +2,10 @@ package com.changbi.tradeunion.boardforworkers.member.presentation;
 
 import com.changbi.tradeunion.boardforworkers.common.CommonValues;
 import com.changbi.tradeunion.boardforworkers.common.dto.MemberSaveDto;
+import com.changbi.tradeunion.boardforworkers.common.dto.Pagination;
 import com.changbi.tradeunion.boardforworkers.common.dto.ResultDto;
 import com.changbi.tradeunion.boardforworkers.member.application.MemberServiceImpl;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +39,38 @@ public class MemberController {
             @RequestBody MemberSaveDto memberDto) {
         ResultDto<Long> resultDto = new ResultDto<>();
 
+        //TODO update Member
+
+        return ResponseEntity.ok(resultDto);
+    }
+
+    //회원 정보 삭제
+    @DeleteMapping("/{memberId}")
+    public ResponseEntity<ResultDto> delete(
+            @PathVariable(name = "memberId") Long memberId) {
+        ResultDto<Long> resultDto = new ResultDto<>();
+
+        //TODO delete Member
+
+        return ResponseEntity.ok(resultDto);
+    }
+
+
+    //회원 전체 목록 조회
+    @GetMapping("/members")
+    public ResponseEntity<ResultDto> findAll(
+            @NotNull @RequestParam(name = "pageNum") Integer pageNum,
+            @NotNull @RequestParam(name = "pageSize") Integer pageSize){
+        Pagination pagination = Pagination.builder()
+                                                .pageNum(pageNum)
+                                                .pageSize(pageSize)
+                                            .build();
+
+        ResultDto resultDto = ResultDto.builder()
+                                    .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
+                                    .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
+                                    .data(memberService.findAll(pagination))
+                                .build();
 
         return ResponseEntity.ok(resultDto);
     }

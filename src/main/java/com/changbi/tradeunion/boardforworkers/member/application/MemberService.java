@@ -4,6 +4,7 @@ import com.changbi.tradeunion.boardforworkers.common.dto.MemberSaveDto;
 import com.changbi.tradeunion.boardforworkers.common.dto.Pagination;
 import com.changbi.tradeunion.boardforworkers.member.domain.Member;
 import com.changbi.tradeunion.boardforworkers.member.domain.PreMember;
+import com.changbi.tradeunion.boardforworkers.member.presentation.dto.MemberListDto;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public interface MemberService {
 
     PreMember findPreMemberById(Long memberId);
 
-    List<Member> findAll(Pagination pagination);
+    List<MemberListDto> findAll(Pagination pagination);
 
     Member findByMemberEmail(String memberName);
 }
