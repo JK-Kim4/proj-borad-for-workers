@@ -127,4 +127,20 @@ public class MemberController {
 
         return ResponseEntity.ok(resultDto);
     }
+
+    @PutMapping("/pre-member/{processType}/{preMemberId}")
+    public ResponseEntity<ResultDto> preMemberSignUpProcess(
+            @PathVariable(name = "processType") String processType,
+            @PathVariable(name = "preMemberId") Long preMemberId){
+
+        memberService.preMemberSignUpProcess(processType, preMemberId);
+
+        ResultDto resultDto =
+                ResultDto.builder()
+                    .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
+                    .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
+                .build();
+
+        return ResponseEntity.ok(resultDto);
+    }
 }

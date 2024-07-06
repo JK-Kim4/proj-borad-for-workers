@@ -1,5 +1,6 @@
 package com.changbi.tradeunion.boardforworkers.member.application;
 
+import com.changbi.tradeunion.boardforworkers.common.CommonValues;
 import com.changbi.tradeunion.boardforworkers.common.dto.MemberSaveDto;
 import com.changbi.tradeunion.boardforworkers.common.dto.Pagination;
 import com.changbi.tradeunion.boardforworkers.member.domain.Member;
@@ -55,8 +56,8 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Long saveMemberByPreMember(PreMember preMember) {
-        Member admin = this.getSessionAdmin();
-        Member member = preMember.toMember(admin.getId());
+        //Member admin = this.getSessionAdmin();
+        Member member = preMember.toMember();
 
         if(isAlreadyExistMemberEmail(member.getMemberEmail())){
             throw new MemberDuplicateException();
@@ -69,6 +70,21 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.deletePreMember(preMember);
 
         return member.getId();
+    }
+
+    @Override
+    public void preMemberSignUpProcess(String processType, Long preMemberId) {
+
+        PreMember preMember = this.findPreMemberById(preMemberId);
+
+        if (CommonValues.PROCESS_TYPE_ACCEPT.equalsIgnoreCase(processType)){
+            this.saveMemberByPreMember(preMember);
+        }
+
+        if (CommonValues.PROCESS_TYPE_DECLINE.equalsIgnoreCase(processType)){
+            this.deletePreMember(preMember);
+        }
+
     }
 
     @Override

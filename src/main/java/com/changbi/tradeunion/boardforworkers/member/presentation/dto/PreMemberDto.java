@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class PreMemberDto {
 
+    private Long preMemberId;
     private String memberEmail;
     private String memberRealName;
     private String memberNickName;
@@ -21,6 +22,7 @@ public class PreMemberDto {
 
     @Builder
     public PreMemberDto(PreMember preMember) {
+        this.preMemberId = preMember.getId();
         this.memberEmail = preMember.getMemberEmail();
         this.memberRealName = preMember.getMemberRealName();
         this.memberNickName = preMember.getMemberNickName();

@@ -34,5 +34,5 @@ public interface MemberService {
 
     Member findByMemberEmail(String memberName);
 
-
+    void preMemberSignUpProcess(String processType, Long preMemberId);
 }

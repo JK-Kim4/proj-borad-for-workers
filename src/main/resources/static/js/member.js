@@ -25,6 +25,9 @@ let main = {
                 if(RESULT_CODE.SUCCESS_DEFAULT === result.resultCode){
                     alert(RESULT_MESSAGE.SUCCESS_MEMBER_REGISTRATION_REQUEST);
                     location.href = "/";
+                } else {
+                    alert(result.resultMessage)
+                    location.reload();
                 }
             },
             error: function (x,h,r){

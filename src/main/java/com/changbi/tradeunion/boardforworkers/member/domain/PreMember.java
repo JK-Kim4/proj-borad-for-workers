@@ -80,4 +80,16 @@ public class PreMember {
                 .role(Role.USER.name())
                 .build();
     }
+
+    public Member toMember(){
+        return Member.builder()
+                .memberEmail(this.memberEmail)
+                .memberRealName(this.memberRealName)
+                .memberNickName(this.memberNickName)
+                .memberPassword(this.memberPassword)
+                .company(this.company.name())
+                .department(this.department.name())
+                .role(Role.USER.name())
+                .build();
+    }
 }

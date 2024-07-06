@@ -1,10 +1,16 @@
 package com.changbi.tradeunion.boardforworkers.member.exception;
 
+import com.changbi.tradeunion.boardforworkers.common.CommonValues;
+
 public class MemberDuplicateException extends RuntimeException{
 
-    private static final String MEMBER_DUPLICATION_ERROR_MESSAGE = "이미 존재하는 회원입니다.";
+    private String errorMessage;
 
     public MemberDuplicateException() {
-        super(MEMBER_DUPLICATION_ERROR_MESSAGE);
+        this.errorMessage = CommonValues.RESULT_MESSAGE_FAIL_MEMBER_DUPLICATION;
+    }
+
+    public MemberDuplicateException(String message){
+        this.errorMessage = message;
     }
 }

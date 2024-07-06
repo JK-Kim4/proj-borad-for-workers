@@ -1,6 +1,18 @@
 let main = {
     init: function (){
 
+        //가입 승인 버튼
+        $(document).on("click", ".accept-button",function (){
+            let preMemberId = $(this).data("pre-member-id");
+
+            main.preMemberSignUpProcess("accept", preMemberId)
+        });
+
+        //가입 거절 버튼 클릭
+        $(document).on("click", ".decline-button",function (){
+            let preMemberId = $(this).data("pre-member-id");
+            main.preMemberSignUpProcess("decline", preMemberId)
+        });
     },
     findPreMembers: function (pageNum, pageSize){
 
@@ -22,8 +34,8 @@ let main = {
                                         "<td>"+element.memberRealName+"</td>" +
                                         "<td>"+element.company+"</td>" +
                                         "<td>"+element.department+"</td>" +
-                                        "<td><button class='btn btn-success'> 승인 </button></td>" +
-                                        "<td><button class='btn btn-danger'> 거절 </button></td>" +
+                                        "<td><button class='btn btn-success accept-button' data-pre-member-id='"+element.preMemberId+"'> 승인 </button></td>" +
+                                        "<td><button class='btn btn-danger decline-button' data-pre-member-id='"+element.preMemberId+"'> 거절 </button></td>" +
                                     "</tr>"
                         });
                     } else {
@@ -41,6 +53,28 @@ let main = {
             }
         })
     },
+    preMemberSignUpProcess: function (processType, preMemberId){
+
+        $.ajax({
+           url: "/api/member/pre-member/"+processType+"/"+preMemberId,
+           method: "PUT",
+           contentType: "application/json; charset=utf-8",
+           success: function (result){
+               if(RESULT_CODE.SUCCESS_DEFAULT === result.resultCode){
+                   alert(result.resultCode);
+                   location.href = "/admin/member/list";
+               } else {
+                   alert(result.resultMessage);
+                   location.reload();
+               }
+           },
+            error: function (x,h,r){
+               console.error(x);
+               alert(RESULT_MESSAGE.FAIL_SYSTEM);
+               location.reload();
+            }
+        });
+    }
 }
 
 
