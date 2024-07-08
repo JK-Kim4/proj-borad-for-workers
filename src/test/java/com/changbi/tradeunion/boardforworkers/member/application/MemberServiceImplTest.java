@@ -8,6 +8,9 @@ import com.changbi.tradeunion.boardforworkers.common.dto.Pagination;
 import com.changbi.tradeunion.boardforworkers.member.domain.Member;
 import com.changbi.tradeunion.boardforworkers.member.domain.PreMember;
 import com.changbi.tradeunion.boardforworkers.member.exception.MemberDuplicateException;
+import com.changbi.tradeunion.boardforworkers.member.presentation.dto.MemberDetailDto;
+import com.changbi.tradeunion.boardforworkers.member.presentation.dto.MemberListDto;
+import com.changbi.tradeunion.boardforworkers.member.presentation.dto.PreMemberDto;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
@@ -78,13 +81,13 @@ class MemberServiceImplTest {
 
                 //when
                 Long memberId = memberService.save(dto);
-                Member member = memberService.findById(memberId);
+                MemberDetailDto member = memberService.findById(memberId);
 
                 //then
                 assertEquals(member.getMemberEmail(), name);
                 assertEquals(member.getMemberPassword(), password);
-                assertEquals(member.getDepartment(), department);
-                assertEquals(member.getRole(), role);
+                assertEquals(member.getDepartment(), department.name());
+                assertEquals(member.getRole(), role.name());
             }
 
             @Test @Transactional
@@ -111,8 +114,9 @@ class MemberServiceImplTest {
             @Test @Transactional
             @DisplayName("신규 회원 등록 요청 시 PreMember 객체가 우선 등록된다.")
             public void pre_member_insert_test(){
+
                 //given
-                MemberSaveDto dto =  new MemberSaveDto();
+                PreMemberDto dto =  new PreMemberDto();
                 String email = "member1@changbi.com"; String password = "12345";
                 String realName = "tester";
                 String company = Company.MEDIA_CHANGBI.name();
@@ -122,6 +126,9 @@ class MemberServiceImplTest {
                 dto.setMemberRealName(realName);
                 dto.setCompany(company);
                 dto.setDepartment(department);
+
+
+
 
                 //when
                 Long preMemberId = memberService.savePreMember(dto);
@@ -140,7 +147,7 @@ class MemberServiceImplTest {
             public void member_insert_and_pre_member_delete_test(){
 
                 //given
-                MemberSaveDto dto =  new MemberSaveDto();
+                PreMemberDto dto =  new PreMemberDto();
                 String email = "member1@changbi.com"; String password = "12345";
                 String realName = "tester";
                 String company = Company.MEDIA_CHANGBI.name();
@@ -155,7 +162,7 @@ class MemberServiceImplTest {
                 Long preMemberId = memberService.savePreMember(dto);
                 PreMember preMember = memberService.findPreMemberById(preMemberId);
                 Long memberId = memberService.saveMemberByPreMember(preMember);
-                Member member = memberService.findById(memberId);
+                MemberDetailDto member = memberService.findById(memberId);
 
 
                 //then
@@ -163,9 +170,9 @@ class MemberServiceImplTest {
                 assertEquals(email, member.getMemberEmail());
                 assertEquals(realName, member.getMemberRealName());
                 assertEquals(password, member.getMemberPassword());
-                assertEquals(company, member.getCompany().name());
-                assertEquals(department, member.getDepartment().name());
-                assertEquals(Role.USER, member.getRole());
+                assertEquals(company, member.getCompany());
+                assertEquals(department, member.getDepartment());
+                assertEquals(Role.USER.name(), member.getRole());
             }
         }
 
@@ -219,7 +226,7 @@ class MemberServiceImplTest {
                 //given
                 Pagination pagination = Pagination.builder().pageNum(0).pageSize(10).build();
                 //when
-                List<Member> memberList = memberService.findAll(pagination);
+                List<MemberListDto> memberList = memberService.findMembers(pagination);
                 //then
                 assertEquals(memberSize, memberList.size());
             }
@@ -256,7 +263,7 @@ class MemberServiceImplTest {
 
             Set<ConstraintViolation<MemberSaveDto>> constraintViolations = validator.validate(dto);
 
-            assertEquals(constraintViolations.size(), 3);
+            assertEquals(constraintViolations.size(), 5);
         }
     }
 

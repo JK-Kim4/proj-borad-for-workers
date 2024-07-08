@@ -27,4 +27,9 @@ public class AdminRouter {
     public String preMemberListPage(){
         return "admin/member/pre-member-list";
     }
+
+    @GetMapping("/board/list")
+    public String boardListPage(){
+        return "admin/board/list";
+    }
 }

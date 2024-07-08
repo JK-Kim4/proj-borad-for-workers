@@ -19,7 +19,7 @@ public interface MemberService {
 
     void update(MemberSaveDto memberSaveDto);
 
-    void delete(Member member);
+    void delete(Long memberId);
 
     void deletePreMember(PreMember preMember);
 

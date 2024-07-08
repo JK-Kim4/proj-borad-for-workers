@@ -1,5 +1,6 @@
 package com.changbi.tradeunion.boardforworkers.board.domain;
 
+import com.changbi.tradeunion.boardforworkers.common.dto.BoardSaveDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -44,4 +45,12 @@ public class Board {
 
     @Column
     private Long updateAdminId;
+
+    public void update(BoardSaveDto dto){
+        this.id = dto.getBoardId();
+        this.boardName = dto.getBoardName();
+        this.useYn = dto.isUseYn();
+        this.attachmentAllowYn = dto.isAttachmentAllowYn();
+        this.updateDate = LocalDateTime.now();
+    }
 }
