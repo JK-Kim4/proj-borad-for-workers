@@ -12,10 +12,10 @@
     <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sign-in/">
 
     <!-- JQuery -->
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" ></script>
 
     <!-- Bootstrap core CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" >
 
     <!-- Favicons -->
     <meta name="theme-color" content="#7952b3">
@@ -44,31 +44,61 @@
 <body class="text-center">
 
 <main class="form-signin">
-    <form>
-        <img class="mb-4" src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
-        <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+    <img class="mb-4" src="" alt="" width="72" height="57">
+    <h1 class="h3 mb-3 fw-normal">로그인</h1>
 
-        <div class="form-floating">
-            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-            <label for="floatingInput">Email address</label>
-        </div>
-        <div class="form-floating">
-            <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-            <label for="floatingPassword">Password</label>
-        </div>
+    <div class="form-floating">
+        <input type="email" class="form-control" id="inputEmail" placeholder="name@example.com">
+        <label for="floatingInput">Email address</label>
+    </div>
+    <div class="form-floating">
+        <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+        <label for="floatingPassword">Password</label>
+    </div>
+    <div class="form-floating">
+        <b id="spanErrorMessage" style="color:red; display: none;">  </b>
+    </div>
 
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" value="remember-me"> Remember me
-            </label>
-        </div>
-        <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
-        <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
-    </form>
+    <div class="checkbox mb-3">
+        <!--<label>
+            <input type="checkbox" value="remember-me"> Remember me
+        </label>-->
+    </div>
+    <button class="w-100 btn btn-lg btn-primary" id="signinButton">Sign in</button>
+    <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
 </main>
 
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/js/commonValues.js"></script>
+<script type="application/javascript">
+    $(document).ready(function (){
+        $("#signinButton").on("click", function (){
+            $("#spanErrorMessage").empty().hide();
+            //TODO login data validation
+            let data = {};
+            data.memberEmail = $("#inputEmail").val();
+            data.memberPassword = $("#inputPassword").val();
+
+            $.ajax({
+                url: "/api/member/login",
+                method: "POST",
+                contentType: "application/json; charset=utf-8;",
+                data: JSON.stringify(data),
+                success: function (result){
+                    if (RESULT_CODE.SUCCESS_DEFAULT === result.resultCode){
+                        location.href = "/"
+                    }else{
+                        $("#spanErrorMessage").text(result.resultMessage).show()
+                    }
+                },
+                error: function (x,h,r){
+                    console.error(x);
+                    $("#spanErrorMessage").text(RESULT_MESSAGE.FAIL_SYSTEM).show()
+                }
+            })
+        })
+    });
+</script>
 </body>
 </html>

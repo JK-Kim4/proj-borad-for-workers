@@ -7,10 +7,11 @@ import com.changbi.tradeunion.boardforworkers.member.domain.Member;
 import com.changbi.tradeunion.boardforworkers.member.domain.PreMember;
 import com.changbi.tradeunion.boardforworkers.member.exception.MemberDuplicateException;
 import com.changbi.tradeunion.boardforworkers.member.exception.MemberNotFountException;
-import com.changbi.tradeunion.boardforworkers.member.presentation.dto.MemberDetailDto;
-import com.changbi.tradeunion.boardforworkers.member.presentation.dto.MemberListDto;
-import com.changbi.tradeunion.boardforworkers.member.presentation.dto.PreMemberDto;
+import com.changbi.tradeunion.boardforworkers.member.exception.MemberValidationException;
+import com.changbi.tradeunion.boardforworkers.member.presentation.dto.*;
 import com.changbi.tradeunion.boardforworkers.member.repository.MemberRepository;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.NonUniqueResultException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -146,6 +148,37 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.findByMemberEmail(findByMemberEmail);
     }
 
+    @Override
+    public void memberLogin(LoginInformation dto, HttpSession session) {
+
+        try {
+            Member member = this.findByMemberEmail(dto.getMemberEmail());
+
+            if (this.isEqualPassword(
+                    member.getMemberPassword(),
+                    dto.getMemberPassword())){
+                logger.info("[Login Success] MemberId = {}\t, loginTime = {}", member.getId(), LocalDateTime.now());
+
+                SessionMember sessionMember = SessionMember.builder().member(member).build();
+
+                session.setAttribute("member", sessionMember);
+            } else {
+                logger.error("[LoginFailure] RequestEmail = {}\t, loginTime = {}]",dto.getMemberEmail(), LocalDateTime.now());
+                throw new MemberValidationException(CommonValues.RESULT_MESSAGE_FAIL_MEMBER_LOGIN_VALIDATION);
+            }
+
+        }catch (NoResultException | NonUniqueResultException e) {
+            logger.error("[LoginFailure] RequestEmail = {}\t, loginTime = {}]",dto.getMemberEmail(), LocalDateTime.now());
+            throw new MemberValidationException(CommonValues.RESULT_MESSAGE_FAIL_MEMBER_LOGIN_VALIDATION);
+        }
+
+    }
+
+    @Override
+    public void memberLogout(SessionMember sessionMember, HttpSession session) {
+        session.removeAttribute("member");
+        session.invalidate();
+    }
 
     /*PRIVATE METHODS*/
     private boolean isAlreadyExistMemberEmail(String memberEmail) {
@@ -159,5 +192,10 @@ public class MemberServiceImpl implements MemberService {
     private Member getSessionAdmin() {
         HttpSession session = request.getSession();
         return (Member) session.getAttribute("admin");
+    }
+
+
+    private boolean isEqualPassword(String memberPassword, String loginPassword) {
+        return memberPassword.equals(loginPassword);
     }
 }

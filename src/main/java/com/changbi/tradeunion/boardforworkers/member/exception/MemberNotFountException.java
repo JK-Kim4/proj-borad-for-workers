@@ -1,10 +1,17 @@
 package com.changbi.tradeunion.boardforworkers.member.exception;
 
+import com.changbi.tradeunion.boardforworkers.common.CommonValues;
+
 public class MemberNotFountException extends RuntimeException{
 
-    private static final String MEMBER_NOTFOUND_ERROR_MESSAGE = "회원이 존재하지 않습니다.";
+
+    private String errorMessage;
 
     public MemberNotFountException() {
-        super(MEMBER_NOTFOUND_ERROR_MESSAGE);
+        super(CommonValues.RESULT_MESSAGE_FAIL_MEMBER_NOTFOUND);
+    }
+
+    public MemberNotFountException(String message){
+        this.errorMessage = message;
     }
 }

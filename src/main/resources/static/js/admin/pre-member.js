@@ -62,7 +62,7 @@ let main = {
            success: function (result){
                if(RESULT_CODE.SUCCESS_DEFAULT === result.resultCode){
                    alert(result.resultCode);
-                   location.href = "/admin/member/list";
+                   location.href = "/admin/pre-member/list";
                } else {
                    alert(result.resultMessage);
                    location.reload();

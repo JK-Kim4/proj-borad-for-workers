@@ -5,7 +5,10 @@ import com.changbi.tradeunion.boardforworkers.common.dto.MemberSaveDto;
 import com.changbi.tradeunion.boardforworkers.common.dto.Pagination;
 import com.changbi.tradeunion.boardforworkers.common.dto.ResultDto;
 import com.changbi.tradeunion.boardforworkers.member.application.MemberServiceImpl;
+import com.changbi.tradeunion.boardforworkers.member.presentation.dto.LoginInformation;
 import com.changbi.tradeunion.boardforworkers.member.presentation.dto.PreMemberDto;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -88,6 +91,27 @@ public class MemberController {
                     .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
                     .data(memberService.findById(memberId))
                 .build();
+
+        return ResponseEntity.ok(resultDto);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<ResultDto> login(
+            @Valid @RequestBody LoginInformation loginInformation,
+            HttpSession session){
+
+        memberService.memberLogin(loginInformation, session);
+        return ResponseEntity.ok(ResultDto.builder()
+                    .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
+                    .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
+                .build());
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<ResultDto> login(HttpSession session){
+        ResultDto resultDto = new ResultDto();
+
+
 
         return ResponseEntity.ok(resultDto);
     }

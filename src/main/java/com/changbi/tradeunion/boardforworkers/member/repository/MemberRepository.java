@@ -3,9 +3,7 @@ package com.changbi.tradeunion.boardforworkers.member.repository;
 import com.changbi.tradeunion.boardforworkers.common.dto.Pagination;
 import com.changbi.tradeunion.boardforworkers.member.domain.Member;
 import com.changbi.tradeunion.boardforworkers.member.domain.PreMember;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -28,7 +26,7 @@ public class MemberRepository {
 
     public PreMember findPreMemberById(Long id) { return em.find(PreMember.class, id); }
 
-    public Member findByMemberEmail(String memberEmail) {
+    public Member findByMemberEmail(String memberEmail) throws NoResultException, NonUniqueResultException {
         String query = "select m from Member m where m.memberEmail = :memberEmail";
 
         return em.createQuery(query, Member.class)
