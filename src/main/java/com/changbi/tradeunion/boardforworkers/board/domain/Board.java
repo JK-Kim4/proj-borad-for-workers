@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -45,6 +46,19 @@ public class Board {
 
     @Column
     private Long updateAdminId;
+
+    @Builder
+    public Board (
+            String boardName,
+            boolean useYn,
+            boolean attachmentAllowYn){
+        this.boardName = boardName;
+        this.useYn = useYn;
+        this.attachmentAllowYn = attachmentAllowYn;
+        this.appendDate = LocalDateTime.now();
+        this.updateDate = LocalDateTime.now();
+        //TODO appendAdminId
+    }
 
     public void update(BoardSaveDto dto){
         this.id = dto.getBoardId();
