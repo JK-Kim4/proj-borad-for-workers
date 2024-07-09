@@ -3,7 +3,7 @@ package com.changbi.tradeunion.boardforworkers.member.domain;
 import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.Company;
 import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.Department;
 import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.Role;
-import com.changbi.tradeunion.boardforworkers.common.dto.MemberSaveDto;
+import com.changbi.tradeunion.boardforworkers.member.presentation.dto.MemberSaveDto;
 import jakarta.persistence.*;
 import lombok.*;
 

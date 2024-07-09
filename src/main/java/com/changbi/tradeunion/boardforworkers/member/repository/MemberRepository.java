@@ -40,7 +40,7 @@ public class MemberRepository {
         TypedQuery<Member> typedQuery = em.createQuery(query, Member.class);
 
         return typedQuery
-                .setFirstResult(pagination.getPageNum())
+                .setFirstResult(pagination.getPageNum() * pagination.getPageSize())
                 .setMaxResults(pagination.getPageSize())
                 .getResultList();
     }

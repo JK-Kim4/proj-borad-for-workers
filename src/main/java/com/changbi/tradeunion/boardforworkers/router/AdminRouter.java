@@ -32,4 +32,9 @@ public class AdminRouter {
     public String boardListPage(){
         return "admin/board/list";
     }
+
+    @GetMapping("/board/save")
+    public String boardSavePage(){
+        return "admin/board/save";
+    }
 }

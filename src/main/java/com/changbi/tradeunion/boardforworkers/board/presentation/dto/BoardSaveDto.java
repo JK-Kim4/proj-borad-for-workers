@@ -1,4 +1,4 @@
-package com.changbi.tradeunion.boardforworkers.common.dto;
+package com.changbi.tradeunion.boardforworkers.board.presentation.dto;
 
 import com.changbi.tradeunion.boardforworkers.board.domain.Board;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.changbi.tradeunion.boardforworkers.common.dto;
+package com.changbi.tradeunion.boardforworkers.member.presentation.dto;
 
 import com.changbi.tradeunion.boardforworkers.member.domain.Member;
 import jakarta.validation.constraints.NotBlank;

@@ -1,6 +1,6 @@
 package com.changbi.tradeunion.boardforworkers.board.domain;
 
-import com.changbi.tradeunion.boardforworkers.common.dto.BoardSaveDto;
+import com.changbi.tradeunion.boardforworkers.board.presentation.dto.BoardSaveDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

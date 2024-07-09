@@ -3,7 +3,7 @@ package com.changbi.tradeunion.boardforworkers.member.application;
 import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.Company;
 import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.Department;
 import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.Role;
-import com.changbi.tradeunion.boardforworkers.common.dto.MemberSaveDto;
+import com.changbi.tradeunion.boardforworkers.member.presentation.dto.MemberSaveDto;
 import com.changbi.tradeunion.boardforworkers.common.dto.Pagination;
 import com.changbi.tradeunion.boardforworkers.member.domain.Member;
 import com.changbi.tradeunion.boardforworkers.member.domain.PreMember;
@@ -11,7 +11,6 @@ import com.changbi.tradeunion.boardforworkers.member.exception.MemberDuplicateEx
 import com.changbi.tradeunion.boardforworkers.member.presentation.dto.MemberDetailDto;
 import com.changbi.tradeunion.boardforworkers.member.presentation.dto.MemberListDto;
 import com.changbi.tradeunion.boardforworkers.member.presentation.dto.PreMemberDto;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import org.junit.jupiter.api.*;
@@ -38,8 +37,6 @@ class MemberServiceImplTest {
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
     class 사용자_엔티티_테스트{
 
-        @Autowired
-        HttpSession session;
 
         @Nested
         @DisplayName("사용자 등록 테스트")
