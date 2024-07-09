@@ -1,5 +1,6 @@
 package com.changbi.tradeunion.boardforworkers.board.application;
 
+import com.changbi.tradeunion.boardforworkers.board.exception.BoardDuplicationException;
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.BoardDetailDto;
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.BoardSaveDto;
 import org.junit.jupiter.api.*;
@@ -37,6 +38,23 @@ public class BoardServiceImplTest {
                 Assertions.assertEquals(name, detailDto.getBoardName());
                 Assertions.assertEquals(useYn, detailDto.isUseYn());
                 Assertions.assertEquals(attachmentAllowYn, detailDto.isAttachmentAllowYn());
+            }
+
+            @Test @Transactional
+            @DisplayName("동일한 이름의 게시판 생성 시 BoardDuplicationException을 반환한다.")
+            public void board_name_duplication_test(){
+                BoardSaveDto dto = new BoardSaveDto();
+                String name = "자유게시판";
+                boolean useYn = false;
+                boolean attachmentAllowYn = true;
+                dto.setBoardName(name); dto.setUseYn(useYn); dto.setAttachmentAllowYn(attachmentAllowYn);
+
+                Long boardId = boardService.save(dto);
+
+
+                Assertions.assertThrows(BoardDuplicationException.class, () -> boardService.save(dto));
+
+
             }
         }
 

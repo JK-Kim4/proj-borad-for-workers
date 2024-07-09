@@ -1,6 +1,7 @@
 package com.changbi.tradeunion.boardforworkers.board.application;
 
 import com.changbi.tradeunion.boardforworkers.board.domain.Board;
+import com.changbi.tradeunion.boardforworkers.board.exception.BoardDuplicationException;
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.BoardDetailDto;
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.BoardListDto;
 import com.changbi.tradeunion.boardforworkers.board.repository.BoardRepository;
@@ -28,7 +29,7 @@ public class BoardServiceImpl implements BoardService{
         Board board = boardDto.toEntity();
 
         if(this.isAlreadyExistBoardName(board.getBoardName())){
-            logger.error("isAlreadyExistBoardName [boardName = {}]", board.getBoardName());
+            throw new BoardDuplicationException();
         }
 
         return boardRepository.save(board);

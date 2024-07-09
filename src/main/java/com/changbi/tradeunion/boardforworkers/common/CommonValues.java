@@ -30,6 +30,7 @@ public class CommonValues {
     public static final String RESULT_MESSAGE_FAIL_DELETE = "삭제에 실패하였습니다.";
 
     public static final String RESULT_MESSAGE_FAIL_MEMBER_DUPLICATION = "이미 존재하는 회원입니다.";
+    public static final String RESULT_MESSAGE_FAIL_BOARD_NAME_DUPLICATION = "이미 존재하는 게시판 이름입니다.";
     public static final String RESULT_MESSAGE_FAIL_MEMBER_NOTFOUND = "회원이 존재하지 않습니다.";
     public static final String RESULT_MESSAGE_FAIL_MEMBER_LOGIN_VALIDATION = "아이디 혹은 비밀번호를 확인 후 다시 시도해주세요.";
 }
