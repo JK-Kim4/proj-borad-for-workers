@@ -48,8 +48,8 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public List<BoardListDto> findBoards(Pagination pagination) {
-        return boardRepository.findBoards(pagination).stream()
+    public List<BoardListDto> findBoards() {
+        return boardRepository.findBoards().stream()
                 .map(board ->
                         BoardListDto.builder()
                             .board(board)

@@ -13,10 +13,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class BoardRouter {
 
     @GetMapping("/{boardId}/post/list")
-    public String boardListPage(
+    public String postListPage(
             @PathVariable(name = "boardId") Long boardId,
             Model model) {
         model.addAttribute("boardId", boardId);
-        return "contents/board/list";
+        return "contents/post/list";
+    }
+
+    @GetMapping("/{boardId}/post/save")
+    public String postSavePage(
+            @PathVariable(name = "boardId") Long boardId,
+            Model model){
+
+        return "contents/post/save";
     }
 }

@@ -1,7 +1,6 @@
 package com.changbi.tradeunion.boardforworkers.board.repository;
 
 import com.changbi.tradeunion.boardforworkers.board.domain.Board;
-import com.changbi.tradeunion.boardforworkers.common.dto.Pagination;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
@@ -27,12 +26,10 @@ public class BoardRepository {
         return em.find(Board.class, boardId);
     }
 
-    public List<Board> findBoards(Pagination pagination){
+    public List<Board> findBoards(){
         String query = "select b from Board b";
 
         return em.createQuery(query, Board.class)
-                .setFirstResult(pagination.getPageNum() * pagination.getPageSize())
-                .setMaxResults(pagination.getPageSize())
                 .getResultList();
     }
 
