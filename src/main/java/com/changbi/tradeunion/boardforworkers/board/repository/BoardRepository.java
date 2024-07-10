@@ -42,4 +42,10 @@ public class BoardRepository {
                 .setParameter("boardName", boardName)
                 .getSingleResult();
     }
+
+    public Board findByBoardName(String boardName) {
+        String query = "select b from Board b where b.boardName = :boardName";
+
+        return em.createQuery(query, Board.class).setParameter("boardName", boardName).getSingleResult();
+    }
 }

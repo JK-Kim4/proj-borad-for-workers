@@ -18,4 +18,5 @@ public interface BoardService {
 
     public BoardDetailDto findById(Long boardId);
 
+    public BoardDetailDto findByBoardName(String boardName);
 }

@@ -62,6 +62,11 @@ public class BoardServiceImpl implements BoardService{
         return BoardDetailDto.builder().board(boardRepository.findById(boardId)).build();
     }
 
+    @Override
+    public BoardDetailDto findByBoardName(String boardName) {
+        return BoardDetailDto.builder().board(boardRepository.findByBoardName(boardName)).build();
+    }
+
     /*private method*/
     private boolean isAlreadyExistBoardName(String boardName) {
         return boardRepository.isAlreadyExistBoardName(boardName);

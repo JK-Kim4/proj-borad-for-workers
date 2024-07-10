@@ -16,6 +16,9 @@ public class BoardServiceImplTest {
 
     @Autowired
     BoardServiceImpl boardService;
+    final String BOARD_NAME_1 = "board1";
+    final String BOARD_NAME_2 = "board2";
+    final String BOARD_NAME_3 = "board3";
 
     @Nested
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -69,9 +72,6 @@ public class BoardServiceImplTest {
         @DisplayName("게시판 조회 테스트")
         class board_select_test{
 
-            final String BOARD_NAME_1 = "board1";
-            final String BOARD_NAME_2 = "board2";
-            final String BOARD_NAME_3 = "board3";
 
             @BeforeEach
             void beforeEach(){
@@ -118,6 +118,44 @@ public class BoardServiceImplTest {
                 BoardDetailDto detailDto = boardService.findById(boardId);
 
                 Assertions.assertEquals(BOARD_NAME_3, detailDto.getBoardName());
+            }
+        }
+
+        @Nested
+        @DisplayName("게시판 수정 및 삭제 테스트")
+        class board_delete_test{
+
+            @BeforeEach
+            void beforeEach(){
+                boolean useYn = false;
+                boolean attachmentAllowYn = true;
+                BoardSaveDto dto1 = BoardSaveDto.builder()
+                        .boardName(BOARD_NAME_1)
+                        .useYn(useYn)
+                        .attachmentAllowYn(attachmentAllowYn)
+                        .build();
+
+                BoardSaveDto dto2 = BoardSaveDto.builder()
+                        .boardName(BOARD_NAME_2)
+                        .useYn(useYn)
+                        .attachmentAllowYn(attachmentAllowYn)
+                        .build();
+                boardService.save(dto1);
+                boardService.save(dto2);
+            }
+
+
+            @Test @Transactional
+            @DisplayName("게시판 삭제 테스트 (ignore POST)")
+            void board_delete_ignoring_post_test(){
+                int totalBoardSize = boardService.findBoards().size();
+
+                BoardDetailDto boardDetailDto = boardService.findByBoardName(BOARD_NAME_1);
+                boardService.delete(boardDetailDto.getBoardId());
+
+                totalBoardSize -= 1;
+
+                Assertions.assertEquals(totalBoardSize, boardService.findBoards().size());
             }
         }
 
