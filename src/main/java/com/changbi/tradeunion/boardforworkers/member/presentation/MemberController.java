@@ -107,13 +107,13 @@ public class MemberController {
                 .build());
     }
 
-    @PostMapping("/logout")
+    @GetMapping("/logout")
     public ResponseEntity<ResultDto> login(HttpSession session){
-        ResultDto resultDto = new ResultDto();
-
-
-
-        return ResponseEntity.ok(resultDto);
+        memberService.memberLogout(session);
+        return ResponseEntity.ok(ResultDto.builder()
+                    .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
+                    .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
+                .build());
     }
 
 

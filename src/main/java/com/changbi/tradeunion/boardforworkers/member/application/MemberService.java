@@ -37,5 +37,5 @@ public interface MemberService {
 
     void memberLogin(LoginInformation loginInformation, HttpSession session);
 
-    void memberLogout(SessionMember sessionMember, HttpSession session);
+    void memberLogout(HttpSession session);
 }

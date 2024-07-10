@@ -176,7 +176,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void memberLogout(SessionMember sessionMember, HttpSession session) {
+    public void memberLogout(HttpSession session) {
         session.removeAttribute("member");
         session.invalidate();
     }
