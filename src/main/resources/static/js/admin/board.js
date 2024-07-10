@@ -13,6 +13,14 @@ let main = {
         $("#moveBoardInsertPageButton").on("click", function (){
             location.href = "/admin/board/save"
         });
+
+        $(document).on("click",".board-update-button",function (){
+            console.log($(this).data("board-id"));
+        });
+
+        $(document).on("click",".board-delete-button",function (){
+            console.log($(this).data("board-id"));
+        })
     },
     save: function (jsonData){
         console.log(jsonData);
@@ -54,12 +62,16 @@ let main = {
                                         "<td class='text-center'>"+element.useYn+"</td>" +
                                         "<td class='text-center'>"+element.attachmentAllowYn+"</td>" +
                                         "<td class='text-center'>"+element.appendDate+"</td>" +
-                                        "<td class='text-center'><button class='btn btn-outline-primary'>수정</button></td>" +
-                                        "<td class='text-center'><button class='btn btn-outline-danger'>삭제</button></td>" +
+                                        "<td class='text-center'>" +
+                                            "<button class='btn btn-outline-primary board-update-button' data-board-id='"+element.boardId+"'>수정</button>" +
+                                        "</td>" +
+                                        "<td class='text-center'>" +
+                                            "<button class='btn btn-outline-danger board-delete-button' data-board-id='"+element.boardId+"'>삭제</button>" +
+                                        "</td>" +
                                     "</tr>"
                         });
                     }else{
-                        html += "<tr  class='text-center'><td colspan='5'> 생성된 게시판이 없습니다. </td></tr>"
+                        html += "<tr  class='text-center'><td colspan='7'> 생성된 게시판이 없습니다. </td></tr>"
                     }
                 }
 
