@@ -25,6 +25,7 @@ public class BoardRouter {
             @PathVariable(name = "boardId") Long boardId,
             Model model){
 
+        model.addAttribute("boardId", boardId);
         return "contents/post/save";
     }
 }

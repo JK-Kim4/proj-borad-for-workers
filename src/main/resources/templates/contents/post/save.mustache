@@ -1,4 +1,94 @@
 {{>layout/header}}
-post save page
+<main class="container col-10">
+    <div class="p-4 p-md-5 mb-4 text-white rounded bg-dark">
+        <div class="col-md-6 px-0">
+            <h1 class="display-4 fst-italic">{{boardId}}</h1>
+            <p class="lead my-3">공지 사항 및 이벤트 등 캐러샐 추가 영역</p>
+            <p class="lead mb-0"><a href="#" class="text-white fw-bold">Continue reading...</a></p>
+        </div>
+    </div>
 
+    <h3 class="my-3">새 글 쓰기</h3>
+    <hr class="my-4">
+    <input type="hidden" id="boardId" value="{{boardId}}">
+    <input type="hidden" id="memberId" value="{{member.memberId}}">
+    <div class="row d-flex justify-content-center">
+        <div class="row mb-4">
+            <div class="col-auto align-self-center">
+                <label for="firstName" class="form-label">게시판 : </label>
+            </div>
+            <div class="col-auto">
+                <input type="text" class="form-control" id="boardNameIndicator" disabled>
+            </div>
+
+            <div class="col-auto align-self-center">
+                <label for="firstName" class="form-label">작성자 : </label>
+            </div>
+            <div class="col-auto">
+                <input type="text" class="form-control" value="{{member.memberRealName}}({{member.memberNickName}})" disabled>
+            </div>
+            <div class="col-auto">
+                <label for="firstName" class="col-auto">공개 여부: </label>
+            </div>
+            <div class="col-auto">
+                <fieldset>
+                    <div class="form-group">
+                        <div class="form-check form-check-inline">
+                            <input type="radio" class="form-check-input" name="inputUseYn" id="useTrue" value="true" checked>
+                            <label for="useTrue">공개</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" class="form-check-input" name="inputUseYn" id="useFalse" value="false">
+                            <label for="useFalse">비공개</label>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-auto align-self-center">
+                <label for="firstName" class=" ">제목 : </label>
+            </div>
+            <div class="col-auto">
+                <select class="form-select" aria-label="Default select example">
+                    <option selected>말머리</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" id=inputBoardName placeholder="" value="" required="">
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <label for="floatingTextarea" class="mb-1">내용:</label>
+            </div>
+            <div class="col-12">
+                <textarea class="form-control" placeholder="내용을 입력해주세요." rows="25" id="inputContent"></textarea>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-5">
+                <input type="file" class="form-control">
+            </div>
+        </div>
+    </div>
+
+    <hr class="my-4">
+
+    <script src="/js/board.js"></script>
+    <script type="application/javascript">
+        $(document).ready(function (){
+            let boardId = $("#boardId").val();
+            let boardDetail = main.findBoardById(boardId);
+            $("#boardNameIndicator").val(boardDetail.boardName);
+        });
+    </script>
+</main>
 {{>layout/footer}}
