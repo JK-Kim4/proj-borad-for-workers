@@ -1,12 +1,14 @@
 package com.changbi.tradeunion.boardforworkers.board.application;
 
 import com.changbi.tradeunion.boardforworkers.board.exception.BoardDuplicationException;
-import com.changbi.tradeunion.boardforworkers.board.presentation.dto.BoardDetailDto;
-import com.changbi.tradeunion.boardforworkers.board.presentation.dto.BoardListDto;
-import com.changbi.tradeunion.boardforworkers.board.presentation.dto.BoardSaveDto;
+import com.changbi.tradeunion.boardforworkers.board.presentation.dto.*;
+import com.changbi.tradeunion.boardforworkers.member.application.MemberServiceImpl;
+import com.changbi.tradeunion.boardforworkers.member.presentation.dto.LoginInformation;
+import com.changbi.tradeunion.boardforworkers.member.presentation.dto.SessionMember;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -16,6 +18,10 @@ public class BoardServiceImplTest {
 
     @Autowired
     BoardServiceImpl boardService;
+
+    @Autowired
+    MemberServiceImpl memberService;
+
     final String BOARD_NAME_1 = "board1";
     final String BOARD_NAME_2 = "board2";
     final String BOARD_NAME_3 = "board3";
@@ -31,11 +37,10 @@ public class BoardServiceImplTest {
             @Test @Transactional
             @DisplayName("신규 게시판 생성 후 고유번호를 반환한다.")
             public void new_board_insert_test(){
-                String name = "자유게시판";
                 boolean useYn = false;
                 boolean attachmentAllowYn = true;
                 BoardSaveDto dto = BoardSaveDto.builder()
-                        .boardName(name)
+                        .boardName(BOARD_NAME_1)
                         .useYn(useYn)
                         .attachmentAllowYn(attachmentAllowYn)
                         .build();
@@ -44,7 +49,7 @@ public class BoardServiceImplTest {
                 Long boardId = boardService.save(dto);
                 BoardDetailDto detailDto = boardService.findById(boardId);
 
-                Assertions.assertEquals(name, detailDto.getBoardName());
+                Assertions.assertEquals(BOARD_NAME_1, detailDto.getBoardName());
                 Assertions.assertEquals(useYn, detailDto.isUseYn());
                 Assertions.assertEquals(attachmentAllowYn, detailDto.isAttachmentAllowYn());
             }
@@ -52,11 +57,10 @@ public class BoardServiceImplTest {
             @Test @Transactional
             @DisplayName("동일한 이름의 게시판 생성 시 BoardDuplicationException을 반환한다.")
             public void board_name_duplication_test(){
-                String name = "자유게시판";
                 boolean useYn = false;
                 boolean attachmentAllowYn = true;
                 BoardSaveDto dto = BoardSaveDto.builder()
-                        .boardName(name)
+                        .boardName(BOARD_NAME_1)
                         .useYn(useYn)
                         .attachmentAllowYn(attachmentAllowYn)
                         .build();
@@ -98,7 +102,7 @@ public class BoardServiceImplTest {
             public void board_select_all_test(){
                 List<BoardListDto> boardList =  boardService.findBoards();
 
-                Assertions.assertEquals(2, boardList.size());
+                Assertions.assertEquals(4, boardList.size());
                 Assertions.assertEquals(BOARD_NAME_1, boardList.get(0).getBoardName());
                 Assertions.assertEquals(BOARD_NAME_2, boardList.get(1).getBoardName());
 
@@ -157,6 +161,56 @@ public class BoardServiceImplTest {
 
                 Assertions.assertEquals(totalBoardSize, boardService.findBoards().size());
             }
+        }
+
+    }
+
+    @Nested
+    @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+    class 게시글_엔티티_테스트{
+
+
+        final String TEST_MEMBER_EMAIL = "test@changbi.com";
+        final String TEST_MEMBER_PASSWORD = "test1234";
+
+        final String TEST_POST_TITLE = "THIS TEST POST";
+        final String TEST_POST_CONTENT = "HELLO THIS IS TEST POST CONTENT";
+
+        @Nested
+        @DisplayName("게시글 등록 테스트")
+        class post_insert_test{
+
+            @Test @Transactional
+            @DisplayName("신규 게시글을 로그인된 사용자 정보와 함께 저장한다.")
+            void post_insert_with_member_test(){
+                //given
+                MockHttpSession session = new MockHttpSession();
+                //01. member login
+                memberService.memberLogin(LoginInformation.builder()
+                                                                .memberEmail(TEST_MEMBER_EMAIL)
+                                                                .memberPassword(TEST_MEMBER_PASSWORD)
+                                                            .build(), session);
+
+                SessionMember sessionMember = (SessionMember) session.getAttribute("member");
+
+                //when
+                PostSaveDto saveDto = PostSaveDto.builder()
+                                                .memberId(sessionMember.getMemberId())
+                                                .boardId(99L)
+                                                .postTitle(TEST_POST_TITLE)
+                                                .postContent(TEST_POST_CONTENT)
+                                                .useYn(true)
+                                            .build();
+
+                Long postId = boardService.savePost(saveDto);
+                PostDetailDto detailDto = boardService.findPostById(postId);
+                //then
+
+                Assertions.assertEquals(TEST_POST_TITLE, detailDto.getPostTitle());
+                Assertions.assertEquals(TEST_POST_CONTENT, detailDto.getPostContent());
+                Assertions.assertEquals(sessionMember.getMemberId(), detailDto.getMemberId());
+            }
+
         }
 
     }

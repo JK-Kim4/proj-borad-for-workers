@@ -1,12 +1,10 @@
 package com.changbi.tradeunion.boardforworkers.board.application;
 
 import com.changbi.tradeunion.boardforworkers.board.domain.Board;
+import com.changbi.tradeunion.boardforworkers.board.domain.Post;
 import com.changbi.tradeunion.boardforworkers.board.exception.BoardDuplicationException;
-import com.changbi.tradeunion.boardforworkers.board.presentation.dto.BoardDetailDto;
-import com.changbi.tradeunion.boardforworkers.board.presentation.dto.BoardListDto;
+import com.changbi.tradeunion.boardforworkers.board.presentation.dto.*;
 import com.changbi.tradeunion.boardforworkers.board.repository.BoardRepository;
-import com.changbi.tradeunion.boardforworkers.board.presentation.dto.BoardSaveDto;
-import com.changbi.tradeunion.boardforworkers.common.dto.Pagination;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +34,14 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
+    public Long savePost(PostSaveDto postSaveDto) {
+
+        Post post = postSaveDto.toEntity();
+
+        return boardRepository.savePost(post);
+    }
+
+    @Override
     public void update(BoardSaveDto dto) {
         Board board = boardRepository.findById(dto.getBoardId());
         board.update(dto);
@@ -60,6 +66,11 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public BoardDetailDto findById(Long boardId) {
         return BoardDetailDto.builder().board(boardRepository.findById(boardId)).build();
+    }
+
+    @Override
+    public PostDetailDto findPostById(Long postId) {
+        return PostDetailDto.builder().post(boardRepository.findPostById(postId)).build();
     }
 
     @Override

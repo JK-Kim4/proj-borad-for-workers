@@ -1,6 +1,7 @@
 package com.changbi.tradeunion.boardforworkers.board.repository;
 
 import com.changbi.tradeunion.boardforworkers.board.domain.Board;
+import com.changbi.tradeunion.boardforworkers.board.domain.Post;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
@@ -52,5 +53,18 @@ public class BoardRepository {
         String query = "select b from Board b where b.boardName = :boardName";
 
         return em.createQuery(query, Board.class).setParameter("boardName", boardName).getSingleResult();
+    }
+
+    public Long savePost(Post post) {
+        em.persist(post);
+        return post.getId();
+    }
+
+    public Post findPostById(Long postId) {
+        String query = "select p from Post p where p.id = :postId";
+
+        return em.createQuery(query, Post.class)
+                .setParameter("postId", postId)
+                .getSingleResult();
     }
 }
