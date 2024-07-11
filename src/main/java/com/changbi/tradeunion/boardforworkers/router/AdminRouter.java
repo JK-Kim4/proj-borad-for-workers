@@ -1,7 +1,9 @@
 package com.changbi.tradeunion.boardforworkers.router;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -36,5 +38,13 @@ public class AdminRouter {
     @GetMapping("/board/save")
     public String boardSavePage(){
         return "admin/board/save";
+    }
+
+    @GetMapping("/board/detail/{boardId}")
+    public String boardDetailPage(
+            @PathVariable(name = "boardId") Long boardId,
+            Model model){
+        model.addAttribute("boardId", boardId);
+        return "admin/board/detail";
     }
 }

@@ -25,6 +25,31 @@ public class BoardController {
                 .build());
     }
 
+    @PostMapping("/update/{boardId}")
+    public ResponseEntity<ResultDto> update(
+            @PathVariable(name = "boardId") Long boardId,
+            @RequestBody BoardSaveDto dto) {
+
+        boardService.update(dto);
+
+        return ResponseEntity.ok(ResultDto.builder()
+                        .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
+                        .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
+                .build());
+    }
+
+    @DeleteMapping("/delete/{boardId}")
+    public ResponseEntity<ResultDto> delete(
+            @PathVariable(name = "boardId") Long boardId) {
+
+        boardService.delete(boardId);
+
+        return ResponseEntity.ok(ResultDto.builder()
+                .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
+                .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
+                .build());
+    }
+
     @GetMapping("/boards")
     public ResponseEntity<ResultDto> findBoards(
             @RequestParam(name = "pageNum", required = false) Integer pageNum,
@@ -34,6 +59,17 @@ public class BoardController {
                         .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
                         .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
                         .data(boardService.findBoards())
+                .build());
+    }
+
+    @GetMapping("/{boardId}")
+    public ResponseEntity<ResultDto> findBoardById(
+            @PathVariable("boardId") Long boardId){
+
+        return ResponseEntity.ok(ResultDto.builder()
+                        .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
+                        .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
+                        .data(boardService.findById(boardId))
                 .build());
     }
 

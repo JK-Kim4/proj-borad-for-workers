@@ -23,7 +23,12 @@ public class BoardRepository {
     }
 
     public Board findById(Long boardId) {
-        return em.find(Board.class, boardId);
+        String query = "select b from Board b where b.id = :boardId";
+
+        // throw (NoResult | NonUnique) Exception
+        return em.createQuery(query, Board.class)
+                .setParameter("boardId", boardId)
+                .getSingleResult();
     }
 
     public List<Board> findBoards(){

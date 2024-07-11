@@ -17,6 +17,7 @@ public class CommonValues {
 
     /*RESULT CODE FAIL*/
     public static final String RESULT_CODE_FAIL_SYSTEM = "9999";
+    public static final String RESULT_CODE_FAIL_SINGLE_ENTITY_VIOLATION = "9900";
     public static final String RESULT_CODE_FAIL_DEFAULT = "9000";
     public static final String RESULT_CODE_FAIL_MEMBER_DUPLICATION = "8000";
     public static final String RESULT_CODE_FAIL_MEMBER_LOGIN_VALIDATION = "8888";
@@ -24,6 +25,7 @@ public class CommonValues {
 
     /*RESULT MESSAGE FAIL*/
     public static final String RESULT_MESSAGE_FAIL_DEFAULT = "요청 처리에 실패하였습니다.";
+    public static final String RESULT_MESSAGE_FAIL_SINGLE_ENTITY_VIOLATION = "요청하신 결과가 존재하지 않거나 1개 이상입니다.";
     public static final String RESULT_MESSAGE_FAIL_SYSTEM = "시스템 오류가 발생하여 요청을 처리하지 못하였습니다.";
     public static final String RESULT_MESSAGE_FAIL_INSERT = "등록에 실패하였습니다.";
     public static final String RESULT_MESSAGE_FAIL_UPDATE = "수정에 실패하였습니다.";

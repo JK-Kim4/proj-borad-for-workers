@@ -61,7 +61,6 @@ public class Board {
     }
 
     public void update(BoardSaveDto dto){
-        this.id = dto.getBoardId();
         this.boardName = dto.getBoardName();
         this.useYn = dto.isUseYn();
         this.attachmentAllowYn = dto.isAttachmentAllowYn();
