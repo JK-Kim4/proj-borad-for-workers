@@ -209,6 +209,7 @@ public class BoardServiceImplTest {
                 Assertions.assertEquals(TEST_POST_TITLE, detailDto.getPostTitle());
                 Assertions.assertEquals(TEST_POST_CONTENT, detailDto.getPostContent());
                 Assertions.assertEquals(sessionMember.getMemberId(), detailDto.getMemberId());
+                Assertions.assertEquals(99L, detailDto.getBoardId());
             }
 
         }

@@ -51,7 +51,7 @@
                 <label for="firstName" class=" ">제목 : </label>
             </div>
             <div class="col-auto">
-                <select class="form-select" aria-label="Default select example">
+                <select class="form-select" aria-label="Default select example" id="inputPostHead">
                     <option selected>말머리</option>
                     <option value="1">One</option>
                     <option value="2">Two</option>
@@ -59,7 +59,7 @@
                 </select>
             </div>
             <div class="col">
-                <input type="text" class="form-control" id=inputBoardName placeholder="" value="" required="">
+                <input type="text" class="form-control" id="inputPostTitle" placeholder="제목을 입력해주세요.">
             </div>
         </div>
 
@@ -73,14 +73,24 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row mb-3">
             <div class="col-5">
                 <input type="file" class="form-control">
+            </div>
+        </div>
+
+        <div class="row d-flex justify-content-end">
+            <div class="col-auto">
+                <button class="btn btn-outline-dark" onclick="history.back();">뒤로 가기</button>
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-primary" id="postSaveButton">새 글 등록</button>
             </div>
         </div>
     </div>
 
     <hr class="my-4">
+
 
     <script src="/js/board.js"></script>
     <script type="application/javascript">
