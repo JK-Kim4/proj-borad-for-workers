@@ -62,13 +62,14 @@ public class Post {
 
     @Builder
     public Post (
-            String postTitle, String postContent,
+            String postHead, String postTitle, String postContent,
             String attachmentFileName, String attachmentFilePath,
             Long boardId, Long memberId, boolean useYn) {
 
         this.boardId = boardId;
         this.memberId = memberId;
         this.useYn = useYn;
+        this.postHead = PostHead.valueOf(postHead);
         this.postTitle = postTitle;
         this.postContent = postContent;
         this.readCount = 0;

@@ -35,9 +35,7 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public Long savePost(PostSaveDto postSaveDto) {
-
         Post post = postSaveDto.toEntity();
-
         return boardRepository.savePost(post);
     }
 

@@ -2,6 +2,7 @@ package com.changbi.tradeunion.boardforworkers.board.presentation;
 
 import com.changbi.tradeunion.boardforworkers.board.application.BoardServiceImpl;
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.BoardSaveDto;
+import com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostSaveDto;
 import com.changbi.tradeunion.boardforworkers.common.CommonValues;
 import com.changbi.tradeunion.boardforworkers.common.dto.ResultDto;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,16 @@ public class BoardController {
                         .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
                         .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
                         .data(boardService.save(dto))
+                .build());
+    }
+
+    @PostMapping("/post/save")
+    public ResponseEntity<ResultDto> postSave(@RequestBody PostSaveDto dto) {
+
+        return ResponseEntity.ok(ResultDto.builder()
+                        .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
+                        .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
+                        .data(boardService.savePost(dto))
                 .build());
     }
 
