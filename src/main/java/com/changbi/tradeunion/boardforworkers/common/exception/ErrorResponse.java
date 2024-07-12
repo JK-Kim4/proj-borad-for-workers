@@ -2,9 +2,11 @@ package com.changbi.tradeunion.boardforworkers.common.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Builder;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Getter
 public class ErrorResponse {
 
     private static final Logger logger = LoggerFactory.getLogger(ErrorResponse.class);

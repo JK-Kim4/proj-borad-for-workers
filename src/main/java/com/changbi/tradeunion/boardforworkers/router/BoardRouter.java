@@ -1,5 +1,7 @@
 package com.changbi.tradeunion.boardforworkers.router;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,7 +25,12 @@ public class BoardRouter {
     @GetMapping("/{boardId}/post/save")
     public String postSavePage(
             @PathVariable(name = "boardId") Long boardId,
-            Model model){
+            Model model, HttpServletRequest request) throws IllegalAccessException {
+
+        HttpSession session = request.getSession();
+        if(session.getAttribute("member") == null){
+            throw new IllegalAccessException("잘못된 접근입니다. 로그인 후 이용해주세요.");
+        }
 
         model.addAttribute("boardId", boardId);
         return "contents/post/save";

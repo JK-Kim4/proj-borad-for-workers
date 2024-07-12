@@ -11,7 +11,9 @@
     <input type="hidden" id="boardId" value="{{boardId}}">
     <div class="row justify-content-end">
         <div class="col-auto">
-            <button class="btn btn-success" id="movePostSavePage">새 글 쓰기</button>
+            {{#member}}
+                <button class="btn btn-success" id="movePostSavePage">새 글 쓰기</button>
+            {{/member}}
         </div>
     </div>
     <div class="table-responsive mt-3">

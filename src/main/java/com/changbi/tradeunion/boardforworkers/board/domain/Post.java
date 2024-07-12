@@ -1,9 +1,7 @@
 package com.changbi.tradeunion.boardforworkers.board.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.PostHead;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,9 +33,13 @@ public class Post {
     private Long memberId;
 
     @Column
-    private String postTitle;
+    @Enumerated(EnumType.STRING)
+    private PostHead postHead;
 
     @Column
+    private String postTitle;
+
+    @Column(columnDefinition = "TEXT")
     private String postContent;
 
     @Column

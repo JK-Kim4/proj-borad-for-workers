@@ -8,6 +8,7 @@ import jakarta.persistence.PersistenceException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
+@Order(value = 2)
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -76,7 +78,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                         .resultMessage(CommonValues.RESULT_MESSAGE_FAIL_SINGLE_ENTITY_VIOLATION)
                 .build());
     }
-
 
     @ExceptionHandler(value = Exception.class)
     protected ResponseEntity<ErrorResponse> handleException(
