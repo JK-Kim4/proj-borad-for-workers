@@ -1,10 +1,8 @@
 package com.changbi.tradeunion.boardforworkers.board.domain;
 
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.BoardSaveDto;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.Role;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -46,6 +44,14 @@ public class Board {
 
     @Column
     private Long updateAdminId;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private Role readRole;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private Role writeRole;
 
     @Builder
     public Board (

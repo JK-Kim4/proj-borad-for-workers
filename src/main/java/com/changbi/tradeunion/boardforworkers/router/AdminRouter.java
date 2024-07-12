@@ -47,4 +47,13 @@ public class AdminRouter {
         model.addAttribute("boardId", boardId);
         return "admin/board/detail";
     }
+
+    @GetMapping("/board/{boardId}/post/list")
+    public String boardPostListPage(
+            @PathVariable(name = "boardId") Long boardId,
+            Model model){
+
+        model.addAttribute("boardId", boardId);
+        return "admin/board/post/list";
+    }
 }
