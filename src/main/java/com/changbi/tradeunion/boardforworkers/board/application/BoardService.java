@@ -16,6 +16,8 @@ public interface BoardService {
 
     public List<BoardListDto> findBoards();
 
+    public List<PostListDto> findPosts(Long boardId);
+
     public BoardDetailDto findById(Long boardId);
 
     public PostDetailDto findPostById(Long postId);

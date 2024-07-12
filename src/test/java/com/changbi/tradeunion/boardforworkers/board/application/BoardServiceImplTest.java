@@ -2,6 +2,7 @@ package com.changbi.tradeunion.boardforworkers.board.application;
 
 import com.changbi.tradeunion.boardforworkers.board.exception.BoardDuplicationException;
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.*;
+import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.PostHead;
 import com.changbi.tradeunion.boardforworkers.member.application.MemberServiceImpl;
 import com.changbi.tradeunion.boardforworkers.member.presentation.dto.LoginInformation;
 import com.changbi.tradeunion.boardforworkers.member.presentation.dto.SessionMember;
@@ -169,12 +170,24 @@ public class BoardServiceImplTest {
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
     class 게시글_엔티티_테스트{
 
+        final String TEST_POST_HEAD = PostHead.GENERAL.name();
 
         final String TEST_MEMBER_EMAIL = "test@changbi.com";
         final String TEST_MEMBER_PASSWORD = "test1234";
 
         final String TEST_POST_TITLE = "THIS TEST POST";
         final String TEST_POST_CONTENT = "HELLO THIS IS TEST POST CONTENT";
+
+        final MockHttpSession session = new MockHttpSession();
+
+        @BeforeEach
+        void beforeEach(){
+            //01. member login
+            memberService.memberLogin(LoginInformation.builder()
+                    .memberEmail(TEST_MEMBER_EMAIL)
+                    .memberPassword(TEST_MEMBER_PASSWORD)
+                    .build(), session);
+        }
 
         @Nested
         @DisplayName("게시글 등록 테스트")
@@ -184,19 +197,13 @@ public class BoardServiceImplTest {
             @DisplayName("신규 게시글을 로그인된 사용자 정보와 함께 저장한다.")
             void post_insert_with_member_test(){
                 //given
-                MockHttpSession session = new MockHttpSession();
-                //01. member login
-                memberService.memberLogin(LoginInformation.builder()
-                                                                .memberEmail(TEST_MEMBER_EMAIL)
-                                                                .memberPassword(TEST_MEMBER_PASSWORD)
-                                                            .build(), session);
-
                 SessionMember sessionMember = (SessionMember) session.getAttribute("member");
 
                 //when
                 PostSaveDto saveDto = PostSaveDto.builder()
                                                 .memberId(sessionMember.getMemberId())
                                                 .boardId(99L)
+                                                .postHead(TEST_POST_HEAD)
                                                 .postTitle(TEST_POST_TITLE)
                                                 .postContent(TEST_POST_CONTENT)
                                                 .useYn(true)
@@ -212,6 +219,61 @@ public class BoardServiceImplTest {
                 Assertions.assertEquals(99L, detailDto.getBoardId());
             }
 
+        }
+
+        @Nested
+        @DisplayName("게시글 조회 테스트")
+        class post_select_test{
+
+            final String TEST_POST_HEAD = PostHead.GENERAL.name();
+
+            final String TEST_MEMBER_EMAIL = "test@changbi.com";
+            final String TEST_MEMBER_PASSWORD = "test1234";
+
+            final String TEST_POST_TITLE = "THIS TEST POST";
+            final String TEST_POST_CONTENT = "HELLO THIS IS TEST POST CONTENT";
+
+            final MockHttpSession session = new MockHttpSession();
+
+            @BeforeEach
+            void beforeEach(){
+                //게시글 테스트 데이터 등록
+                memberService.memberLogin(LoginInformation.builder()
+                        .memberEmail(TEST_MEMBER_EMAIL)
+                        .memberPassword(TEST_MEMBER_PASSWORD)
+                        .build(), session);
+
+                SessionMember sessionMember = (SessionMember) session.getAttribute("member");
+
+                PostSaveDto saveDto = PostSaveDto.builder()
+                            .memberId(sessionMember.getMemberId())
+                            .boardId(99L)
+                            .postHead(TEST_POST_HEAD)
+                            .postTitle(TEST_POST_TITLE)
+                            .postContent(TEST_POST_CONTENT)
+                            .useYn(true)
+                        .build();
+
+                boardService.savePost(saveDto);
+                boardService.savePost(saveDto);
+                boardService.savePost(saveDto);
+
+            }
+
+            @Test @Transactional
+            @DisplayName("등록되어있는 전체 게시글을 조회한다.")
+            void post_select_post_test(){
+                //when
+                List<PostListDto> postListDtoList = boardService.findPosts(99L);
+
+                //then
+                Assertions.assertEquals(3, postListDtoList.size());
+
+            }
+
+            @Test @Transactional
+            @DisplayName("게시판 고유번호를 key로 등록된 게시글을 조회한다.")
+            void post_select_post_by_board_id_test(){}
         }
 
     }

@@ -39,6 +39,14 @@ public class BoardRepository {
                 .getResultList();
     }
 
+    public List<Post> findPosts(Long boardId){
+        String query = "select p from Post p where p.boardId = :boardId";
+
+        return em.createQuery(query, Post.class)
+                .setParameter("boardId", boardId)
+                .getResultList();
+    }
+
 
 
     public boolean isAlreadyExistBoardName(String boardName) {
