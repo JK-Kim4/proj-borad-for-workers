@@ -2,6 +2,7 @@ package com.changbi.tradeunion.boardforworkers.board.repository;
 
 import com.changbi.tradeunion.boardforworkers.board.domain.Board;
 import com.changbi.tradeunion.boardforworkers.board.domain.Post;
+import com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostListDto;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
@@ -39,10 +40,19 @@ public class BoardRepository {
                 .getResultList();
     }
 
-    public List<Post> findPosts(Long boardId){
-        String query = "select p from Post p where p.boardId = :boardId";
+    public List<PostListDto> findPosts(Long boardId){
+        String query =  "select " +
+                            "new com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostListDto" +
+                            "(p.id, b.id, m.id, " +
+                            "p.useYn, p.postHead, p.postTitle, " +
+                            "p.readCount, p.recommendCount, p.appendDate, p.updateDate," +
+                            "m.memberRealName, b.boardName) " +
+                        "from Post p " +
+                        "left outer join Member m on p.memberId = m.id " +
+                        "left outer join Board b on p.boardId = b.id " +
+                        "where p.boardId = :boardId";
 
-        return em.createQuery(query, Post.class)
+        return em.createQuery(query, PostListDto.class)
                 .setParameter("boardId", boardId)
                 .getResultList();
     }

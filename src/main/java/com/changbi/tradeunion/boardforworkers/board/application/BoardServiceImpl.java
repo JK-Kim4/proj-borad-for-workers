@@ -63,12 +63,7 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public List<PostListDto> findPosts(Long boardId) {
-        return boardRepository.findPosts(boardId).stream()
-                .map(post -> PostListDto
-                                .builder()
-                                    .post(post)
-                                .build())
-                .toList();
+        return boardRepository.findPosts(boardId);
     }
 
     @Override

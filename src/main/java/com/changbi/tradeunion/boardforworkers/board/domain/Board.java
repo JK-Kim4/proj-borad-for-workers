@@ -56,11 +56,13 @@ public class Board {
     @Builder
     public Board (
             String boardName,
-            boolean useYn,
-            boolean attachmentAllowYn){
+            boolean useYn, boolean attachmentAllowYn,
+            String readRole, String writeRole){
         this.boardName = boardName;
         this.useYn = useYn;
         this.attachmentAllowYn = attachmentAllowYn;
+        this.readRole = Role.valueOf(readRole);
+        this.writeRole = Role.valueOf(writeRole);
         this.appendDate = LocalDateTime.now();
         this.updateDate = LocalDateTime.now();
         //TODO appendAdminId
@@ -71,5 +73,7 @@ public class Board {
         this.useYn = dto.isUseYn();
         this.attachmentAllowYn = dto.isAttachmentAllowYn();
         this.updateDate = LocalDateTime.now();
+        this.readRole = Role.valueOf(dto.getReadRole());
+        this.writeRole = Role.valueOf(dto.getWriteRole());
     }
 }

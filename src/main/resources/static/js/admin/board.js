@@ -6,6 +6,8 @@ let main = {
             data.boardName = $("#inputBoardName").val();
             data.useYn = $("input[name='inputUseYn']:checked").val()
             data.attachmentAllowYn = $("input[name='inputAttachmentAllowYn']:checked").val()
+            data.readRole = $("#inputReadRole").val();
+            data.writeRole = $("#inputWriteRole").val();
 
             main.save(JSON.stringify(data));
         });
@@ -17,6 +19,8 @@ let main = {
             data.boardName = $("#inputBoardName").val();
             data.useYn = $("input[name='inputUseYn']:checked").val()
             data.attachmentAllowYn = $("input[name='inputAttachmentAllowYn']:checked").val()
+            data.readRole = $("#inputReadRole").val();
+            data.writeRole = $("#inputWriteRole").val();
 
             main.update(data.boardId, JSON.stringify(data));
         });
@@ -117,41 +121,6 @@ let main = {
                     if(result.data.length > 0){
                         $.each(result.data, function (index, element){
 
-                            /*<div class='col-md-4'>
-                                <div class='card p-3 mb-2'>
-                                    <div class='d-flex justify-content-between'>
-                                        <div class='d-flex flex-row align-items-center'>
-                                            <div class='ms-2 c-details'>
-                                                <h6 class='mb-0'>생성일:</h6>
-                                                <span class='badge badge-pill bg-primary'> 권한 </span>
-                                            </div>
-                                        </div>
-                                        <div class=''> <button class='btn btn-outline-dark'>게시물 목록</button> </div>
-                                    </div>
-                                    <div class='mt-5'>
-                                        <h3 class='heading'>자유게시판<br></h3>
-                                        <h5>게시물 수: 120</h5>
-                                        <div class='mt-5'>
-                                            <div class='mt-3'> <span class='text1'> <span class='text2'>신규 등록 게시물: 24</span></span> </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            html += "<tr>" +
-                                        "<td class='text-center'>"+element.boardId+"</td>" +
-                                        "<td class='text-center'>"+element.boardName+"</td>" +
-                                        "<td class='text-center'>"+element.useYn+"</td>" +
-                                        "<td class='text-center'>"+element.attachmentAllowYn+"</td>" +
-                                        "<td class='text-center'>"+element.appendDate+"</td>" +
-                                        "<td class='text-center'>" +
-                                            "<button class='btn btn-outline-primary move-detail-button' data-board-id='"+element.boardId+"'>수정</button>" +
-                                        "</td>" +
-                                        "<td class='text-center'>" +
-                                            "<button class='btn btn-outline-success move-post-list-button' data-board-id='"+element.boardId+"'>게시물 관리</button>" +
-                                        "</td>" +
-                                    "</tr>"*/
-
                             html += "<div class='col-md-4'>" +
                                         "<div class='card p-3 mb-2'>" +
                                             "<div class='d-flex justify-content-between'>" +
@@ -164,7 +133,7 @@ let main = {
                                                 "<div class=''> <button class='btn btn-outline-dark move-post-list-button' data-board-id='"+element.boardId+"'>게시물 목록</button> </div>" +
                                             "</div>" +
                                             "<div class='mt-5'>" +
-                                                "<h3 class='heading'>"+element.boardName+"<br></h3>" +
+                                                "<a href='/admin/board/detail/"+element.boardId+"'><h3 class='heading'>"+element.boardName+"<br></h3></a>" +
                                                 "<h5>게시물 수: </h5>" +
                                                 "<div class='mt-5'>" +
                                                     "<div class='mt-3'>" +
@@ -202,6 +171,8 @@ let main = {
                     $("input[name='inputAttachmentAllowYn'][value='"+data.attachmentAllowYn+"']").attr("checked", true);
                     $("#appendDate").val(data.appendDate);
                     $("#updateDate").val(data.updateDate);
+                    $("#inputReadRole").find("option[value='"+data.readRole+"']").attr("selected",true);
+                    $("#inputWriteRole").find("option[value='"+data.writeRole+"']").attr("selected",true);
 
                 }else{
                     alert(result.resultMessage)
@@ -215,7 +186,39 @@ let main = {
         });
     },
     findPosts: function (pageNum, pageSize,boardId){
+        $.ajax({
+            url: "/api/board/"+boardId+"/posts",
+            method: "GET",
+            contentType: "application/json; charset=utf-8;",
+            success: function (result){
+                let html = "";
+                if (RESULT_CODE.SUCCESS_DEFAULT === result.resultCode){
+                    if (result.data.length > 0){
+                        let data = result.data;
+                        $.each(data, function (index, element){
+                            html += "<tr>" +
+                                "<td class='text-center'> "+element.postId+"</td>" +
+                                "<td class='text-center'> "+element.boardName+"</td>" +
+                                "<td class='text-center'> "+element.postTitle+"</td>" +
+                                "<td class='text-center'> "+element.memberRealName+"</td>" +
+                                "<td class='text-center'> "+element.recommendCount+"</td>" +
+                                "<td class='text-center'> "+element.readCount+"</td>" +
+                                "<td class='text-center'> "+dayjs(element.appendDate).format('YYYY.MM.DD')+"</td>" +
+                                "<td class='text-center'> "+dayjs(element.updateDate).format('YYYY.MM.DD')+"</td>" +
+                                "</tr>"
+                        });
+                    }else{
+                        html += "<tr><td colspan='8' class='text-center'> 등록된 게시글이 존재하지 않습니다. </td></tr>";
+                    }
+                }
 
+                $("#postListBody").html(html);
+            },
+            error: function (x,h,r){
+                console.error(x)
+                alert(RESULT_MESSAGE.FAIL_SYSTEM);
+            }
+        })
     }
 }
 

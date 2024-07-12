@@ -84,5 +84,14 @@ public class BoardController {
                 .build());
     }
 
+    @GetMapping("/{boardId}/posts")
+    public ResponseEntity<ResultDto> findBoardPosts(
+            @PathVariable(name = "boardId") Long boardId){
 
+        return ResponseEntity.ok(ResultDto.builder()
+                        .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
+                        .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
+                        .data(boardService.findPosts(boardId))
+                .build());
+    }
 }

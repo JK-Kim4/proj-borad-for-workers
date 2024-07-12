@@ -16,6 +16,8 @@ public class BoardDetailDto {
     private String boardName;
     private boolean useYn;
     private boolean attachmentAllowYn;
+    private String readRole;
+    private String writeRole;
     private LocalDateTime appendDate;
     private Long appendAdminId;
     private LocalDateTime updateDate;
@@ -27,6 +29,8 @@ public class BoardDetailDto {
         this.boardName = board.getBoardName();
         this.useYn = board.isUseYn();
         this.attachmentAllowYn = board.isAttachmentAllowYn();
+        this.readRole = board.getReadRole().name();
+        this.writeRole = board.getWriteRole().name();
         this.appendDate = board.getAppendDate();
         this.updateDate = board.getUpdateDate();
         //TODO admin id

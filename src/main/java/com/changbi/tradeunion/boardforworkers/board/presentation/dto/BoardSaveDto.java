@@ -14,13 +14,20 @@ public class BoardSaveDto {
     private String boardName;
     private boolean useYn;
     private boolean attachmentAllowYn;
+    private String readRole;
+    private String writeRole;
 
     @Builder
-    public BoardSaveDto(long boardId, String boardName, boolean useYn, boolean attachmentAllowYn) {
+    public BoardSaveDto(
+            long boardId, String boardName,
+            boolean useYn, boolean attachmentAllowYn,
+            String readRole, String writeRole) {
         this.boardId = boardId;
         this.boardName = boardName;
         this.useYn = useYn;
         this.attachmentAllowYn = attachmentAllowYn;
+        this.readRole = readRole;
+        this.writeRole = writeRole;
     }
 
     public Board toEntity(){
@@ -28,6 +35,8 @@ public class BoardSaveDto {
                 .boardName(this.boardName)
                 .useYn(this.isUseYn())
                 .attachmentAllowYn(this.isAttachmentAllowYn())
+                .readRole(this.readRole)
+                .writeRole(this.writeRole)
                 .build();
     }
 }

@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * Post Entity
@@ -60,6 +61,12 @@ public class Post {
     @Column
     private LocalDateTime updateDate;
 
+    @Transient
+    private String memberName;
+
+    @Transient
+    private String boardName;
+
     @Builder
     public Post (
             String postHead, String postTitle, String postContent,
@@ -69,7 +76,9 @@ public class Post {
         this.boardId = boardId;
         this.memberId = memberId;
         this.useYn = useYn;
-        this.postHead = PostHead.valueOf(postHead);
+        if(!Objects.isNull(postHead)){
+            this.postHead = PostHead.valueOf(postHead);
+        }
         this.postTitle = postTitle;
         this.postContent = postContent;
         this.readCount = 0;

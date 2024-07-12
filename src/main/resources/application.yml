@@ -12,6 +12,7 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: create-drop
+    show-sql: true
   mustache:
     servlet:
       expose-session-attributes: true
