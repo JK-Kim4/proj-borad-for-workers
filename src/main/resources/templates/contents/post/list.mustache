@@ -38,7 +38,8 @@
 <script src="/js/board.js"></script>
 <script type="application/javascript">
     $(document).ready(function (){
-
+        let boardId = $("#boardId").val();
+        main.findBoardPosts(boardId);
     });
 </script>
 {{>layout/footer}}

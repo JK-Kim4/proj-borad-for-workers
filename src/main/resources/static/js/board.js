@@ -8,24 +8,34 @@ let main = {
         $("#postSaveButton").on("click", function (){
             let data = {};
 
-            data.boardId = $("#boardId").val();
+            let boardId = $("#boardId").val();
+
+            data.boardId = boardId;
             data.memberId = $("#memberId").val();
             data.useYn = $("input[name='inputUseYn']:checked").val();
             data.postHead = $("#inputPostHead").val();
             data.postTitle = $("#inputPostTitle").val();
             data.postContent = $("#inputContent").val();
 
-            main.savePost(JSON.stringify(data));
+            main.savePost(JSON.stringify(data), boardId);
         });
     },
-    savePost: function (jsonData){
+    savePost: function (jsonData, boardId){
         $.ajax({
             url: "/api/board/post/save",
             method: "POST",
             data: jsonData,
             contentType: "application/json; charset=utf-8;",
             success: function (result){
-                console.log(result)
+                if(RESULT_CODE.SUCCESS_DEFAULT === result.resultCode){
+                    alert(result.resultMessage);
+                    location.href = "/board/"+boardId+"/post/list";
+                }else{
+                    alert(result.resultMessage);
+                    location.reload();
+                }
+
+
             },
             error: function (x,h,r){
                 console.error(x)
@@ -54,6 +64,38 @@ let main = {
             }
         });
         return boardDetail;
+    },
+    findBoardPosts: function (boardId){
+        $.ajax({
+            url: "/api/board/"+boardId+"/posts",
+            method: "GET",
+            contentType: "application/json; charset=utf-8",
+            success: function (result){
+                let html = "";
+                if(RESULT_CODE.SUCCESS_DEFAULT === result.resultCode){
+                    if(result.data.length > 0){
+                        let data = result.data;
+                        $.each(data, function (index, element){
+                            html += "<tr>" +
+                                        "<td class='text-center'>"+element.postId+"</td>" +
+                                        "<td class='text-center'>"+element.postTitle+"</td>" +
+                                        "<td class='text-center'>"+element.memberRealName+"</td>" +
+                                        "<td class='text-center'>"+dayjs(element.appendDate).format('YYYY.MM.DD')+"</td>" +
+                                        "<td class='text-center'>"+element.recommendCount+"</td>" +
+                                        "<td class='text-center'>"+element.readCount+"</td>" +
+                                    "</tr>"
+                        });
+                    }else{
+                        html += "<tr><td colspan='6' class='text-center'>등록된 게시글이 없습니다.</td></tr>"
+                    }
+                    $("#postListDiv").html(html)
+                }
+            },
+            error: function (x,h,r){
+                console.log(e);
+                alert(RESULT_MESSAGE.FAIL_SYSTEM);
+            }
+        })
     }
 }
 
