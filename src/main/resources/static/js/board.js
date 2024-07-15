@@ -19,6 +19,11 @@ let main = {
 
             main.savePost(JSON.stringify(data), boardId);
         });
+
+        $(document).on("click", ".post-list-content", function (){
+            let postId = $(this).data("post-id");
+            location.href = "/board/post/detail/"+postId;
+        })
     },
     savePost: function (jsonData, boardId){
         $.ajax({
@@ -76,7 +81,7 @@ let main = {
                     if(result.data.length > 0){
                         let data = result.data;
                         $.each(data, function (index, element){
-                            html += "<tr>" +
+                            html += "<tr class='post-list-content' data-post-id='"+element.postId+"'>" +
                                         "<td class='text-center'>"+element.postId+"</td>" +
                                         "<td class='text-center'>"+element.postTitle+"</td>" +
                                         "<td class='text-center'>"+element.memberRealName+"</td>" +

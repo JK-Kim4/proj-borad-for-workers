@@ -35,4 +35,13 @@ public class BoardRouter {
         model.addAttribute("boardId", boardId);
         return "contents/post/save";
     }
+
+    @GetMapping("/post/detail/{postId}")
+    public String postDetailPage(
+            @PathVariable(name = "postId") Long postId,
+            Model model) {
+
+        model.addAttribute("postId", postId);
+        return "contents/post/detail";
+    }
 }
