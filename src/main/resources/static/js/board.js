@@ -65,9 +65,9 @@ let main = {
         });
         return boardDetail;
     },
-    findBoardPosts: function (boardId){
+    findBoardPostsForClients: function (boardId){
         $.ajax({
-            url: "/api/board/"+boardId+"/posts",
+            url: "/api/board/client/"+boardId+"/posts",
             method: "GET",
             contentType: "application/json; charset=utf-8",
             success: function (result){

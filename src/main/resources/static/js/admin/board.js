@@ -44,6 +44,11 @@ let main = {
             let boardId = $(this).data("board-id");
             location.href = "/admin/board/"+boardId+"/post/list";
         });
+
+        $(document).on("click", ".move-post-detail-button", function (){
+            let postId = $(this).data("post-id");
+            location.href = "/admin/board/post/detail/"+postId;
+        })
     },
     save: function (jsonData){
         console.log(jsonData);
@@ -197,15 +202,16 @@ let main = {
                         let data = result.data;
                         $.each(data, function (index, element){
                             html += "<tr>" +
-                                "<td class='text-center'> "+element.postId+"</td>" +
-                                "<td class='text-center'> "+element.boardName+"</td>" +
-                                "<td class='text-center'> "+element.postTitle+"</td>" +
-                                "<td class='text-center'> "+element.memberRealName+"</td>" +
-                                "<td class='text-center'> "+element.recommendCount+"</td>" +
-                                "<td class='text-center'> "+element.readCount+"</td>" +
-                                "<td class='text-center'> "+dayjs(element.appendDate).format('YYYY.MM.DD')+"</td>" +
-                                "<td class='text-center'> "+dayjs(element.updateDate).format('YYYY.MM.DD')+"</td>" +
-                                "</tr>"
+                                        "<td class='text-center'> "+element.postId+"</td>" +
+                                        "<td class='text-center'> "+element.boardName+"</td>" +
+                                        "<td class='text-center'> "+element.postTitle+"</td>" +
+                                        "<td class='text-center'> "+element.memberRealName+"</td>" +
+                                        "<td class='text-center'> "+element.recommendCount+"</td>" +
+                                        "<td class='text-center'> "+element.readCount+"</td>" +
+                                        "<td class='text-center'> "+dayjs(element.appendDate).format('YYYY.MM.DD')+"</td>" +
+                                        "<td class='text-center'> "+dayjs(element.updateDate).format('YYYY.MM.DD')+"</td>" +
+                                        "<td class='text-center'><button class='btn btn-success move-post-detail-button' data-post-id='"+element.postId+"'> 상세 보기 </button></td>" +
+                                    "</tr>"
                         });
                     }else{
                         html += "<tr><td colspan='8' class='text-center'> 등록된 게시글이 존재하지 않습니다. </td></tr>";
@@ -219,6 +225,34 @@ let main = {
                 alert(RESULT_MESSAGE.FAIL_SYSTEM);
             }
         })
+    },
+    findPostById: function (postId){
+        $.ajax({
+            url: "/api/board/post/"+postId,
+            method: "GET",
+            contentType: "application/json; charset=utf-8",
+            success: function (result){
+                if(RESULT_CODE.SUCCESS_DEFAULT === result.resultCode){
+                    let data = result.data;
+                    $("#disableAuthorInformation").val(data.memberRealName + " ("+ data.memberNickName + ")");
+                    $("#memberId").val(data.memberId);
+                    $("#disableBoardName").val(data.boardName);
+                    $("#boardId").val(data.boardId);
+                    $("#disablePostHead").val(data.postHead);
+                    $("#disablePostTitle").val(data.postTitle);
+                    $("#disablePostContent").val(data.postContent);
+                    $("#disableAppendDate").val(dayjs(data.appendDate).format('YYYY.MM.DD. HH:mm:ss'));
+                    $("#disableUpdateDate").val(dayjs(data.updateDate).format('YYYY.MM.DD. HH:mm:ss'));
+                    $("input[name='inputUseYn'][value='"+data.useYn+"']").attr("checked", true);
+                }
+
+                console.log(result);
+            },
+            error: function (x,h,r){
+                console.error(x)
+                alert(RESULT_MESSAGE.FAIL_SYSTEM);
+            }
+        });
     }
 }
 

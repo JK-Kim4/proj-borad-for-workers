@@ -20,7 +20,7 @@
         <table class="table">
             <thead>
             <tr>
-                <th scope="col" class="col-auto text-center">No</th>
+                <th scope="col" class="col-1 text-center">No</th>
                 <th scope="col" class="col-6 text-center">제목</th>
                 <th scope="col" class="col-auto text-center">글쓴이</th>
                 <th scope="col" class="col-auto text-center">작성일</th>
@@ -39,7 +39,7 @@
 <script type="application/javascript">
     $(document).ready(function (){
         let boardId = $("#boardId").val();
-        main.findBoardPosts(boardId);
+        main.findBoardPostsForClients(boardId);
     });
 </script>
 {{>layout/footer}}

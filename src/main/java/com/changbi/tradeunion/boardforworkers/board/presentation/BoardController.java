@@ -94,4 +94,27 @@ public class BoardController {
                         .data(boardService.findPosts(boardId))
                 .build());
     }
+
+    @GetMapping("/post/{postId}")
+    public ResponseEntity<ResultDto> findPostDetail(
+            @PathVariable(name = "postId") Long postId){
+
+        return ResponseEntity.ok(ResultDto.builder()
+                        .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
+                        .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
+                        .data(boardService.findPostById(postId))
+                .build());
+    }
+
+    @GetMapping("/client/{boardId}/posts")
+    public ResponseEntity<ResultDto> findBoardPostsForClients(
+            @PathVariable(name = "boardId") Long boardId){
+
+        return ResponseEntity.ok(ResultDto.builder()
+                .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
+                .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
+                .data(boardService.findPostsForClients(boardId))
+                .build());
+    }
+
 }

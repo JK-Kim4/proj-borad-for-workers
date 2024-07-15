@@ -2,6 +2,7 @@ package com.changbi.tradeunion.boardforworkers.board.repository;
 
 import com.changbi.tradeunion.boardforworkers.board.domain.Board;
 import com.changbi.tradeunion.boardforworkers.board.domain.Post;
+import com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostDetailDto;
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostListDto;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -57,6 +58,26 @@ public class BoardRepository {
                 .getResultList();
     }
 
+    public List<PostListDto> findPostsForClients(Long boardId) {
+        String query =  "select " +
+                            "new com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostListDto" +
+                            "(" +
+                                "p.id, b.id, m.id, " +
+                                "p.useYn, p.postHead, p.postTitle, " +
+                                "p.readCount, p.recommendCount, p.appendDate, p.updateDate," +
+                                "m.memberRealName, b.boardName" +
+                            ") " +
+                        "from Post p " +
+                        "left outer join Member m on p.memberId = m.id " +
+                        "left outer join Board b on p.boardId = b.id " +
+                        "where p.useYn = true " +
+                        "and p.boardId = :boardId " +
+                        "order by p.appendDate desc";
+
+        return em.createQuery(query, PostListDto.class)
+                .setParameter("boardId", boardId)
+                .getResultList();
+    }
 
 
     public boolean isAlreadyExistBoardName(String boardName) {
@@ -78,11 +99,23 @@ public class BoardRepository {
         return post.getId();
     }
 
-    public Post findPostById(Long postId) {
-        String query = "select p from Post p where p.id = :postId";
+    public PostDetailDto findPostById(Long postId) {
+        String query =  "select " +
+                            "new com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostDetailDto" +
+                            "(" +
+                                "p.id, b.id, b.boardName, m.id, m.memberRealName, m.memberNickName," +
+                                "p.postHead, p.postTitle, p.postContent, p.useYn, p.readCount, p.recommendCount," +
+                                "p.attachmentFileName, p.attachmentFilePath, p.appendDate, p.updateDate" +
+                            ") " +
+                        "from Post p " +
+                        "left outer join Board b on p.boardId = b.id " +
+                        "left outer join Member m on p.memberId = m.id " +
+                        "where p.id = :postId";
 
-        return em.createQuery(query, Post.class)
+        return em.createQuery(query, PostDetailDto.class)
                 .setParameter("postId", postId)
                 .getSingleResult();
     }
+
+
 }

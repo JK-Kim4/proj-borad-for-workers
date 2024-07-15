@@ -1,0 +1,91 @@
+{{>layout/admin-header}}
+<div class="container">
+    <main class="col-md-10 ms-sm-auto col-lg-10 px-md-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">게시물 상세 정보</h1>
+        </div>
+        <h4 class="mb-3">게시판 상세 정보</h4>
+        <div class="row d-flex justify-content-start mb-3">
+            <div class="col-12">
+                <input type="hidden" id="postId" value="{{postId}}">
+                <div class="row g-3">
+                    <div class="col-3">
+                        <label for="disableAuthorInformation">글쓴이</label>
+                        <input type="hidden" id="memberId">
+                        <input type="text" class="form-control" id="disableAuthorInformation" disabled>
+                    </div>
+                    <div class="col-3">
+                        <label for="disableBoardName">게시판</label>
+                        <input type="hidden" id="boardId">
+                        <input type="text" class="form-control" id="disableBoardName" disabled>
+                    </div>
+                    <div class="col-4">
+                        <label for="">사용 여부</label>
+                        <fieldset>
+                            <div class="form-group">
+                                <div class="form-check form-check-inline">
+                                    <input type="radio" class="form-check-input" name="inputUseYn" id="useTrue" value="true">
+                                    <label for="useTrue">사용</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input type="radio" class="form-check-input" name="inputUseYn" id="useFalse" value="false">
+                                    <label for="useFalse">사용 안함</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+
+
+                <div class="row g-3 mt-2">
+                    <div class="col-3">
+                        <label for="disablePostHead" class="form-label">말머리</label>
+                        <input type="text" class="form-control" id="disablePostHead" disabled>
+                    </div>
+
+                    <div class="col-9">
+                        <label for="disablePostTitle" class="form-label">제목</label>
+                        <input type="text" class="form-control" id="disablePostTitle" disabled>
+                    </div>
+                </div>
+
+                <div class="row g-3 mt-2">
+                    <div class="col-12">
+                        <label for="disablePostContent" class="form-label">내용</label>
+                        <textarea class="form-control" placeholder="내용을 입력해주세요." rows="25" id="disablePostContent" disabled></textarea>
+                    </div>
+                </div>
+
+                <div class="row g-3 mt-2">
+                    <div class="col-5">
+                        <label for="">등록일</label>
+                        <input type="text" class="form-control" id="disableAppendDate" disabled>
+                    </div>
+                    <div class="col-5">
+                        <label for="">수정일</label>
+                        <input type="text" class="form-control" id="disableUpdateDate" disabled>
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <button class="btn btn-success" id="postUpdateButton">수정</button>
+                <button class="btn btn-danger" id="postDeleteButton">삭제</button>
+                <button class="btn btn-outline-dark" onclick="history.back();">뒤로 가기</button>
+
+            </div>
+        </div>
+    </main>
+</div>
+</div>
+
+<script src="/js/admin/board.js"></script>
+<script type="application/javascript">
+    $(document).ready(function (){
+        let postId = $("#postId").val();
+        main.findPostById(postId)
+    });
+</script>
+</div>
+
+{{>layout/admin-footer}}

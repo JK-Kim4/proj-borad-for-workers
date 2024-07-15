@@ -67,13 +67,18 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
+    public List<PostListDto> findPostsForClients(Long boardId) {
+        return boardRepository.findPostsForClients(boardId);
+    }
+
+    @Override
     public BoardDetailDto findById(Long boardId) {
         return BoardDetailDto.builder().board(boardRepository.findById(boardId)).build();
     }
 
     @Override
     public PostDetailDto findPostById(Long postId) {
-        return PostDetailDto.builder().post(boardRepository.findPostById(postId)).build();
+        return boardRepository.findPostById(postId);
     }
 
     @Override

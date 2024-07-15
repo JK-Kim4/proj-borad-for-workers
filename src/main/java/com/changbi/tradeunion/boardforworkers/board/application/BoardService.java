@@ -23,4 +23,6 @@ public interface BoardService {
     public PostDetailDto findPostById(Long postId);
 
     public BoardDetailDto findByBoardName(String boardName);
+
+    List<PostListDto> findPostsForClients(Long boardId);
 }
