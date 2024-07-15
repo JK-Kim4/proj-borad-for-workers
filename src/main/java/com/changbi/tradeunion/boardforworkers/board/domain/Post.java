@@ -1,5 +1,6 @@
 package com.changbi.tradeunion.boardforworkers.board.domain;
 
+import com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostSaveDto;
 import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.PostHead;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -88,5 +89,14 @@ public class Post {
         this.appendDate = LocalDateTime.now();
         this.updateDate = LocalDateTime.now();
 
+    }
+
+    public void update(PostSaveDto dto) {
+        this.useYn = dto.isUseYn();
+        this.postHead = PostHead.valueOf(dto.getPostHead());
+        this.postTitle = dto.getPostTitle();
+        this.postContent = dto.getPostContent();
+        this.updateDate = LocalDateTime.now();
+        //TODO attachment file
     }
 }

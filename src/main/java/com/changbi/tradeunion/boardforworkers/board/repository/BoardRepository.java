@@ -4,6 +4,7 @@ import com.changbi.tradeunion.boardforworkers.board.domain.Board;
 import com.changbi.tradeunion.boardforworkers.board.domain.Post;
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostDetailDto;
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostListDto;
+import com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostSaveDto;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
@@ -21,8 +22,14 @@ public class BoardRepository {
         return board.getId();
     }
 
-    public void delete(Board board) {
+    public void delete(Long boardId) {
+        Board board = em.find(Board.class, boardId);
         em.remove(board);
+    }
+
+    public void deletePost(Long postId) {
+        Post post = em.find(Post.class, postId);
+        em.remove(post);
     }
 
     public Board findById(Long boardId) {
@@ -117,5 +124,8 @@ public class BoardRepository {
                 .getSingleResult();
     }
 
-
+    public void postUpdate(PostSaveDto dto) {
+        Post post = em.find(Post.class, dto.getPostId());
+        post.update(dto);
+    }
 }

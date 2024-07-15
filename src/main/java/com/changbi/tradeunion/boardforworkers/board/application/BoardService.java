@@ -12,7 +12,11 @@ public interface BoardService {
 
     public void update(BoardSaveDto dto);
 
+    public void updatePost(PostSaveDto dto);
+
     public void delete(Long boardId);
+
+    public void deletePost(Long postId);
 
     public List<BoardListDto> findBoards();
 

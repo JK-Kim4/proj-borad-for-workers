@@ -31,6 +31,28 @@ let main = {
             main.delete(boardId);
         });
 
+        $("#postUpdateButton").on("click", function (){
+            let data= {};
+            let postId = $("#postId").val();
+
+            data.postId = postId;
+            data.boardId = $("#boardId").val();
+            data.useYn = $("input[name='inputUseYn']:checked").val()
+            data.postTitle = $("#disablePostTitle").val();
+            data.postContent = $("#disablePostContent").val();
+            data.postHead = $("#disablePostHead").val()
+            /*data.attachmentFileName;
+            data.attachmentFilePath;*/
+
+            main.postUpdate(JSON.stringify(data), postId);
+        });
+
+        $("#postDeleteButton").on("click", function (){
+            let postId = $("#postId").val();
+
+            main.deletePost(postId);
+        })
+
         $("#moveBoardInsertPageButton").on("click", function (){
             location.href = "/admin/board/save"
         });
@@ -91,6 +113,27 @@ let main = {
             }
         });
     },
+    postUpdate: function (jsonData, postId){
+        $.ajax({
+            url: "/api/board/post/update/"+postId,
+            method: "POST",
+            data: jsonData,
+            contentType: "application/json; charset=utf-8;",
+            success: function (result){
+                if(RESULT_CODE.SUCCESS_DEFAULT === result.resultCode){
+                    alert(result.resultMessage)
+                    location.reload();
+                }else{
+                    alert(result.resultMessage);
+                }
+            },
+            error: function (x,h,r){
+                console.error(x);
+                alert(RESULT_MESSAGE.FAIL_SYSTEM)
+                location.reload();
+            }
+        });
+    },
     delete: function (boardId){
         $.ajax({
             url: "/api/board/delete/"+boardId,
@@ -108,6 +151,24 @@ let main = {
                 console.error(x);
                 alert(RESULT_MESSAGE.FAIL_SYSTEM)
                 location.reload();
+            }
+        })
+    },
+    deletePost: function (postId){
+        $.ajax({
+            url: "/api/board/post/delete/"+postId,
+            method: "DELETE",
+            success: function (result){
+                if(RESULT_CODE.SUCCESS_DEFAULT === result.resultCode){
+                    alert(result.resultMessage)
+                    location.href = "/admin/board/list";
+                }else{
+                    alert(result.resultMessage);
+                }
+            },
+            error: function (x,h,r){
+                console.error(x)
+                alert(RESULT_MESSAGE.FAIL_SYSTEM);
             }
         })
     },
@@ -245,8 +306,6 @@ let main = {
                     $("#disableUpdateDate").val(dayjs(data.updateDate).format('YYYY.MM.DD. HH:mm:ss'));
                     $("input[name='inputUseYn'][value='"+data.useYn+"']").attr("checked", true);
                 }
-
-                console.log(result);
             },
             error: function (x,h,r){
                 console.error(x)

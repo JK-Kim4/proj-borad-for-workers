@@ -49,6 +49,19 @@ public class BoardController {
                 .build());
     }
 
+    @PostMapping("/post/update/{postId}")
+    public ResponseEntity<ResultDto> postUpdate(
+            @PathVariable(name = "postId") Long postId,
+            @RequestBody PostSaveDto dto){
+
+        boardService.updatePost(dto);
+
+        return ResponseEntity.ok(ResultDto.builder()
+                .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
+                .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
+                .build());
+    }
+
     @DeleteMapping("/delete/{boardId}")
     public ResponseEntity<ResultDto> delete(
             @PathVariable(name = "boardId") Long boardId) {
@@ -56,8 +69,20 @@ public class BoardController {
         boardService.delete(boardId);
 
         return ResponseEntity.ok(ResultDto.builder()
-                .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
-                .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
+                        .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
+                        .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
+                .build());
+    }
+
+    @DeleteMapping("/post/delete/{postId}")
+    public ResponseEntity<ResultDto> deletePost(
+            @PathVariable(name = "postId") Long postId) {
+
+        boardService.deletePost(postId);
+
+        return ResponseEntity.ok(ResultDto.builder()
+                        .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
+                        .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
                 .build());
     }
 

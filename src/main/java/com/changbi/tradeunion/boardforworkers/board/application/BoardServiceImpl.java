@@ -46,9 +46,18 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
+    public void updatePost(PostSaveDto dto) {
+        boardRepository.postUpdate(dto);
+    }
+
+    @Override
     public void delete(Long boardId) {
-        Board board = boardRepository.findById(boardId);
-        boardRepository.delete(board);
+        boardRepository.delete(boardId);
+    }
+
+    @Override
+    public void deletePost(Long postId) {
+        boardRepository.deletePost(postId);
     }
 
     @Override

@@ -10,6 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PostSaveDto {
 
+    private Long postId;
     private Long boardId;
     private Long memberId;
     private boolean useYn;
