@@ -27,3 +27,4 @@ server:
     include-message: always
     include-binding-errors: always
     include-stacktrace: always
+

@@ -210,7 +210,7 @@ public class BoardServiceImplTest {
                                             .build();
 
                 Long postId = boardService.savePost(saveDto);
-                PostDetailDto detailDto = boardService.findPostById(postId);
+                PostDetailDto detailDto = boardService.findPostById(postId, null);
                 //then
 
                 Assertions.assertEquals(TEST_POST_TITLE, detailDto.getPostTitle());
