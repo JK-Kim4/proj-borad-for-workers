@@ -7,41 +7,44 @@
         </div>
     </div>
 
+    <input type="hidden" id="postId" value="{{postId}}">
+    <input type="hidden" id="boardId" value="">
+    <input type="hidden" id="memberId" value="">
+
     <div class="row">
         <div class="d-flex flex-row justify-content-start col-10">
-            <h5 >
-                <span class="badge badge-pill bg-primary">말머리</span> 제목
-            </h5>
+            <h5 id="postTitle"></h5>
         </div>
         <div class="d-flex flex-row justify-content-end col-auto">
-            😄<label for="firstName" class="form-label text-center">작성자(닉네임)</label>
+            😄<label for="firstName" class="form-label text-center" id="postAuthor"></label>
         </div>
     </div>
 
+
     <hr class="my-4">
     <div class="row d-flex justify-content-center">
-
+        <div class="row">
+            <div class="d-flex flex-row justify-content-end col-12" style="color:gray;" id="readCount">
+                조회수: 0
+            </div>
+        </div>
         <div class="row mb-4">
-            <div class="col-12">
-                <label for="floatingTextarea" class="mb-1">본문</label>
+            <div class="col-12" id="postContent">
             </div>
-            <div class="col-12" id="postContentDiv">
-            </div>
-
             <div class="d-flex flex-row justify-content-center col-12">
-                <button class="btn btn-outline-primary ">추천</button>
+                <button class="btn btn-outline-primary" id="recommendButton">추천</button>
                 &nbsp;&nbsp;
-                <button class="btn btn-outline-danger">신고</button>
+                <button class="btn btn-outline-danger" id="reportButton">신고</button>
             </div>
         </div>
 
         <hr class="my-4">
 
-        <div class="row mb-3">
+        <!--<div class="row mb-3">
             <div class="col-12">
                 댓글 영역
             </div>
-        </div>
+        </div>-->
 
         <div class="row d-flex justify-content-end">
             <div class="col-auto">
@@ -59,7 +62,8 @@
     <script src="/js/board.js"></script>
     <script type="application/javascript">
         $(document).ready(function (){
-
+            let postId = $("#postId").val();
+            main.findPostById(postId);
         });
     </script>
 </main>

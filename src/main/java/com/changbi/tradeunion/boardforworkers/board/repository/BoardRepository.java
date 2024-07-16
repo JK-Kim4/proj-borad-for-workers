@@ -128,4 +128,15 @@ public class BoardRepository {
         Post post = em.find(Post.class, dto.getPostId());
         post.update(dto);
     }
+
+    public void updatePostReadCount(Long postId) {
+        Post post = em.find(Post.class, postId);
+        post.updateReadCount();
+    }
+
+    public int updatePostRecommendCount(Long postId) {
+        Post post = em.find(Post.class, postId);
+        post.updateRecommendCount();
+        return post.getRecommendCount();
+    }
 }

@@ -99,4 +99,12 @@ public class Post {
         this.updateDate = LocalDateTime.now();
         //TODO attachment file
     }
+
+    public void updateReadCount() {
+        this.readCount += 1;
+    }
+
+    public void updateRecommendCount() {
+        this.recommendCount += 1;
+    }
 }

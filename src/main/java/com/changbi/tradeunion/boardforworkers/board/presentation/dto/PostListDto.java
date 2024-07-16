@@ -35,7 +35,7 @@ public class PostListDto {
         this.boardId = post.getBoardId();
         this.memberId = post.getMemberId();
         this.useYn = post.isUseYn();
-        this.postHead = post.getPostHead().getValue();
+        this.postHead = post.getPostHead().name();
         this.postTitle = post.getPostTitle();
         this.readCount = post.getReadCount();
         this.recommendCount = post.getRecommendCount();
@@ -54,7 +54,7 @@ public class PostListDto {
         this.memberRealName = memberRealName;
         this.useYn = useYn;
         if(!Objects.isNull(postHead)){
-            this.postHead = postHead.getValue();
+            this.postHead = postHead.name();
         }
         this.postTitle = postTitle;
         this.readCount = readCount;

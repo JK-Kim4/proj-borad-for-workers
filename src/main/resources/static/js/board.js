@@ -20,6 +20,11 @@ let main = {
             main.savePost(JSON.stringify(data), boardId);
         });
 
+        $("#recommendButton").on("click", function (){
+            let postId = $("#postId").val();
+            main.updatePostRecommendCount(postId);
+        });
+
         $(document).on("click", ".post-list-content", function (){
             let postId = $(this).data("post-id");
             location.href = "/board/post/detail/"+postId;
@@ -70,6 +75,36 @@ let main = {
         });
         return boardDetail;
     },
+    findPostById: function (postId){
+        $.ajax({
+            url: "/api/board/post/"+postId,
+            method: "GET",
+            data: {
+                type: "client"
+            },
+            contentType: "application/json; charset=utf-8",
+            success: function (result){
+                if(RESULT_CODE.SUCCESS_DEFAULT === result.resultCode){
+                    let data = result.data;
+
+                    $("#postTitle").html(main.getPostHeadBadge(data.postHead) +" "+ data.postTitle);
+                    $("#postAuthor").html(data.memberNickName + " ("+ data.memberRealName + ")");
+                    $("#postContent").html(data.postContent);
+
+                    $("#readCount").html("조회수: "+data.readCount);
+                    $("#recommendButton").html("추천 " + data.recommendCount);
+
+                    $("#boardId").val(data.boardId)
+                    $("#memberId").val(data.memberId)
+                    console.log(data);
+                }
+            },
+            error: function (x,h,r){
+                console.error(x)
+                alert(RESULT_MESSAGE.FAIL_SYSTEM);
+            }
+        });
+    },
     findBoardPostsForClients: function (boardId){
         $.ajax({
             url: "/api/board/client/"+boardId+"/posts",
@@ -81,9 +116,10 @@ let main = {
                     if(result.data.length > 0){
                         let data = result.data;
                         $.each(data, function (index, element){
+                            let postHeadBadge = main.getPostHeadBadge(element.postHead);
                             html += "<tr class='post-list-content' data-post-id='"+element.postId+"'>" +
                                         "<td class='text-center'>"+element.postId+"</td>" +
-                                        "<td class='text-center'>"+element.postTitle+"</td>" +
+                                        "<td class='text-start'>"+postHeadBadge+element.postTitle+"</td>" +
                                         "<td class='text-center'>"+element.memberRealName+"</td>" +
                                         "<td class='text-center'>"+dayjs(element.appendDate).format('YYYY.MM.DD')+"</td>" +
                                         "<td class='text-center'>"+element.recommendCount+"</td>" +
@@ -101,6 +137,42 @@ let main = {
                 alert(RESULT_MESSAGE.FAIL_SYSTEM);
             }
         })
+    },
+    updatePostRecommendCount: function (postId){
+        $.ajax({
+            url: "/api/board/update/recommend-count/"+postId,
+            method: "GET",
+            contentType: "application/json; charset=utd-8;",
+            success: function (result){
+                if(RESULT_CODE.SUCCESS_DEFAULT === result.resultCode){
+                    alert(RESULT_MESSAGE.SUCCESS_RECOMMEND_RESULT);
+                    $("#recommendButton").html("추천 "+result.data);
+                }else{
+                    alert(result.resultMessage);
+                    return;
+                }
+            },
+            error: function (x,h,r){
+                console.error(x);
+                alert(RESULT_MESSAGE.FAIL_SYSTEM);
+                return;
+            }
+        })
+    },
+    getPostHeadBadge: function (postHead){
+        let badge = "";
+        switch (postHead){
+            case 'GENERAL' :
+                badge = "<span class='badge badge-pill bg-primary me-2'> 일반 </span>";
+                break;
+            case 'NOTICE' :
+                badge = "<span class='badge badge-pill badge-secondary me-2'> 공지 </span>";
+                break;
+            case 'NEWS' :
+                badge = "<span class='badge badge-pill warning me-2'> 뉴스 </span>";
+                break;
+        }
+        return badge;
     }
 }
 

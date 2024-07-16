@@ -2,6 +2,8 @@ package com.changbi.tradeunion.boardforworkers.common;
 
 public class CommonValues {
 
+    public static final String SERVICE_TYPE_CLIENT = "client";
+
     public static final String PROCESS_TYPE_ACCEPT = "ACCEPT";
     public static final String PROCESS_TYPE_DECLINE = "DECLINE";
 

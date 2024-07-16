@@ -5,6 +5,7 @@ import com.changbi.tradeunion.boardforworkers.board.domain.Post;
 import com.changbi.tradeunion.boardforworkers.board.exception.BoardDuplicationException;
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.*;
 import com.changbi.tradeunion.boardforworkers.board.repository.BoardRepository;
+import com.changbi.tradeunion.boardforworkers.common.CommonValues;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Transactional(readOnly = false)
@@ -86,7 +88,12 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public PostDetailDto findPostById(Long postId) {
+    public PostDetailDto findPostById(Long postId, String type) {
+
+        if(!Objects.isNull(type) && CommonValues.SERVICE_TYPE_CLIENT.equals(type)){
+            this.updatePostReadCount(postId);
+        }
+
         return boardRepository.findPostById(postId);
     }
 
@@ -95,8 +102,19 @@ public class BoardServiceImpl implements BoardService{
         return BoardDetailDto.builder().board(boardRepository.findByBoardName(boardName)).build();
     }
 
+    @Override
+    public int updatePostRecommendCount(Long postId) {
+        return boardRepository.updatePostRecommendCount(postId);
+    }
+
     /*private method*/
     private boolean isAlreadyExistBoardName(String boardName) {
         return boardRepository.isAlreadyExistBoardName(boardName);
     }
+
+    private void updatePostReadCount(Long postId) {
+        boardRepository.updatePostReadCount(postId);
+    }
+
+
 }

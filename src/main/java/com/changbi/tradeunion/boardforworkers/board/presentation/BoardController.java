@@ -122,12 +122,13 @@ public class BoardController {
 
     @GetMapping("/post/{postId}")
     public ResponseEntity<ResultDto> findPostDetail(
-            @PathVariable(name = "postId") Long postId){
+            @PathVariable(name = "postId") Long postId,
+            @RequestParam(name = "type", required = false) String type){
 
         return ResponseEntity.ok(ResultDto.builder()
                         .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
                         .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
-                        .data(boardService.findPostById(postId))
+                        .data(boardService.findPostById(postId, type))
                 .build());
     }
 
@@ -139,6 +140,19 @@ public class BoardController {
                 .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
                 .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
                 .data(boardService.findPostsForClients(boardId))
+                .build());
+    }
+
+    @GetMapping("/update/recommend-count/{postId}")
+    public ResponseEntity<ResultDto> updateRecommendCount(
+            @PathVariable(name = "postId") Long postId){
+
+
+
+        return ResponseEntity.ok(ResultDto.builder()
+                .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
+                .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
+                        .data(boardService.updatePostRecommendCount(postId))
                 .build());
     }
 
