@@ -4,14 +4,22 @@ let main = {
         $("#requestRegistrationButton").on("click", function (){
             //TODO data validation
             let data = {}
-            data.memberEmail = $("#inputMail").val();
-            data.memberRealName = $("#inputRealName").val();
-            data.memberNickName = $("#inputNickName").val();
-            data.memberPassword = $("#inputPassword").val();
-            data.company = $("#inputCompany").val();
-            data.department = $("#inputDepartment").val();
+            let emailValidationResult = $("#emailValidationResult").val();
+            let passwordValidationResult = $("#passwordValidationResult").val();
 
-            main.save(JSON.stringify(data));
+            if(emailValidationResult && passwordValidationResult){
+                data.memberEmail = $("#inputMail").val();
+                data.memberRealName = $("#inputRealName").val();
+                data.memberNickName = $("#inputNickName").val();
+                data.memberPassword = $("#inputPassword").val();
+                data.company = $("#inputCompany").val();
+                data.department = $("#inputDepartment").val();
+
+                main.save(JSON.stringify(data));
+            }else{
+                alert(RESULT_MESSAGE.FAIL_VALIDATION)
+                return;
+            }
         });
 
         //이메일 인증번호 발송 버튼
@@ -46,6 +54,38 @@ let main = {
             let email = $("#inputMail").val();
             main.sendAuthNumber(email);
         });
+
+        $("#checkPassword").on("focus", function (){
+            let inputPassword = $("#inputPassword").val();
+
+            if(!main.isValidPassword(inputPassword)){
+                alert("유효하지 않은 비밀번호입니다. (최소 8자 이상 / 최소 하나의 문자, 하나의 숫자 반드시 포함)");
+                $("#passwordValidationResult").val(false);
+                $("#inputPassword").focus();
+                return
+            }
+
+            $("#checkPassword").attr("disabled", false);
+        });
+
+        $("#checkPassword").on("blur", function (){
+            let validResult = $("#passwordValidationResult");
+            let errorMessage = $("#passwordErrorMessage");
+            validResult.val(false);
+            let inputPassword = $("#inputPassword").val();
+            let checkPassword = $("#checkPassword").val();
+
+            if(inputPassword === checkPassword){
+                errorMessage.empty();
+                errorMessage.hide();
+                validResult.val(true);
+                return;
+            }else{
+                errorMessage.text("입력하신 비밀번호가 일치하지 않습니다.");
+                errorMessage.show();
+                return;
+            }
+        })
     },
     save: function (jsonData){
 
@@ -68,6 +108,12 @@ let main = {
                 alert(RESULT_MESSAGE.FAIL_SYSTEM);
             }
         });
+    },
+    isValidPassword: function (password){
+        const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,25}$/;
+        
+        return passwordRegex.test(password);
+
     },
     isChangbiMember: function (email){
         const emailRegex = /^[a-zA-Z0-9._-]+@changbi.com$/i;

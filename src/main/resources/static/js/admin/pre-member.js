@@ -61,7 +61,7 @@ let main = {
            contentType: "application/json; charset=utf-8",
            success: function (result){
                if(RESULT_CODE.SUCCESS_DEFAULT === result.resultCode){
-                   alert(result.resultCode);
+                   alert(result.resultMessage);
                    location.href = "/admin/pre-member/list";
                } else {
                    alert(result.resultMessage);

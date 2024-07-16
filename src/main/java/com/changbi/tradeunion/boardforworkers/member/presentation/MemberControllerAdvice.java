@@ -19,7 +19,7 @@ public class MemberControllerAdvice {
 
         return ResponseEntity.ok(ResultDto.builder()
                         .resultCode(CommonValues.RESULT_CODE_FAIL_MEMBER_LOGIN_VALIDATION)
-                        .resultMessage(e.getMessage())
+                        .resultMessage(e.getErrorMessage())
                 .build());
     }
 
@@ -28,7 +28,7 @@ public class MemberControllerAdvice {
 
         return ResponseEntity.ok( ResultDto.builder()
                         .resultCode(CommonValues.RESULT_CODE_FAIL_MEMBER_DUPLICATION)
-                        .resultMessage(e.getMessage())
+                        .resultMessage(e.getErrorMessage())
                         .build());
     }
 
