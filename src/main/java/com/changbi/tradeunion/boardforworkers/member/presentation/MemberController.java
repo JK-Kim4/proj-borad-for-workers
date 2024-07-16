@@ -16,6 +16,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+
 @RestController
 @RequestMapping("/api/member")
 @RequiredArgsConstructor
@@ -58,7 +60,6 @@ public class MemberController {
 
         return ResponseEntity.ok(resultDto);
     }
-
 
     //회원 전체 목록 조회
     @GetMapping("/members")
@@ -116,6 +117,16 @@ public class MemberController {
                 .build());
     }
 
+    @PostMapping("/send-auth")
+    public ResponseEntity<ResultDto> sendAuth(
+            @RequestBody HashMap<String, String > requestParam){
+
+        memberService.sendAuthNumber(requestParam);
+        return ResponseEntity.ok(ResultDto.builder()
+                .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
+                .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
+                .build());
+    }
 
     /*
     * Pre Member Entity 관련

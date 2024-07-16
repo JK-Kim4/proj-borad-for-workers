@@ -45,9 +45,8 @@
 <div class="container col-6">
     <main>
         <div class="py-5 text-center">
-            <img class="d-block mx-auto mb-4" alt="" width="72" height="57">
+            <img class="d-block mx-auto mb-4" src="/image/marx.png" alt="" width="72" height="57">
             <h2>계정 생성하기</h2>
-            <p class="lead">창비그룹 노동조합 게시판 회원 계정 생성하기</p>
             <p class="lead">계정은 창비 그룹웨어 메일 주소(@changbi.com)로만 가입이 가능합니다.</p>
         </div>
 
@@ -68,20 +67,22 @@
                                 <button class="btn btn-success" id="emailRequestButton"> 인증 번호 발송 </button>
                             </div>
                         </div>
-                        <!--<div class="row mt-1">
-                            <div class="col-7">
-                                <input type="text" class="form-control" placeholder="발송된 인증번호 6자리를 입력해주세요.">
+                        <div class="row mt-1" id="authCheckDiv" style="display: none;">
+                            <div class="col-6">
+                                <input type="text" class="form-control" id="authNumberChecker" placeholder="발송된 인증번호 4자리를 입력해주세요.">
+                                <input type="hidden" id="emailValidationResult" >
                             </div>
-                            <div class="col-3">
-                                <span class="form-control">잔여 시간</span>
+                            <div class="col-auto">
+                                <button class="btn btn-outline-success" id="authNumberCheckButton"> 확인 </button>
+                                <button class="btn btn-outline-warning" id="reGenerateButton"> 재발송 </button>
                             </div>
-                        </div>-->
+                        </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-6">
                             <label for="username" class="form-label">비밀번호</label>
                             <span style="color:red;">에러 메세지</span>
-                            <input type="password" class="form-control" id="inputPassword" placeholder="비밀번호 입 (영 대소문자, 숫자, 특수문자 포함 8 ~ 20자)" required>
+                            <input type="password" class="form-control" id="inputPassword" placeholder="비밀번호 입력 (영 대소문자, 숫자, 특수문자 포함 8 ~ 20자)" required>
                         </div>
 
                         <div class="col-6">

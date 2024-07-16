@@ -7,6 +7,7 @@ import com.changbi.tradeunion.boardforworkers.member.domain.PreMember;
 import com.changbi.tradeunion.boardforworkers.member.presentation.dto.*;
 import jakarta.servlet.http.HttpSession;
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface MemberService {
@@ -38,4 +39,6 @@ public interface MemberService {
     void memberLogin(LoginInformation loginInformation, HttpSession session);
 
     void memberLogout(HttpSession session);
+
+    void sendAuthNumber(HashMap authNumber);
 }

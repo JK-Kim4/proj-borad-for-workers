@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -147,6 +148,11 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Member findByMemberEmail(String findByMemberEmail) {
         return memberRepository.findByMemberEmail(findByMemberEmail);
+    }
+
+    @Override
+    public void sendAuthNumber(HashMap authNumber) {
+        System.out.println(authNumber.toString());
     }
 
     @Override
