@@ -1,14 +1,11 @@
 package com.changbi.tradeunion.boardforworkers.member.presentation;
 
 import com.changbi.tradeunion.boardforworkers.common.CommonValues;
-import com.changbi.tradeunion.boardforworkers.member.presentation.dto.MemberSaveDto;
 import com.changbi.tradeunion.boardforworkers.common.dto.Pagination;
 import com.changbi.tradeunion.boardforworkers.common.dto.ResultDto;
 import com.changbi.tradeunion.boardforworkers.member.application.MemberServiceImpl;
-import com.changbi.tradeunion.boardforworkers.member.presentation.dto.LoginInformation;
+import com.changbi.tradeunion.boardforworkers.member.presentation.dto.MemberSaveDto;
 import com.changbi.tradeunion.boardforworkers.member.presentation.dto.PreMemberDto;
-import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -96,7 +93,7 @@ public class MemberController {
         return ResponseEntity.ok(resultDto);
     }
 
-    @PostMapping("/login")
+    /*@PostMapping("/login")
     public ResponseEntity<ResultDto> login(
             @Valid @RequestBody LoginInformation loginInformation,
             HttpSession session){
@@ -106,16 +103,16 @@ public class MemberController {
                     .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
                     .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
                 .build());
-    }
+    }*/
 
-    @GetMapping("/logout")
+    /*@GetMapping("/logout")
     public ResponseEntity<ResultDto> login(HttpSession session){
         memberService.memberLogout(session);
         return ResponseEntity.ok(ResultDto.builder()
                     .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
                     .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
                 .build());
-    }
+    }*/
 
     @PostMapping("/send-auth")
     public ResponseEntity<ResultDto> sendAuth(

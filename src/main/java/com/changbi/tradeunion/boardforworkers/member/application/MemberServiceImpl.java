@@ -1,6 +1,7 @@
 package com.changbi.tradeunion.boardforworkers.member.application;
 
 import com.changbi.tradeunion.boardforworkers.common.CommonValues;
+import com.changbi.tradeunion.boardforworkers.member.domain.MemberDetail;
 import com.changbi.tradeunion.boardforworkers.member.presentation.dto.MemberSaveDto;
 import com.changbi.tradeunion.boardforworkers.common.dto.Pagination;
 import com.changbi.tradeunion.boardforworkers.member.domain.Member;
@@ -17,6 +18,9 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,11 +32,28 @@ import java.util.Objects;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class MemberServiceImpl implements MemberService {
+public class MemberServiceImpl implements MemberService, UserDetailsService {
 
     private final Logger logger = LoggerFactory.getLogger(MemberServiceImpl.class);
     private final HttpServletRequest request;
     private final MemberRepository memberRepository;
+
+    @Override
+    public UserDetails loadUserByUsername(String memberEmail) throws UsernameNotFoundException {
+
+        try {
+            Member member = memberRepository.findByMemberEmail(memberEmail);
+            SessionMember sessionMember = SessionMember.builder().member(member).build();
+
+            HttpSession session = request.getSession();
+            session.setAttribute("member", sessionMember);
+
+            return new MemberDetail(member);
+        }catch (NoResultException e){
+            logger.error("[MEMBER LOGIN FAIL]", e);
+            throw new  UsernameNotFoundException("회원이 존재하지 않습니다.");
+        }
+    }
 
     @Override
     public Long save(MemberSaveDto memberSaveDto) {

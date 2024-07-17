@@ -44,28 +44,30 @@
 <body class="text-center">
 
 <main class="form-signin">
-    <img class="mb-4" src="" alt="" width="72" height="57">
-    <h1 class="h3 mb-3 fw-normal">로그인</h1>
+    <form action="/login/auth" method="POST" id="loginForm">
+        <img class="d-block mx-auto mb-4" src="/image/marx.png" alt="" width="72" height="57">
+        <h1 class="h3 mb-3 fw-normal">로그인</h1>
 
-    <div class="form-floating">
-        <input type="email" class="form-control" id="inputEmail" placeholder="name@example.com">
-        <label for="floatingInput">Email address</label>
-    </div>
-    <div class="form-floating">
-        <input type="password" class="form-control" id="inputPassword" placeholder="Password">
-        <label for="floatingPassword">Password</label>
-    </div>
-    <div class="form-floating">
-        <b id="spanErrorMessage" style="color:red; display: none;">  </b>
-    </div>
+        <div class="form-floating">
+            <input type="email" class="form-control" name="memberEmail" id="inputEmail" placeholder="name@example.com">
+            <label for="floatingInput">Email address</label>
+        </div>
+        <div class="form-floating">
+            <input type="password" class="form-control" name="memberPassword" id="inputPassword" placeholder="Password">
+            <label for="floatingPassword">Password</label>
+        </div>
+        {{#error}}
+            <b id="spanErrorMessage" style="color:red;">{{errorMessage}}</b>
+        {{/error}}
 
-    <div class="checkbox mb-3">
-        <!--<label>
-            <input type="checkbox" value="remember-me"> Remember me
-        </label>-->
-    </div>
-    <button class="w-100 btn btn-lg btn-primary" id="signinButton">Sign in</button>
-    <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
+        <div class="checkbox mb-3">
+            <!--<label>
+                <input type="checkbox" value="remember-me"> Remember me
+            </label>-->
+        </div>
+        <button class="w-100 btn btn-lg btn-primary" type="submit">로그인</button>
+        <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
+    </form>
 </main>
 
 
@@ -73,31 +75,11 @@
 <script src="/js/commonValues.js"></script>
 <script type="application/javascript">
     $(document).ready(function (){
-        $("#signinButton").on("click", function (){
-            $("#spanErrorMessage").empty().hide();
-            //TODO login data validation
-            let data = {};
-            data.memberEmail = $("#inputEmail").val();
-            data.memberPassword = $("#inputPassword").val();
-
-            $.ajax({
-                url: "/api/member/login",
-                method: "POST",
-                contentType: "application/json; charset=utf-8;",
-                data: JSON.stringify(data),
-                success: function (result){
-                    if (RESULT_CODE.SUCCESS_DEFAULT === result.resultCode){
-                        location.href = "/"
-                    }else{
-                        $("#spanErrorMessage").text(result.resultMessage).show()
-                    }
-                },
-                error: function (x,h,r){
-                    console.error(x);
-                    $("#spanErrorMessage").text(RESULT_MESSAGE.FAIL_SYSTEM).show()
-                }
-            })
-        })
+        $("#loginForm").keypress(function (e){
+            if(e.keyCode === 13){
+                $("#loginForm").submit();
+            }
+        });
     });
 </script>
 </body>

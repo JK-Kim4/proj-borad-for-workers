@@ -6,6 +6,7 @@ import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.Role;
 import com.changbi.tradeunion.boardforworkers.member.presentation.dto.MemberSaveDto;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDateTime;
 
@@ -70,6 +71,8 @@ public class Member {
             String memberNickName,String memberRealName,
             String company, String department,
             String role, Long appendAdminId){
+
+
         this.memberEmail = memberEmail;
         this.memberRealName = memberRealName;
         this.memberPassword = memberPassword;
@@ -98,8 +101,8 @@ public class Member {
 
     //회원 패스워드 수정
     public void updatePassword(String password){
-        //TODO 비밀번호 암호화 적용
-        this.memberPassword = password;
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        this.memberPassword = passwordEncoder.encode(password);
     }
 
     /*private method

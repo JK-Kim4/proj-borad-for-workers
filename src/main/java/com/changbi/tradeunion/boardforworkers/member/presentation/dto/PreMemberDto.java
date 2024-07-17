@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDateTime;
 
@@ -35,11 +36,13 @@ public class PreMemberDto {
 
 
     public PreMember toPreEntity(){
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
         return PreMember.builder()
                 .memberEmail(this.memberEmail)
                 .company(this.company)
                 .memberRealName(this.memberRealName)
-                .memberPassword(this.memberPassword)
+                .memberPassword(passwordEncoder.encode(this.memberPassword))
                 .memberNickName(this.memberNickName)
                 .department(this.department)
                 .build();
