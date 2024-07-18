@@ -34,6 +34,15 @@ public class Board {
     private boolean attachmentAllowYn;
 
     @Column
+    private Integer depth;
+
+    @Column
+    private Integer upperBoardId;
+
+    @Column
+    private String boardPath;
+
+    @Column
     private LocalDateTime appendDate;
 
     @Column

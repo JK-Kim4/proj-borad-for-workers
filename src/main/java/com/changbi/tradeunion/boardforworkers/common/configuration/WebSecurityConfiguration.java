@@ -37,7 +37,7 @@ public class WebSecurityConfiguration {
                                     .requestMatchers("/",
                                             "/css/**", "/js/**", "/image/**", "/member/**",
                                             "/api/member/send-auth", "/api/member/pre-member/save").permitAll()
-                                    .requestMatchers("/admin/**").hasRole("SUPER_ADMIN")
+                                    .requestMatchers("/admin/**").hasAnyRole("SUPER_ADMIN", "ADMIN")
                                     .anyRequest().authenticated())
                 .formLogin(
                         form -> form

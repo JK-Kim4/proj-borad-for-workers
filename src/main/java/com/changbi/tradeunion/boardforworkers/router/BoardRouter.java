@@ -22,6 +22,17 @@ public class BoardRouter {
         return "contents/post/list";
     }
 
+    /*사내 게시판 || 부서 게시판 이동*/
+    @GetMapping("/private/{type}/{boardId}/post/list")
+    public String privateListPage(
+            @PathVariable(name = "boardId") Long boardId,
+            @PathVariable(name = "type") String  type,
+            Model model){
+
+        model.addAttribute("boardId", boardId);
+        return "contents/post/list";
+    }
+
     @GetMapping("/{boardId}/post/save")
     public String postSavePage(
             @PathVariable(name = "boardId") Long boardId,
@@ -44,4 +55,6 @@ public class BoardRouter {
         model.addAttribute("postId", postId);
         return "contents/post/detail";
     }
+
+
 }

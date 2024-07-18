@@ -42,7 +42,7 @@ public class BoardRepository {
     }
 
     public List<Board> findBoards(){
-        String query = "select b from Board b";
+        String query = "select b from Board b where b.useYn = TRUE AND b.depth = 1";
 
         return em.createQuery(query, Board.class)
                 .getResultList();
@@ -138,5 +138,17 @@ public class BoardRepository {
         Post post = em.find(Post.class, postId);
         post.updateRecommendCount();
         return post.getRecommendCount();
+    }
+
+    public List<Board> findChildBoardList(Long boardId) {
+        String query =  "select b " +
+                        "From Board b " +
+                        "where b.depth = 2 " +
+                        "and b.upperBoardId = :boardId " +
+                        "order by b.id asc";
+
+        return em.createQuery(query, Board.class)
+                .setParameter("boardId", boardId)
+                .getResultList();
     }
 }

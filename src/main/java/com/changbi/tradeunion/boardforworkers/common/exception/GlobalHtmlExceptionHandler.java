@@ -1,5 +1,6 @@
 package com.changbi.tradeunion.boardforworkers.common.exception;
 
+import com.changbi.tradeunion.boardforworkers.board.exception.PrivateBoardAuthorizationException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,5 +25,16 @@ public class GlobalHtmlExceptionHandler {
         logger.error("{}", ex.getStackTrace());
 
         return "error/401";
+    }
+
+    @ExceptionHandler(value = PrivateBoardAuthorizationException.class)
+    protected String  handlePrivateBoardAuthorizationException(
+            final HttpServletRequest request,
+            final PrivateBoardAuthorizationException ex) throws IOException {
+
+        logger.error("[ERROR-]\t{} \t{} \t{}", request.getMethod(), request.getRequestURI(), ex.getMessage());
+        logger.error("[ERROR-REQUEST BOARD ID] \t{}", ex.getBoardId());
+
+        return "error/403";
     }
 }

@@ -2,6 +2,7 @@ package com.changbi.tradeunion.boardforworkers.board.application;
 
 import com.changbi.tradeunion.boardforworkers.board.exception.BoardDuplicationException;
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.*;
+import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.Company;
 import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.PostHead;
 import com.changbi.tradeunion.boardforworkers.member.application.MemberServiceImpl;
 import com.changbi.tradeunion.boardforworkers.member.presentation.dto.LoginInformation;
@@ -10,11 +11,13 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @SpringBootTest
+@ActiveProfiles("loc")
 public class BoardServiceImplTest {
 
     @Autowired
@@ -26,6 +29,15 @@ public class BoardServiceImplTest {
     final String BOARD_NAME_1 = "board1";
     final String BOARD_NAME_2 = "board2";
     final String BOARD_NAME_3 = "board3";
+
+    @Test
+    public void enum_test(){
+        Company[] com = Company.values();
+
+        for (Company c: com){
+            if (c.getValue().equals("창비")) System.out.println(c);
+        }
+    }
 
     @Nested
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)

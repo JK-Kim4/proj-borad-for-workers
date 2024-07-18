@@ -64,12 +64,22 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public List<BoardListDto> findBoards() {
-        return boardRepository.findBoards().stream()
+
+        List<BoardListDto> boardListDtoList = boardRepository.findBoards().stream()
                 .map(board -> BoardListDto
-                                .builder()
-                                    .board(board)
-                                .build())
+                        .builder()
+                        .board(board)
+                        .build())
                 .toList();
+
+        for(BoardListDto boardListDto : boardListDtoList){
+            List<Board> childBoardList = boardRepository.findChildBoardList(boardListDto.getBoardId());
+            if(childBoardList != null && !childBoardList.isEmpty()){
+                boardListDto.setChildBoardList(childBoardList.stream().map(board -> BoardListDto.builder().board(board).build()).toList());
+            }
+        }
+
+        return boardListDtoList;
     }
 
     @Override
@@ -90,7 +100,7 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public PostDetailDto findPostById(Long postId, String type) {
 
-        if(!Objects.isNull(type) && CommonValues.SERVICE_TYPE_CLIENT.equals(type)){
+        if(!Objects.isNull(type) && CommonValues.SERVICE_TYPE_CLIENT.equals(type.toUpperCase())){
             this.updatePostReadCount(postId);
         }
 
