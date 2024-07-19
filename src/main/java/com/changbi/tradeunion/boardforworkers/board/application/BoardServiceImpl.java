@@ -75,7 +75,11 @@ public class BoardServiceImpl implements BoardService{
         for(BoardListDto boardListDto : boardListDtoList){
             List<Board> childBoardList = boardRepository.findChildBoardList(boardListDto.getBoardId());
             if(childBoardList != null && !childBoardList.isEmpty()){
-                boardListDto.setChildBoardList(childBoardList.stream().map(board -> BoardListDto.builder().board(board).build()).toList());
+                boardListDto.setChildBoardList(childBoardList.stream()
+                        .map(board -> BoardListDto.builder()
+                                .board(board)
+                                .build())
+                        .toList());
             }
         }
 
@@ -94,7 +98,23 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public BoardDetailDto findById(Long boardId) {
-        return BoardDetailDto.builder().board(boardRepository.findById(boardId)).build();
+        BoardDetailDto boardDetailDto = BoardDetailDto.builder().board(boardRepository.findById(boardId)).build();
+
+        if(boardDetailDto.getDepth() > 1){
+            BoardDetailDto upperBoardDto = BoardDetailDto.builder().board(boardRepository.findParentBoard(boardDetailDto.getUpperBoardId())).build();
+            boardDetailDto.setParentBoard(upperBoardDto);
+        }
+
+        if(boardDetailDto.getDepth() == 1){
+            List<Board> childBoardList = boardRepository.findChildBoardList(boardId);
+            boardDetailDto.setChildBoardList(childBoardList.stream()
+                    .map(board -> BoardDetailDto.builder()
+                            .board(board)
+                            .build())
+                    .toList());
+        }
+
+        return boardDetailDto;
     }
 
     @Override

@@ -4,8 +4,8 @@ import com.changbi.tradeunion.boardforworkers.board.application.BoardService;
 import com.changbi.tradeunion.boardforworkers.board.exception.PrivateBoardAuthorizationException;
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.BoardDetailDto;
 import com.changbi.tradeunion.boardforworkers.common.CommonValues;
-import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.Company;
-import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.Department;
+import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.Role;
+import com.changbi.tradeunion.boardforworkers.common.utility.EnumUtility;
 import com.changbi.tradeunion.boardforworkers.member.presentation.dto.SessionMember;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -33,78 +33,40 @@ public class PrivateBoardAccessInterceptor implements HandlerInterceptor {
         HttpSession session = request.getSession();
         SessionMember member = (SessionMember) session.getAttribute("member");
 
-        String boardType = this.extractPrivateBoardType(request);
-        Long boardId = this.extractPrivateBoardId(request);
+        if (member.getRole().equals(Role.ADMIN.name()) || member.getRole().equals(Role.SUPER_ADMIN.name())){
+            return true;
+        }
 
-        if(CommonValues.BOARD_TYPE_COMPANY.equals(boardType)) result = this.companyBoardSessionCheck(member.getCompany(), boardId);
+        String boardType = EnumUtility.extractPrivateBoardType(request);
+        Long boardId = EnumUtility.extractPrivateBoardId(request);
 
-        if(CommonValues.BOARD_TYPE_DEPARTMENT.equals(boardType)) result = this.departmentBoardSessionCheck(member.getDepartment(), boardId);
+        BoardDetailDto detailDto = boardService.findById(boardId);
+
+        if(CommonValues.BOARD_TYPE_COMPANY.equals(boardType)) result = EnumUtility.companyBoardSessionCheck(member.getCompany(), detailDto);
+
+        if(CommonValues.BOARD_TYPE_DEPARTMENT.equals(boardType)) result = EnumUtility.departmentBoardSessionCheck(member.getDepartment(), detailDto);
 
         if(result){
             return result;
         }else{
             throw new PrivateBoardAuthorizationException(CommonValues.RESULT_MESSAGE_FAIL_BOARD_AUTHORIZATION, boardId);
         }
-
     }
 
-    private Long extractPrivateBoardId(HttpServletRequest request) {
-        String []requestUri = request.getRequestURI().trim().split("/");
-        Long boardId = Long.valueOf(requestUri[4]);
 
-        return boardId;
+    private boolean validatePostListPageAuthorization(
+            HttpServletRequest request,
+            SessionMember member){
+
+        return false;
     }
 
-    private String extractPrivateBoardType(HttpServletRequest request){
-        String []requestUri = request.getRequestURI().trim().split("/");
-        String boardType = requestUri[3].toUpperCase();
+    private boolean validatePostSavePageAuthorization(
+            HttpServletRequest request,
+            SessionMember member){
 
-        logger.info("[PrivateBoardAccessInterceptor] REQUEST BOARD TYPE = {}", boardType);
-
-        return boardType;
+        return false;
     }
 
-    private String parseBoardIdToCompany(Long boardId){
-        BoardDetailDto detailDto = boardService.findById(boardId);
-        String boardName = detailDto.getBoardName();
-        Company []companies = Company.values();
 
-        for(Company company : companies){
-            if (company.getValue().equals(boardName)) return company.name();
-        }
-
-        return null;
-    }
-
-    private String parseBoardIdToDepartment(Long boardId){
-        BoardDetailDto detailDto = boardService.findById(boardId);
-        String boardName = detailDto.getBoardName();
-        Department []departments = Department.values();
-
-        for (Department department : departments){
-            if (department.getValue().equals(boardName)) return department.name();
-        }
-
-        return null;
-    }
-
-    private boolean companyBoardSessionCheck(String memberCompany, Long boardId){
-        String company = this.parseBoardIdToCompany(boardId);
-
-        logger.info("[PrivateBoardAccessInterceptor] SESSION MEMBER COMPANY = {}", company);
-        logger.info("[PrivateBoardAccessInterceptor] BOARD ID = {}", boardId);
-
-
-        return memberCompany.equals(company);
-
-    }
-
-    private boolean departmentBoardSessionCheck(String memberDepartment, Long boardId){
-        String department = this.parseBoardIdToDepartment(boardId);
-
-        logger.info("[PrivateBoardAccessInterceptor] SESSION MEMBER DEPARTMENT = {}", memberDepartment);
-        logger.info("[PrivateBoardAccessInterceptor] BOARD ID = {}", boardId);
-
-        return memberDepartment.equals(department);
-    }
 }

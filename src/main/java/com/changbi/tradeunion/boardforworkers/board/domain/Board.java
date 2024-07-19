@@ -37,7 +37,7 @@ public class Board {
     private Integer depth;
 
     @Column
-    private Integer upperBoardId;
+    private Long upperBoardId;
 
     @Column
     private String boardPath;

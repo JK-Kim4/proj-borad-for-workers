@@ -61,7 +61,6 @@ let main = {
             contentType: "application/json; charset=utf-8",
             async: false,
             success: function (result){
-                console.log(result)
                 if(RESULT_CODE.SUCCESS_DEFAULT === result.resultCode){
                     boardDetail = result.data;
                 }else{

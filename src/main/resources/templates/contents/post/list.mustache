@@ -5,16 +5,15 @@
     }
 </style>
 <main class="container col-10">
-    {{#company}}{{.}}{{/company}}
     <div class="p-4 p-md-5 mb-4 text-white rounded bg-dark">
         <div class="col-md-6 px-0">
-            <h1 class="display-4 fst-italic">{{boardId}}</h1>
-            <p class="lead my-3">공지 사항 및 이벤트 등 캐러샐 추가 영역</p>
-            <p class="lead mb-0"><a href="#" class="text-white fw-bold">Continue reading...</a></p>
+            <input type="hidden" id="boardId" value="{{boardId}}">
+            <h1 class="display-4 fst-italic" id="boardName"></h1>
+            <p class="lead my-3"></p>
         </div>
     </div>
 
-    <input type="hidden" id="boardId" value="{{boardId}}">
+
     <div class="row justify-content-end">
         <div class="col-auto">
             {{#member}}
@@ -46,6 +45,12 @@
     $(document).ready(function (){
         let boardId = $("#boardId").val();
         main.findBoardPostsForClients(boardId);
+
+        let boardInformation = main.findBoardById(boardId);
+        let boardName = "";
+        if (boardInformation.parentBoard != null) boardName += boardInformation.boardName + " <span style='font-size: 25px;'>[" + boardInformation.parentBoard.boardName +"]</span> ";
+        else boardName += boardInformation.boardName
+        $("#boardName").html(boardName);
     });
 </script>
 {{>layout/footer}}

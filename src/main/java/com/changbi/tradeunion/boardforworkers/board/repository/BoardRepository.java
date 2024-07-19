@@ -140,6 +140,14 @@ public class BoardRepository {
         return post.getRecommendCount();
     }
 
+    public Board findParentBoard(Long upperBoardId) {
+        String query = "select b " +
+                "from Board b " +
+                "where b.depth = 1 and b.id = :upperBoardId";
+
+        return em.createQuery(query, Board.class).setParameter("upperBoardId", upperBoardId).getSingleResult();
+    }
+
     public List<Board> findChildBoardList(Long boardId) {
         String query =  "select b " +
                         "From Board b " +

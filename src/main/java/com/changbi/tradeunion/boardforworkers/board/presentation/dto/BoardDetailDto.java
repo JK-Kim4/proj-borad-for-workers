@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter @Setter
 @NoArgsConstructor
@@ -18,10 +20,15 @@ public class BoardDetailDto {
     private boolean attachmentAllowYn;
     private String readRole;
     private String writeRole;
+    private Integer depth;
+    private Long upperBoardId;
     private LocalDateTime appendDate;
     private Long appendAdminId;
     private LocalDateTime updateDate;
     private Long updateAdminId;
+
+    private List<BoardDetailDto> childBoardList = new ArrayList<>();
+    private BoardDetailDto parentBoard;
 
     @Builder
     public BoardDetailDto(Board board) {
@@ -29,6 +36,8 @@ public class BoardDetailDto {
         this.boardName = board.getBoardName();
         this.useYn = board.isUseYn();
         this.attachmentAllowYn = board.isAttachmentAllowYn();
+        this.depth = board.getDepth();
+        this.upperBoardId = board.getUpperBoardId();
         this.readRole = board.getReadRole().name();
         this.writeRole = board.getWriteRole().name();
         this.appendDate = board.getAppendDate();
