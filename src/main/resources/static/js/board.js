@@ -15,7 +15,7 @@ let main = {
             data.useYn = $("input[name='inputUseYn']:checked").val();
             data.postHead = $("#inputPostHead").val();
             data.postTitle = $("#inputPostTitle").val();
-            data.postContent = myEditor.getData();
+            data.postContent = editor.getHTML();
 
             main.savePost(JSON.stringify(data), boardId);
         });

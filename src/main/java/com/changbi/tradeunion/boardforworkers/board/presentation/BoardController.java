@@ -65,10 +65,10 @@ public class BoardController {
 
     @PostMapping("/upload")
     public ResponseEntity<ResultDto> fileUpload(
-            MultipartFile file){
+            @RequestParam(name = "upload") MultipartFile upload){
 
 
-        System.out.println(file);
+        System.out.println("multipart request = " + upload);
 
         return ResponseEntity.ok(ResultDto.builder().build());
     }

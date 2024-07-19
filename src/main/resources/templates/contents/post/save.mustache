@@ -1,6 +1,6 @@
 {{>layout/header}}
-<link rel="stylesheet" href="/plugin/ckeditor5/style.css">
-<link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/42.0.1/ckeditor5.css">
+<!-- TOAST UI Editor CDN(CSS) -->
+<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
 <main class="container col-10">
     <div class="p-4 p-md-5 mb-4 text-white rounded bg-dark">
         <div class="col-md-6 px-0">
@@ -70,11 +70,7 @@
                 <label for="floatingTextarea" class="mb-1">내용:</label>
             </div>
             <div class="col-auto">
-                <div class="main-container">
-                    <div class="editor-container editor-container_classic-editor" id="editor-container">
-                        <div class="editor-container__editor"><div id="editor"></div></div>
-                    </div>
-                </div>
+                <div id="editor"></div>
             </div>
         </div>
 
@@ -100,17 +96,16 @@
 
 
     <script src="/js/board.js"></script>
-    <script type="importmap">
-        {
-            "imports": {
-                "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/42.0.1/ckeditor5.js",
-                "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/42.0.1/"
-            }
-        }
-    </script>
-    <script type="module" src="/plugin/ckeditor5/main.js"></script>
+    <!-- TOAST UI Editor CDN(JS) -->
+    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
     <script type="application/javascript">
-        let myEditor;
+        const editor = new toastui.Editor({
+            el: document.querySelector('#editor'),
+            previewStyle: 'vertical',
+            height: '500px',
+            initialEditType: 'wysiwyg'
+        });
+
 
         $(document).ready(function (){
             let boardId = $("#boardId").val();
