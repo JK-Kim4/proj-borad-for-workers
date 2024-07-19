@@ -55,7 +55,8 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="mx-3" role="img" viewBox="0 0 24 24"><title>Search</title><circle cx="10.5" cy="10.5" r="7.5"/><path d="M21 21l-5.2-5.2"/></svg>
                 </a>-->
                 {{#member}}
-                    <span>{{memberRealName}}({{memberNickName}})님 반갑습니다.</span>
+                    <span>{{memberRealName}}({{memberNickName}})님 반갑습니다.</span> &nbsp;&nbsp;
+                    <a class="btn btn-sm btn-outline-dark" href="/logout">로그아웃</a>
                 {{/member}}
                 {{^member}}
                     <a class="btn btn-sm btn-outline-secondary" href="/member/sign-in">Sign in</a> &nbsp;&nbsp;
@@ -66,10 +67,10 @@
         </div>
     </header>
 
-    <nav class="nav d-flex justify-content-center">
+    <nav class="nav m-1 d-flex justify-content-center">
             {{#headers}}
                 <div {{#childBoardList}}class="dropdown"{{/childBoardList}}>
-                    <a class="p-2 link-secondary"
+                    <a class="p-3 link-secondary" style="font-size: 20px;"
                         {{^childBoardList}}href="{{boardPath}}"{{/childBoardList}}
                         {{#childBoardList}}
                             role="button"
