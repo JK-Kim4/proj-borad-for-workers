@@ -40,4 +40,6 @@ public class CommonValues {
     public static final String RESULT_MESSAGE_FAIL_BOARD_AUTHORIZATION = "게시판을 사용할 수 있는 권한이 존재하지않습니다.";
     public static final String RESULT_MESSAGE_FAIL_MEMBER_NOTFOUND = "회원이 존재하지 않습니다.";
     public static final String RESULT_MESSAGE_FAIL_MEMBER_LOGIN_VALIDATION = "아이디 혹은 비밀번호를 확인 후 다시 시도해주세요.";
+
+    public static final String LOCAL_FILE_UPLOAD_PATH = "/Users/jongwan-air/Desktop/temp-upload";
 }

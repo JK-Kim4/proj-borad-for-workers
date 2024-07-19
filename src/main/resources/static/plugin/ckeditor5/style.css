@@ -19,6 +19,10 @@
 }
 
 .editor-container_classic-editor .editor-container__editor {
-	min-width: 795px;
-	max-width: 795px;
+	min-width: 66vw;
+	max-width: 100vw;
+}
+
+.ck-editor__editable {
+	min-height: 500px;
 }
