@@ -15,7 +15,7 @@ let main = {
             data.useYn = $("input[name='inputUseYn']:checked").val();
             data.postHead = $("#inputPostHead").val();
             data.postTitle = $("#inputPostTitle").val();
-            data.postContent = $("#inputContent").val();
+            data.postContent = myEditor.getData();
 
             main.savePost(JSON.stringify(data), boardId);
         });
@@ -31,6 +31,7 @@ let main = {
         })
     },
     savePost: function (jsonData, boardId){
+
         $.ajax({
             url: "/api/board/post/save",
             method: "POST",

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Getter @Setter
 @NoArgsConstructor
@@ -61,7 +62,9 @@ public class PostDetailDto {
         this.memberId = memberId;
         this.memberRealName = memberRealName;
         this.memberNickName = memberNickName;
-        this.postHead = postHead.name();
+        if(!Objects.isNull(postHead)){
+            this.postHead = postHead.name();
+        }
         this.postTitle = postTitle;
         this.postContent = postContent;
         this.useYn = useYn;

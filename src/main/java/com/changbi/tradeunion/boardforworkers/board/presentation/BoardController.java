@@ -8,6 +8,7 @@ import com.changbi.tradeunion.boardforworkers.common.dto.ResultDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/board")
@@ -60,6 +61,16 @@ public class BoardController {
                 .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
                 .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
                 .build());
+    }
+
+    @PostMapping("/upload")
+    public ResponseEntity<ResultDto> fileUpload(
+            MultipartFile file){
+
+
+        System.out.println(file);
+
+        return ResponseEntity.ok(ResultDto.builder().build());
     }
 
     @DeleteMapping("/delete/{boardId}")
