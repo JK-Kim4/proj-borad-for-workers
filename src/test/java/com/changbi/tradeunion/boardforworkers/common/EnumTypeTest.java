@@ -32,8 +32,8 @@ public class EnumTypeTest {
 
         String memberRole = "USER";
 
-        Assertions.assertTrue(EnumUtility.readRoleSessionCheck(memberRole, board.getReadRole()));
-        Assertions.assertFalse(EnumUtility.writeRoleSessionCheck(memberRole, board.getWriteRole()));
+        Assertions.assertTrue(EnumUtility.isQualifiedRole(memberRole, board.getReadRole().name()));
+        Assertions.assertFalse(EnumUtility.isQualifiedRole(memberRole, board.getWriteRole().name()));
 
     }
 }

@@ -5,6 +5,7 @@ import com.changbi.tradeunion.boardforworkers.board.domain.Post;
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostDetailDto;
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostListDto;
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostSaveDto;
+import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.PostHead;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
@@ -158,5 +159,42 @@ public class BoardRepository {
         return em.createQuery(query, Board.class)
                 .setParameter("boardId", boardId)
                 .getResultList();
+    }
+
+    public PostDetailDto findMostRecentNoticePost() {
+        String query =  "select " +
+                            "new com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostDetailDto" +
+                            "(" +
+                                "p.id, b.id, b.boardName, m.id, m.memberRealName, m.memberNickName," +
+                                "p.postHead, p.postTitle, p.postContent, p.useYn, p.readCount, p.recommendCount," +
+                                "p.attachmentFileName, p.attachmentFilePath, p.appendDate, p.updateDate" +
+                            ") " +
+                        "from Post p " +
+                        "left outer join Board b on p.boardId = b.id " +
+                        "left outer join Member m on p.memberId = m.id " +
+                        "where p.boardId = 91 " +
+                        "and p.postHead = :noticeHead " +
+                        "order by p.appendDate desc limit 1";
+
+        return em.createQuery(query, PostDetailDto.class)
+                .setParameter("noticeHead", PostHead.NOTICE)
+                .getSingleResult();
+    }
+
+    public PostDetailDto findMostPopularPost() {
+        String query =  "select " +
+                            "new com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostDetailDto" +
+                            "(" +
+                                "p.id, b.id, b.boardName, m.id, m.memberRealName, m.memberNickName," +
+                                "p.postHead, p.postTitle, p.postContent, p.useYn, p.readCount, p.recommendCount," +
+                                "p.attachmentFileName, p.attachmentFilePath, p.appendDate, p.updateDate" +
+                            ") " +
+                        "from Post p " +
+                        "left outer join Board b on p.boardId = b.id " +
+                        "left outer join Member m on p.memberId = m.id " +
+                        "order by p.recommendCount desc, p.readCount desc, p.id desc limit 1";
+
+
+        return em.createQuery(query, PostDetailDto.class).getSingleResult();
     }
 }

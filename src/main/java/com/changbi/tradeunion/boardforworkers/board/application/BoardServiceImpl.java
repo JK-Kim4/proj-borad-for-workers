@@ -128,6 +128,16 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
+    public PostDetailDto findMostRecentNoticePost() {
+        return boardRepository.findMostRecentNoticePost();
+    }
+
+    @Override
+    public PostDetailDto findMostPopularPost() {
+        return boardRepository.findMostPopularPost();
+    }
+
+    @Override
     public BoardDetailDto findByBoardName(String boardName) {
         return BoardDetailDto.builder().board(boardRepository.findByBoardName(boardName)).build();
     }

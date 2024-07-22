@@ -167,10 +167,10 @@ let main = {
                 badge = "<span class='badge badge-pill bg-primary me-2'> 일반 </span>";
                 break;
             case 'NOTICE' :
-                badge = "<span class='badge badge-pill badge-secondary me-2'> 공지 </span>";
+                badge = "<span class='badge badge-pill bg-success me-2'> 공지 </span>";
                 break;
             case 'NEWS' :
-                badge = "<span class='badge badge-pill warning me-2'> 뉴스 </span>";
+                badge = "<span class='badge badge-pill bg-warning me-2'> 뉴스 </span>";
                 break;
         }
         return badge;

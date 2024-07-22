@@ -34,7 +34,7 @@ public class WebSecurityConfiguration {
                 .authorizeHttpRequests(
                         request -> request
                                     .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-                                    .requestMatchers("/", "/about",
+                                    .requestMatchers("/", "/about", "/api/common/index-data",
                                             "/css/**", "/js/**", "/image/**", "/member/**", "/plugin/**",
                                             "/api/member/send-auth", "/api/member/pre-member/save").permitAll()
                                     .requestMatchers("/admin/**").hasAnyRole("SUPER_ADMIN", "ADMIN")
