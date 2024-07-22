@@ -70,7 +70,7 @@
                 <label for="floatingTextarea" class="mb-1">내용:</label>
             </div>
             <div class="col-auto">
-                <div id="editor"></div>
+                <div id="editor" style="width: 66.4vw"></div>
             </div>
         </div>
 
@@ -86,8 +86,6 @@
             </div>
             <div class="col-auto">
                 <button class="btn btn-primary" id="postSaveButton">새 글 등록</button>
-                <button class="btn btn-primary" id="tempButton">에디터 확인</button>
-
             </div>
         </div>
     </div>
@@ -103,6 +101,7 @@
             el: document.querySelector('#editor'),
             previewStyle: 'vertical',
             height: '500px',
+            width: '1200px',
             initialEditType: 'wysiwyg'
         });
 

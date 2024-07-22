@@ -1,6 +1,11 @@
 package com.changbi.tradeunion.boardforworkers.router;
 
+import com.changbi.tradeunion.boardforworkers.board.application.BoardService;
+import com.changbi.tradeunion.boardforworkers.board.presentation.dto.BoardDetailDto;
+import com.changbi.tradeunion.boardforworkers.common.utility.EnumUtility;
+import com.changbi.tradeunion.boardforworkers.member.presentation.dto.SessionMember;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/board")
 @RequiredArgsConstructor
 public class BoardRouter {
+
+    private final BoardService boardService;
 
     @GetMapping("/{boardId}/post/list")
     public String postListPage(
@@ -35,20 +42,38 @@ public class BoardRouter {
     @GetMapping("/{boardId}/post/save")
     public String postSavePage(
             @PathVariable(name = "boardId") Long boardId,
+            HttpSession session,
             Model model, HttpServletRequest request) {
 
-        model.addAttribute("boardId", boardId);
-        return "contents/post/save";
+        //쓰기 권한 확인
+        SessionMember member = (SessionMember) session.getAttribute("member");
+        BoardDetailDto boardDetailDto = boardService.findById(boardId);
+
+        if(EnumUtility.isQualifiedRole(member.getRole(), boardDetailDto.getWriteRole())){
+            model.addAttribute("boardId", boardId);
+            return "contents/post/save";
+        }else{
+            return "error/403";
+        }
     }
 
-    @GetMapping("/post/detail/{postId}")
+    @GetMapping("/{boardId}/post/detail/{postId}")
     public String postDetailPage(
             @PathVariable(name = "postId") Long postId,
+            @PathVariable(name = "boardId") Long boardId,
+            HttpSession session,
             Model model) {
 
-        model.addAttribute("postId", postId);
-        return "contents/post/detail";
-    }
+        //읽기 권한 확인
+        SessionMember member = (SessionMember) session.getAttribute("member");
+        BoardDetailDto boardDetailDto = boardService.findById(boardId);
 
+        if(EnumUtility.isQualifiedRole(member.getRole(), boardDetailDto.getReadRole())){
+            model.addAttribute("postId", postId);
+            return "contents/post/detail";
+        }else{
+            return "error/403";
+        }
+    }
 
 }

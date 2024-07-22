@@ -7,11 +7,15 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum Role {
 
-    SUPER_ADMIN("ROLE_SUPER_ADMIN,ROLE_ADMIN,ROLE_USER"),
-    ADMIN("ROLE_ADMIN,ROLE_USER"),
-    USER("ROLE_USER"),
+    SUPER_ADMIN("ROLE_SUPER_ADMIN,ROLE_ADMIN,ROLE_USER,ROLE_GUEST"),
+    ADMIN("ROLE_ADMIN,ROLE_USER,ROLE_GUEST"),
+    USER("ROLE_USER,ROLE_GUEST"),
     GUEST("ROLE_GUEST");
 
     private final String value;
+
+    public String getHighestRoleValue(){
+        return this.getValue().split(",")[0];
+    }
 
 }

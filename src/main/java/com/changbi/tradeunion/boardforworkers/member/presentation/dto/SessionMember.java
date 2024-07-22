@@ -14,8 +14,8 @@ public class SessionMember {
     private String memberRealName;
     private String memberNickName;
 
-    private String  company;
-    private String  department;
+    private String company;
+    private String department;
     private String role;
 
 

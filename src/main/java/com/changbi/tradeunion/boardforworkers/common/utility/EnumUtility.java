@@ -3,11 +3,14 @@ package com.changbi.tradeunion.boardforworkers.common.utility;
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.BoardDetailDto;
 import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.Company;
 import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.Department;
+import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.Role;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
 
 @Component
 @RequiredArgsConstructor
@@ -60,7 +63,6 @@ public class EnumUtility {
         logger.info("[PrivateBoardAccessInterceptor] SESSION MEMBER COMPANY = {}", company);
         logger.info("[PrivateBoardAccessInterceptor] BOARD ID = {}", detailDto.getBoardId());
 
-
         return memberCompany.equals(company);
 
     }
@@ -72,5 +74,12 @@ public class EnumUtility {
         logger.info("[PrivateBoardAccessInterceptor] BOARD ID = {}", detailDto.getBoardId());
 
         return memberDepartment.equals(department);
+    }
+
+    public static boolean isQualifiedRole(String memberRole, String boardReadRole){
+        String []memberRoleValues = Role.valueOf(memberRole)
+                                        .getValue()
+                                        .split(",");
+        return Arrays.asList(memberRoleValues).contains(Role.valueOf(boardReadRole).getHighestRoleValue());
     }
 }

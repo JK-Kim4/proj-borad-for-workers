@@ -13,6 +13,11 @@ public class HomeRouter {
         return "contents/index";
     }
 
+    @GetMapping("/about")
+    public String aboutPage(){
+        return "contents/about";
+    }
+
     @GetMapping("/global-error")
     public String errorPage() throws Exception{
 

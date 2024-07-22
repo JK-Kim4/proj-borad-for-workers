@@ -27,7 +27,8 @@ let main = {
 
         $(document).on("click", ".post-list-content", function (){
             let postId = $(this).data("post-id");
-            location.href = "/board/post/detail/"+postId;
+            let boardId = $("#boardId").val();
+            location.href = "/board/"+boardId+"/post/detail/"+postId;
         })
     },
     savePost: function (jsonData, boardId){
