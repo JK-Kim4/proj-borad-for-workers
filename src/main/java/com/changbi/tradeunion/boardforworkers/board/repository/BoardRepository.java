@@ -192,6 +192,7 @@ public class BoardRepository {
                         "from Post p " +
                         "left outer join Board b on p.boardId = b.id " +
                         "left outer join Member m on p.memberId = m.id " +
+                        "where b.id not in (91, 93, 94) " +
                         "order by p.recommendCount desc, p.readCount desc, p.id desc limit 1";
 
 
