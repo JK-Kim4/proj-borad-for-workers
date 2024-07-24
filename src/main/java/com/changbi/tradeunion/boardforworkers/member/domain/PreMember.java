@@ -26,7 +26,7 @@ import java.time.LocalDateTime;
 public class PreMember {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "pre_member_id")
     private Long id;
 
