@@ -1,10 +1,10 @@
 package com.changbi.tradeunion.boardforworkers.member.application;
 
 import com.changbi.tradeunion.boardforworkers.common.CommonValues;
-import com.changbi.tradeunion.boardforworkers.member.domain.MemberDetail;
-import com.changbi.tradeunion.boardforworkers.member.presentation.dto.MemberSaveDto;
+import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.Role;
 import com.changbi.tradeunion.boardforworkers.common.dto.Pagination;
 import com.changbi.tradeunion.boardforworkers.member.domain.Member;
+import com.changbi.tradeunion.boardforworkers.member.domain.MemberDetail;
 import com.changbi.tradeunion.boardforworkers.member.domain.PreMember;
 import com.changbi.tradeunion.boardforworkers.member.exception.MemberDuplicateException;
 import com.changbi.tradeunion.boardforworkers.member.exception.MemberNotFountException;
@@ -47,6 +47,9 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
 
             HttpSession session = request.getSession();
             session.setAttribute("member", sessionMember);
+            if (Role.ADMIN.equals(member.getRole()) || Role.SUPER_ADMIN.equals(member.getRole())){
+                session.setAttribute("isAdmin", true);
+            }
 
             return new MemberDetail(member);
         }catch (NoResultException e){
@@ -190,6 +193,7 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
                 SessionMember sessionMember = SessionMember.builder().member(member).build();
 
                 session.setAttribute("member", sessionMember);
+
             } else {
                 logger.error("[LoginFailure] RequestEmail = {}\t, loginTime = {}]",dto.getMemberEmail(), LocalDateTime.now());
                 throw new MemberValidationException(CommonValues.RESULT_MESSAGE_FAIL_MEMBER_LOGIN_VALIDATION);

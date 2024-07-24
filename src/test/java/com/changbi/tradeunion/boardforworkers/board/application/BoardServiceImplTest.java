@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @SpringBootTest
-@ActiveProfiles("loc")
+@ActiveProfiles("dev")
 public class BoardServiceImplTest {
 
     @Autowired
@@ -29,6 +29,8 @@ public class BoardServiceImplTest {
     final String BOARD_NAME_1 = "board1";
     final String BOARD_NAME_2 = "board2";
     final String BOARD_NAME_3 = "board3";
+    final String READ_ROLE = "USER";
+    final String WRITE_ROLE = "USER";
 
     @Test
     public void enum_test(){
@@ -55,6 +57,8 @@ public class BoardServiceImplTest {
                 BoardSaveDto dto = BoardSaveDto.builder()
                         .boardName(BOARD_NAME_1)
                         .useYn(useYn)
+                        .readRole(READ_ROLE)
+                        .writeRole(WRITE_ROLE)
                         .attachmentAllowYn(attachmentAllowYn)
                         .build();
 
@@ -75,6 +79,8 @@ public class BoardServiceImplTest {
                 BoardSaveDto dto = BoardSaveDto.builder()
                         .boardName(BOARD_NAME_1)
                         .useYn(useYn)
+                        .readRole(READ_ROLE)
+                        .writeRole(WRITE_ROLE)
                         .attachmentAllowYn(attachmentAllowYn)
                         .build();
 
@@ -97,6 +103,8 @@ public class BoardServiceImplTest {
                 BoardSaveDto dto1 = BoardSaveDto.builder()
                         .boardName(BOARD_NAME_1)
                         .useYn(useYn)
+                        .readRole(READ_ROLE)
+                        .writeRole(WRITE_ROLE)
                         .attachmentAllowYn(attachmentAllowYn)
                         .build();
 
@@ -127,6 +135,8 @@ public class BoardServiceImplTest {
                 BoardSaveDto dto = BoardSaveDto.builder()
                         .boardName(BOARD_NAME_3)
                         .useYn(true)
+                        .readRole(READ_ROLE)
+                        .writeRole(WRITE_ROLE)
                         .attachmentAllowYn(true)
                         .build();
 
@@ -148,6 +158,8 @@ public class BoardServiceImplTest {
                 boolean attachmentAllowYn = true;
                 BoardSaveDto dto1 = BoardSaveDto.builder()
                         .boardName(BOARD_NAME_1)
+                        .readRole(READ_ROLE)
+                        .writeRole(WRITE_ROLE)
                         .useYn(useYn)
                         .attachmentAllowYn(attachmentAllowYn)
                         .build();
@@ -155,6 +167,8 @@ public class BoardServiceImplTest {
                 BoardSaveDto dto2 = BoardSaveDto.builder()
                         .boardName(BOARD_NAME_2)
                         .useYn(useYn)
+                        .readRole(READ_ROLE)
+                        .writeRole(WRITE_ROLE)
                         .attachmentAllowYn(attachmentAllowYn)
                         .build();
                 boardService.save(dto1);
@@ -282,10 +296,6 @@ public class BoardServiceImplTest {
                 Assertions.assertEquals(3, postListDtoList.size());
 
             }
-
-            @Test @Transactional
-            @DisplayName("게시판 고유번호를 key로 등록된 게시글을 조회한다.")
-            void post_select_post_by_board_id_test(){}
         }
 
     }
