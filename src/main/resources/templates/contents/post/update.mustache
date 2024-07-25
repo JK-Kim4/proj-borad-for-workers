@@ -31,13 +31,13 @@
                 <input type="text" class="form-control" value="{{member.memberRealName}}({{member.memberNickName}})" disabled>
             </div>
             <div class="col-auto">
-                <label for="firstName" class="col-auto">공개 여부: </label>
+                <label for="inputUseYn" class="col-auto">공개 여부: </label>
             </div>
             <div class="col-auto">
                 <fieldset>
                     <div class="form-group">
                         <div class="form-check form-check-inline">
-                            <input type="radio" class="form-check-input" name="inputUseYn" id="useTrue" value="true" checked>
+                            <input type="radio" class="form-check-input" name="inputUseYn" id="useTrue" value="true">
                             <label for="useTrue">공개</label>
                         </div>
                         <div class="form-check form-check-inline">
@@ -51,11 +51,11 @@
 
         <div class="row mb-4">
             <div class="col-auto align-self-center">
-                <label for="firstName" class=" ">제목 : </label>
+                <label for="inputTitle" class=" ">제목 : </label>
             </div>
             <div class="col-auto">
                 <select class="form-select" aria-label="Default select example" id="inputPostHead">
-                    <option disabled selected>말머리 선택</option>
+                    <option disabled>말머리 선택</option>
                     <option value="GENERAL">일반</option>
                     <option value="NEWS">소식</option>
                     <option value="NOTICE">공지</option>
@@ -72,8 +72,8 @@
             <div class="col-12">
                 <label for="floatingTextarea" class="mb-1">내용:</label>
             </div>
-            <div class="col-auto">
-                <div id="editor" style="width: 66.4vw"></div>
+            <div class="col-12">
+                <div id="editor" style="width: 100%"></div>
             </div>
         </div>
 
@@ -88,7 +88,10 @@
                 <button class="btn btn-outline-dark" id="goToPostListButton">목록으로</button>
             </div>
             <div class="col-auto">
-                <button class="btn btn-primary" id="postSaveButton">새 글 등록</button>
+                <button class="btn btn-danger" id="postDeleteButton">삭제하기</button>
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-success" id="postUpdateButton">수정하기</button>
             </div>
         </div>
     </div>
@@ -114,7 +117,7 @@
             let postData = main.findPostById(postId);
 
             console.log(postData);
-
+            main.renderPostUpdatePage(postData);
 
             let boardId = $("#boardId").val();
             let boardDetail = main.findBoardById(boardId);

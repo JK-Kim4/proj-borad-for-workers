@@ -149,7 +149,6 @@ public class BoardController {
             @PathVariable(name = "postId") Long postId){
 
 
-
         return ResponseEntity.ok(ResultDto.builder()
                 .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
                 .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)

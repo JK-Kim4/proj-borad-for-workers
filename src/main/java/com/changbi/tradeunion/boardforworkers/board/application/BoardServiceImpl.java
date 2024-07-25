@@ -49,7 +49,7 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public void updatePost(PostSaveDto dto) {
-        boardRepository.postUpdate(dto);
+            boardRepository.postUpdate(dto);
     }
 
     @Override
@@ -89,6 +89,11 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public List<PostListDto> findPosts(Long boardId) {
         return boardRepository.findPosts(boardId);
+    }
+
+    @Override
+    public List<PostListDto> findPostsByMemberId(Long memberId) {
+        return boardRepository.findPostsByMemberId(memberId);
     }
 
     @Override

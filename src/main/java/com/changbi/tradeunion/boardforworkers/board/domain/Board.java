@@ -66,12 +66,14 @@ public class Board {
     public Board (
             String boardName,
             boolean useYn, boolean attachmentAllowYn,
-            String readRole, String writeRole){
+            String readRole, String writeRole,
+            Integer depth){
         this.boardName = boardName;
         this.useYn = useYn;
         this.attachmentAllowYn = attachmentAllowYn;
         this.readRole = Role.valueOf(readRole);
         this.writeRole = Role.valueOf(writeRole);
+        this.depth = depth;
         this.appendDate = LocalDateTime.now();
         this.updateDate = LocalDateTime.now();
         //TODO appendAdminId

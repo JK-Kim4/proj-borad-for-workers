@@ -16,18 +16,21 @@ public class BoardSaveDto {
     private boolean attachmentAllowYn;
     private String readRole;
     private String writeRole;
+    private Integer depth;
 
     @Builder
     public BoardSaveDto(
             long boardId, String boardName,
             boolean useYn, boolean attachmentAllowYn,
-            String readRole, String writeRole) {
+            String readRole, String writeRole,
+            Integer depth) {
         this.boardId = boardId;
         this.boardName = boardName;
         this.useYn = useYn;
         this.attachmentAllowYn = attachmentAllowYn;
         this.readRole = readRole;
         this.writeRole = writeRole;
+        this.depth = depth;
     }
 
     public Board toEntity(){
@@ -37,6 +40,7 @@ public class BoardSaveDto {
                 .attachmentAllowYn(this.isAttachmentAllowYn())
                 .readRole(this.readRole)
                 .writeRole(this.writeRole)
+                .depth(this.depth)
                 .build();
     }
 }

@@ -2,9 +2,11 @@ package com.changbi.tradeunion.boardforworkers.board.repository;
 
 import com.changbi.tradeunion.boardforworkers.board.domain.Board;
 import com.changbi.tradeunion.boardforworkers.board.domain.Post;
+import com.changbi.tradeunion.boardforworkers.board.exception.PostIllegalArgumentException;
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostDetailDto;
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostListDto;
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostSaveDto;
+import com.changbi.tradeunion.boardforworkers.common.CommonValues;
 import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.PostHead;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -26,6 +28,7 @@ public class BoardRepository {
     public void delete(Long boardId) {
         Board board = em.find(Board.class, boardId);
         em.remove(board);
+        em.flush();
     }
 
     public void deletePost(Long postId) {
@@ -78,7 +81,7 @@ public class BoardRepository {
                         "from Post p " +
                         "left outer join Member m on p.memberId = m.id " +
                         "left outer join Board b on p.boardId = b.id " +
-                        "where p.useYn = true " +
+                        "where (p.memberId = :sessionMemberId or p.useYn = true) " +
                         "and p.boardId = :boardId " +
                         "order by p.appendDate desc";
 
@@ -125,9 +128,14 @@ public class BoardRepository {
                 .getSingleResult();
     }
 
-    public void postUpdate(PostSaveDto dto) {
-        Post post = em.find(Post.class, dto.getPostId());
-        post.update(dto);
+    public void postUpdate(PostSaveDto dto){
+        try {
+            Post post = em.find(Post.class, dto.getPostId());
+            post.update(dto);
+        }catch (Exception e){
+            throw new PostIllegalArgumentException(CommonValues.RESULT_MESSAGE_FAIL_POST_ILLEGAL_ARGUMENT, dto.getBoardId(), dto.getPostId());
+        }
+
     }
 
     public void updatePostReadCount(Long postId) {
@@ -205,5 +213,24 @@ public class BoardRepository {
         return em.createQuery(query, Long.class)
                 .setParameter("postId", postId)
                 .getSingleResult();
+    }
+
+    public List<PostListDto> findPostsByMemberId(Long memberId) {
+        String query =  "select " +
+                            "new com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostListDto" +
+                                "(" +
+                                    "p.id, b.id, m.id, " +
+                                    "p.useYn, p.postHead, p.postTitle, " +
+                                    "p.readCount, p.recommendCount, p.appendDate, p.updateDate," +
+                                    "m.memberRealName, b.boardName" +
+                                ") " +
+                        "from Post p " +
+                        "left outer join Member m on p.memberId = m.id " +
+                        "left outer join Board b on p.boardId = b.id " +
+                        "where p.memberId = :memberId";
+
+        return em.createQuery(query, PostListDto.class)
+                .setParameter("memberId", memberId)
+                .getResultList();
     }
 }

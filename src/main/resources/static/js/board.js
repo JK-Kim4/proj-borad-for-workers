@@ -20,6 +20,26 @@ let main = {
             main.savePost(JSON.stringify(data), boardId);
         });
 
+        $("#postDeleteButton").on("click", function (){
+            let postId = $("#postId").val(); let boardId = $("#boardId").val();
+            main.deletePost(postId, boardId);
+        });
+
+        $("#postUpdateButton").on("click", function (){
+            let data = {};
+            let postId = $("#postId").val(); let boardId = $("#boardId").val();
+
+            data.postId = postId;
+            data.boardId = boardId;
+            data.memberId = $("#memberId").val();
+            data.useYn = $("input[name='inputUseYn']:checked").val();
+            data.postHead = $("#inputPostHead").val();
+            data.postTitle = $("#inputPostTitle").val();
+            data.postContent = editor.getHTML();
+
+            main.updatePost(JSON.stringify(data), postId);
+        });
+
         $("#recommendButton").on("click", function (){
             let postId = $("#postId").val();
             main.updatePostRecommendCount(postId);
@@ -28,7 +48,7 @@ let main = {
         $("#goToPostListButton").on("click", function (){
             let boardId = $("#boardId").val();
             location.href = "/board/"+boardId+"/post/list";
-        })
+        });
 
         $(document).on("click", ".post-list-content", function (){
             let postId = $(this).data("post-id");
@@ -36,7 +56,7 @@ let main = {
             location.href = "/board/"+boardId+"/post/detail/"+postId;
         });
 
-        $(document).on("click", "#postUpdateButton", function (){
+        $(document).on("click", "#goToPostUpdate", function (){
             let postId = $(this).data("post-id");
             let boardId = $("#boardId").val()
             location.href = "/board/"+boardId+"/post/update/"+postId;
@@ -63,6 +83,50 @@ let main = {
                 alert(RESULT_MESSAGE.FAIL_SYSTEM);
             }
         })
+    },
+    updatePost: function (jsonData, postId){
+
+        $.ajax({
+            url: "/api/board/post/update/"+postId,
+            method: "POST",
+            data: jsonData,
+            contentType: "application/json; charset=utf-8;",
+            success: function (result){
+                if(RESULT_CODE.SUCCESS_DEFAULT === result.resultCode){
+                    alert(result.resultMessage)
+                    location.reload();
+                }else{
+                    alert(result.resultMessage);
+                }
+            },
+            error: function (x,h,r){
+                console.error(x);
+                alert(RESULT_MESSAGE.FAIL_SYSTEM)
+                location.reload();
+            }
+        });
+
+    },
+    deletePost: function (postId, boardId){
+        $.ajax({
+            url: "/api/board/post/delete/"+postId,
+            method: "DELETE",
+            contentType: "application/json; charset=utf-8;",
+            success: function (result){
+                if(RESULT_CODE.SUCCESS_DEFAULT === result.resultCode){
+                    alert(result.resultMessage);
+                    location.href = "/board/"+ boardId + "/post/list";
+                }else{
+                    alert(result.resultMessage)
+                    location.reload();
+                }
+            },
+            error: function (x,h,r){
+                console.error(x)
+                alert(RESULT_MESSAGE.FAIL_SYSTEM)
+                location.reload();
+            }
+        });
     },
     findBoardById: function (boardId){
         let boardDetail = {};
@@ -164,7 +228,7 @@ let main = {
         })
     },
     addUpdateButton: function (postId){
-        let html = "<button class='btn btn-success' id='postUpdateButton' data-post-id='"+postId+"'>수정</button>";
+        let html = "<button class='btn btn-success' id='goToPostUpdate' data-post-id='"+postId+"'>수정</button>";
 
         $("#postUpdateButtonDiv").html(html);
     },
@@ -184,6 +248,11 @@ let main = {
         }
     },
     renderPostUpdatePage: function (data){
+        $("input[name='inputUseYn'][value='"+data.useYn+"']").attr("checked", "checked");
+        $("#inputPostHead").val(data.postHead).attr("selected", "selected");
+        $("#inputPostTitle").val(data.postTitle);
+        $("#editor").html(editor.setHTML(data.postContent));
+
 
     },
     getPostHeadBadge: function (postHead){

@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @SpringBootTest
-@ActiveProfiles("dev")
+@ActiveProfiles("loc")
 public class BoardServiceImplTest {
 
     @Autowired
@@ -31,6 +31,15 @@ public class BoardServiceImplTest {
     final String BOARD_NAME_3 = "board3";
     final String READ_ROLE = "USER";
     final String WRITE_ROLE = "USER";
+
+    final Long NOTICE_BOARD_ID = 91L;
+    final String TEST_POST_HEAD = PostHead.GENERAL.name();
+
+    final String TEST_MEMBER_EMAIL = "mediachangbi@changbi.com";
+    final String TEST_MEMBER_PASSWORD = "$2a$10$Qsc23VzJNxA1LZa61MjMt.tQd1aTylhADS4nPE3uJQhrs3Fn9nByO";
+
+    final String TEST_POST_TITLE = "THIS TEST POST";
+    final String TEST_POST_CONTENT = "HELLO THIS IS TEST POST CONTENT";
 
     @Test
     public void enum_test(){
@@ -111,6 +120,8 @@ public class BoardServiceImplTest {
                 BoardSaveDto dto2 = BoardSaveDto.builder()
                         .boardName(BOARD_NAME_2)
                         .useYn(useYn)
+                        .readRole(READ_ROLE)
+                        .writeRole(WRITE_ROLE)
                         .attachmentAllowYn(attachmentAllowYn)
                         .build();
 
@@ -154,12 +165,14 @@ public class BoardServiceImplTest {
 
             @BeforeEach
             void beforeEach(){
-                boolean useYn = false;
+                boolean useYn = true;
                 boolean attachmentAllowYn = true;
+                Integer depth = 1;
                 BoardSaveDto dto1 = BoardSaveDto.builder()
                         .boardName(BOARD_NAME_1)
                         .readRole(READ_ROLE)
                         .writeRole(WRITE_ROLE)
+                        .depth(depth)
                         .useYn(useYn)
                         .attachmentAllowYn(attachmentAllowYn)
                         .build();
@@ -169,6 +182,7 @@ public class BoardServiceImplTest {
                         .useYn(useYn)
                         .readRole(READ_ROLE)
                         .writeRole(WRITE_ROLE)
+                        .depth(depth)
                         .attachmentAllowYn(attachmentAllowYn)
                         .build();
                 boardService.save(dto1);
@@ -196,14 +210,6 @@ public class BoardServiceImplTest {
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
     class 게시글_엔티티_테스트{
 
-        final String TEST_POST_HEAD = PostHead.GENERAL.name();
-
-        final String TEST_MEMBER_EMAIL = "test@changbi.com";
-        final String TEST_MEMBER_PASSWORD = "test1234";
-
-        final String TEST_POST_TITLE = "THIS TEST POST";
-        final String TEST_POST_CONTENT = "HELLO THIS IS TEST POST CONTENT";
-
         final MockHttpSession session = new MockHttpSession();
 
         @BeforeEach
@@ -228,7 +234,7 @@ public class BoardServiceImplTest {
                 //when
                 PostSaveDto saveDto = PostSaveDto.builder()
                                                 .memberId(sessionMember.getMemberId())
-                                                .boardId(99L)
+                                                .boardId(NOTICE_BOARD_ID)
                                                 .postHead(TEST_POST_HEAD)
                                                 .postTitle(TEST_POST_TITLE)
                                                 .postContent(TEST_POST_CONTENT)
@@ -242,7 +248,7 @@ public class BoardServiceImplTest {
                 Assertions.assertEquals(TEST_POST_TITLE, detailDto.getPostTitle());
                 Assertions.assertEquals(TEST_POST_CONTENT, detailDto.getPostContent());
                 Assertions.assertEquals(sessionMember.getMemberId(), detailDto.getMemberId());
-                Assertions.assertEquals(99L, detailDto.getBoardId());
+                Assertions.assertEquals(NOTICE_BOARD_ID, detailDto.getBoardId());
             }
 
         }
@@ -251,13 +257,7 @@ public class BoardServiceImplTest {
         @DisplayName("게시글 조회 테스트")
         class post_select_test{
 
-            final String TEST_POST_HEAD = PostHead.GENERAL.name();
 
-            final String TEST_MEMBER_EMAIL = "test@changbi.com";
-            final String TEST_MEMBER_PASSWORD = "test1234";
-
-            final String TEST_POST_TITLE = "THIS TEST POST";
-            final String TEST_POST_CONTENT = "HELLO THIS IS TEST POST CONTENT";
 
             final MockHttpSession session = new MockHttpSession();
 
@@ -273,7 +273,7 @@ public class BoardServiceImplTest {
 
                 PostSaveDto saveDto = PostSaveDto.builder()
                             .memberId(sessionMember.getMemberId())
-                            .boardId(99L)
+                            .boardId(NOTICE_BOARD_ID)
                             .postHead(TEST_POST_HEAD)
                             .postTitle(TEST_POST_TITLE)
                             .postContent(TEST_POST_CONTENT)
@@ -290,10 +290,10 @@ public class BoardServiceImplTest {
             @DisplayName("등록되어있는 전체 게시글을 조회한다.")
             void post_select_post_test(){
                 //when
-                List<PostListDto> postListDtoList = boardService.findPosts(99L);
+                List<PostListDto> postListDtoList = boardService.findPosts(NOTICE_BOARD_ID);
 
                 //then
-                Assertions.assertEquals(3, postListDtoList.size());
+                Assertions.assertEquals(4, postListDtoList.size());
 
             }
         }
