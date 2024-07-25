@@ -68,6 +68,7 @@ public class BoardServiceImplTest {
                         .useYn(useYn)
                         .readRole(READ_ROLE)
                         .writeRole(WRITE_ROLE)
+                        .depth(1)
                         .attachmentAllowYn(attachmentAllowYn)
                         .build();
 
@@ -107,13 +108,14 @@ public class BoardServiceImplTest {
 
             @BeforeEach
             void beforeEach(){
-                boolean useYn = false;
+                boolean useYn = true;
                 boolean attachmentAllowYn = true;
                 BoardSaveDto dto1 = BoardSaveDto.builder()
                         .boardName(BOARD_NAME_1)
                         .useYn(useYn)
                         .readRole(READ_ROLE)
                         .writeRole(WRITE_ROLE)
+                        .depth(1)
                         .attachmentAllowYn(attachmentAllowYn)
                         .build();
 
@@ -122,6 +124,7 @@ public class BoardServiceImplTest {
                         .useYn(useYn)
                         .readRole(READ_ROLE)
                         .writeRole(WRITE_ROLE)
+                        .depth(1)
                         .attachmentAllowYn(attachmentAllowYn)
                         .build();
 
@@ -134,7 +137,7 @@ public class BoardServiceImplTest {
             public void board_select_all_test(){
                 List<BoardListDto> boardList =  boardService.findBoards();
 
-                Assertions.assertEquals(4, boardList.size());
+                Assertions.assertEquals(7, boardList.size());
                 Assertions.assertEquals(BOARD_NAME_1, boardList.get(0).getBoardName());
                 Assertions.assertEquals(BOARD_NAME_2, boardList.get(1).getBoardName());
 
@@ -148,6 +151,7 @@ public class BoardServiceImplTest {
                         .useYn(true)
                         .readRole(READ_ROLE)
                         .writeRole(WRITE_ROLE)
+                        .depth(1)
                         .attachmentAllowYn(true)
                         .build();
 

@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
 
@@ -34,6 +35,7 @@ public class Board {
     private boolean attachmentAllowYn;
 
     @Column
+    @ColumnDefault("1")
     private Integer depth;
 
     @Column

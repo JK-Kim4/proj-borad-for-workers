@@ -46,7 +46,7 @@ public class BoardRepository {
     }
 
     public List<Board> findBoards(){
-        String query = "select b from Board b where b.useYn = TRUE AND b.depth = 1";
+        String query = "select b from Board b where b.useYn = TRUE AND b.depth = 1 order by b.id";
 
         return em.createQuery(query, Board.class)
                 .getResultList();
