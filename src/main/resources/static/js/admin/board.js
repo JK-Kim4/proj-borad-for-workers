@@ -178,7 +178,8 @@ let main = {
             method: "GET",
             data: {
                 pageNum: pageNum,
-                pageSize: pageSize
+                pageSize: pageSize,
+                type: "admin"
             },
             contentType: "application/json; charset=utf-8",
             success: function (result){

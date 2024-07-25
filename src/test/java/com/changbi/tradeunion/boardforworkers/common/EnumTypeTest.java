@@ -24,8 +24,7 @@ public class EnumTypeTest {
     @Test @Transactional
     @DisplayName("사용자 권한 확인")
     void member_read_role_check(){
-        List<Board> boardListDtoList = boardRepository.findBoards();
-        System.out.println(boardListDtoList.size());
+        List<Board> boardListDtoList = boardRepository.findBoardsForClient();
         Board board = boardListDtoList.get(0);
 
         BoardDetailDto boardDetailDto = BoardDetailDto.builder().board(board).build();

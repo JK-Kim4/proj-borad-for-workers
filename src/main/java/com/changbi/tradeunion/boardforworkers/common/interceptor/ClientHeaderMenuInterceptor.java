@@ -29,7 +29,7 @@ public class ClientHeaderMenuInterceptor implements HandlerInterceptor {
         if(headers != null && headers.size() > 0) {
             return true;
         }else{
-            headers = boardService.findBoards();
+            headers = boardService.findBoardsForClient();
             session.setAttribute("headers", headers);
             return true;
         }

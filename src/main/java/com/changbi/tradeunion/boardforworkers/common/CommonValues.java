@@ -3,8 +3,10 @@ package com.changbi.tradeunion.boardforworkers.common;
 public class CommonValues {
 
     public static final String SERVICE_TYPE_CLIENT = "CLIENT";
+    public static final String SERVICE_TYPE_ADMIN = "ADMIN";
     public static final String BOARD_TYPE_COMPANY = "COMPANY";
     public static final String BOARD_TYPE_DEPARTMENT = "DEPARTMENT";
+
 
     public static final String PROCESS_TYPE_ACCEPT = "ACCEPT";
     public static final String PROCESS_TYPE_DECLINE = "DECLINE";

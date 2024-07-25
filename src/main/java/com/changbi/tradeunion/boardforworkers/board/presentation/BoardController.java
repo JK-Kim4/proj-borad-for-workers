@@ -90,12 +90,14 @@ public class BoardController {
     @GetMapping("/boards")
     public ResponseEntity<ResultDto> findBoards(
             @RequestParam(name = "pageNum", required = false) Integer pageNum,
-            @RequestParam(name = "pageSize", required = false) Integer pageSize){
+            @RequestParam(name = "pageSize", required = false) Integer pageSize,
+            @RequestParam(name = "type", required = false) String type){
 
         return ResponseEntity.ok(ResultDto.builder()
                         .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
                         .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
-                        .data(boardService.findBoards())
+                        .data(CommonValues.SERVICE_TYPE_ADMIN.equalsIgnoreCase(type)
+                                ? boardService.findBoards() : boardService.findBoardsForClient())
                 .build());
     }
 

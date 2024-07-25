@@ -64,8 +64,31 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public List<BoardListDto> findBoards() {
-
         List<BoardListDto> boardListDtoList = boardRepository.findBoards().stream()
+                .map(board -> BoardListDto
+                        .builder()
+                        .board(board)
+                        .build())
+                .toList();
+
+        for(BoardListDto boardListDto : boardListDtoList){
+            List<Board> childBoardList = boardRepository.findChildBoardList(boardListDto.getBoardId());
+            if(childBoardList != null && !childBoardList.isEmpty()){
+                boardListDto.setChildBoardList(childBoardList.stream()
+                        .map(board -> BoardListDto.builder()
+                                .board(board)
+                                .build())
+                        .toList());
+            }
+        }
+
+        return boardListDtoList;
+    }
+
+    @Override
+    public List<BoardListDto> findBoardsForClient() {
+
+        List<BoardListDto> boardListDtoList = boardRepository.findBoardsForClient().stream()
                 .map(board -> BoardListDto
                         .builder()
                         .board(board)
