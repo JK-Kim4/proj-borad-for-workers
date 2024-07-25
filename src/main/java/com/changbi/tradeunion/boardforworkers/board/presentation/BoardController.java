@@ -125,6 +125,7 @@ public class BoardController {
                         .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
                         .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
                         .data(boardService.findPosts(boardId, pagination))
+                        .pagination(pagination)
                 .build());
     }
 
@@ -149,9 +150,10 @@ public class BoardController {
         Pagination pagination = boardService.getPostPagingInfo(pageNum, pageSize);
 
         return ResponseEntity.ok(ResultDto.builder()
-                .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
-                .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
-                .data(boardService.findPostsForClient(boardId, pagination))
+                        .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
+                        .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
+                        .data(boardService.findPostsForClient(boardId, pagination))
+                        .pagination(pagination)
                 .build());
     }
 
