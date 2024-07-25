@@ -1,6 +1,7 @@
 package com.changbi.tradeunion.boardforworkers.board.application;
 
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.*;
+import com.changbi.tradeunion.boardforworkers.common.dto.Pagination;
 
 import java.util.List;
 
@@ -22,7 +23,9 @@ public interface BoardService {
 
     public List<BoardListDto> findBoardsForClient();
 
-    public List<PostListDto> findPosts(Long boardId);
+    public List<PostListDto> findPosts(Long boardId, Pagination pagination);
+
+    public List<PostListDto> findPostsForClient(Long boardId, Pagination pagination);
 
     public List<PostListDto> findPostsByMemberId(Long memberId);
 
@@ -38,7 +41,7 @@ public interface BoardService {
 
     public BoardDetailDto findByBoardName(String boardName);
 
-    public List<PostListDto> findPostsForClients(Long boardId);
-
     public int updatePostRecommendCount(Long postId);
+
+    Pagination getPostPagingInfo(Integer pageNum, Integer pageSize);
 }

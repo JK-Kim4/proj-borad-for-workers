@@ -173,10 +173,14 @@ let main = {
 
         return postData;
     },
-    findBoardPostsForClients: function (boardId){
+    findBoardPostsForClients: function (boardId, pageNum, pageSize){
         $.ajax({
             url: "/api/board/client/"+boardId+"/posts",
             method: "GET",
+            data: {
+                pageNum : pageNum,
+                pageSize : pageSize
+            },
             contentType: "application/json; charset=utf-8",
             success: function (result){
                 let html = "";

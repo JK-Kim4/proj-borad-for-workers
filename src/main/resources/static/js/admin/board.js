@@ -252,10 +252,14 @@ let main = {
             }
         });
     },
-    findPosts: function (pageNum, pageSize,boardId){
+    findPosts: function (boardId, pageNum, pageSize){
         $.ajax({
             url: "/api/board/"+boardId+"/posts",
             method: "GET",
+            data: {
+                pageNum: pageNum,
+                pageSize: pageSize
+            },
             contentType: "application/json; charset=utf-8;",
             success: function (result){
                 let html = "";

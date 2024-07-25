@@ -4,6 +4,7 @@ import com.changbi.tradeunion.boardforworkers.board.application.BoardServiceImpl
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.BoardSaveDto;
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostSaveDto;
 import com.changbi.tradeunion.boardforworkers.common.CommonValues;
+import com.changbi.tradeunion.boardforworkers.common.dto.Pagination;
 import com.changbi.tradeunion.boardforworkers.common.dto.ResultDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -114,12 +115,16 @@ public class BoardController {
 
     @GetMapping("/{boardId}/posts")
     public ResponseEntity<ResultDto> findBoardPosts(
-            @PathVariable(name = "boardId") Long boardId){
+            @PathVariable(name = "boardId") Long boardId,
+            @RequestParam(name = "pageNum") Integer pageNum,
+            @RequestParam(name = "pageSize") Integer pageSize){
+
+        Pagination pagination = boardService.getPostPagingInfo(pageNum, pageSize);
 
         return ResponseEntity.ok(ResultDto.builder()
                         .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
                         .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
-                        .data(boardService.findPosts(boardId))
+                        .data(boardService.findPosts(boardId, pagination))
                 .build());
     }
 
@@ -137,12 +142,16 @@ public class BoardController {
 
     @GetMapping("/client/{boardId}/posts")
     public ResponseEntity<ResultDto> findBoardPostsForClients(
-            @PathVariable(name = "boardId") Long boardId){
+            @PathVariable(name = "boardId") Long boardId,
+            @RequestParam(name = "pageNum") Integer pageNum,
+            @RequestParam(name = "pageSize") Integer pageSize){
+
+        Pagination pagination = boardService.getPostPagingInfo(pageNum, pageSize);
 
         return ResponseEntity.ok(ResultDto.builder()
                 .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
                 .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
-                .data(boardService.findPostsForClients(boardId))
+                .data(boardService.findPostsForClient(boardId, pagination))
                 .build());
     }
 

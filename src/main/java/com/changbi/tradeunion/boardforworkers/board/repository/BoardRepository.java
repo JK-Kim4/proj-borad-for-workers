@@ -8,6 +8,7 @@ import com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostListDto
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostSaveDto;
 import com.changbi.tradeunion.boardforworkers.common.CommonValues;
 import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.PostHead;
+import com.changbi.tradeunion.boardforworkers.common.dto.Pagination;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
@@ -76,7 +77,7 @@ public class BoardRepository {
                 .getResultList();
     }
 
-    public List<PostListDto> findPostsForClients(Long boardId) {
+    public List<PostListDto> findPostsForClient(Long boardId, Pagination pagination) {
         String query =  "select " +
                             "new com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostListDto" +
                             "(" +
@@ -88,12 +89,14 @@ public class BoardRepository {
                         "from Post p " +
                         "left outer join Member m on p.memberId = m.id " +
                         "left outer join Board b on p.boardId = b.id " +
-                        "where (p.memberId = :sessionMemberId or p.useYn = true) " +
+                        "where p.useYn = true " +
                         "and p.boardId = :boardId " +
                         "order by p.appendDate desc";
 
         return em.createQuery(query, PostListDto.class)
                 .setParameter("boardId", boardId)
+                .setFirstResult(pagination.getPageNum() * pagination.getPageSize())
+                .setMaxResults(pagination.getPageSize())
                 .getResultList();
     }
 
@@ -240,4 +243,12 @@ public class BoardRepository {
                 .setParameter("memberId", memberId)
                 .getResultList();
     }
+
+    public Long getPostTotalCount() {
+        String query = "select count(*) from Post p where p.useYn = true";
+
+        return em.createQuery(query, Long.class).getSingleResult();
+    }
+
+
 }

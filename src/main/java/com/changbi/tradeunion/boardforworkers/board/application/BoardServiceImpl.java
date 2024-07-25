@@ -6,6 +6,7 @@ import com.changbi.tradeunion.boardforworkers.board.exception.BoardDuplicationEx
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.*;
 import com.changbi.tradeunion.boardforworkers.board.repository.BoardRepository;
 import com.changbi.tradeunion.boardforworkers.common.CommonValues;
+import com.changbi.tradeunion.boardforworkers.common.dto.Pagination;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -110,18 +111,18 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public List<PostListDto> findPosts(Long boardId) {
+    public List<PostListDto> findPosts(Long boardId, Pagination pagination) {
         return boardRepository.findPosts(boardId);
+    }
+
+    @Override
+    public List<PostListDto> findPostsForClient(Long boardId, Pagination pagination) {
+        return boardRepository.findPostsForClient(boardId, pagination);
     }
 
     @Override
     public List<PostListDto> findPostsByMemberId(Long memberId) {
         return boardRepository.findPostsByMemberId(memberId);
-    }
-
-    @Override
-    public List<PostListDto> findPostsForClients(Long boardId) {
-        return boardRepository.findPostsForClients(boardId);
     }
 
     @Override
@@ -178,6 +179,15 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public int updatePostRecommendCount(Long postId) {
         return boardRepository.updatePostRecommendCount(postId);
+    }
+
+    @Override
+    public Pagination getPostPagingInfo(Integer pageNum, Integer pageSize) {
+        return Pagination.builder()
+                .pageNum(pageNum)
+                .pageSize(pageSize)
+                .totalCount(boardRepository.getPostTotalCount())
+                .build();
     }
 
     /*private method*/
