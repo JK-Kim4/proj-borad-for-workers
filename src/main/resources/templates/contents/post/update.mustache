@@ -10,9 +10,10 @@
         </div>
     </div>
 
-    <h3 class="my-3">새 글 쓰기</h3>
+    <h3 class="my-3">게시글 수정</h3>
     <hr class="my-4">
     <input type="hidden" id="boardId" value="{{boardId}}">
+    <input type="hidden" id="postId" value="{{postId}}">
     <input type="hidden" id="memberId" value="{{member.memberId}}">
     <div class="row d-flex justify-content-center">
         <div class="row mb-4">
@@ -109,6 +110,12 @@
 
 
         $(document).ready(function (){
+            let postId = $("#postId").val();
+            let postData = main.findPostById(postId);
+
+            console.log(postData);
+
+
             let boardId = $("#boardId").val();
             let boardDetail = main.findBoardById(boardId);
             $("#boardNameIndicator").val(boardDetail.boardName);

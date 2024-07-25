@@ -64,16 +64,28 @@ public class BoardRouter {
             HttpSession session,
             Model model) {
 
-        //읽기 권한 확인
-        SessionMember member = (SessionMember) session.getAttribute("member");
-        BoardDetailDto boardDetailDto = boardService.findById(boardId);
+        model.addAttribute("postId", postId);
+        return "contents/post/detail";
+    }
 
-        if(EnumUtility.isQualifiedRole(member.getRole(), boardDetailDto.getReadRole())){
+    @GetMapping("/{boardId}/post/update/{postId}")
+    public String postUpdatePage(
+            @PathVariable(name = "postId") Long postId,
+            @PathVariable(name = "boardId") Long boardId,
+            HttpSession session, Model model) {
+
+        //글쓴이 로그인 여부 확인
+        SessionMember member = (SessionMember) session.getAttribute("member");
+        Long authorId = boardService.findAuthorIdByPostId(postId);
+
+        if(member.getMemberId().equals(authorId)){
             model.addAttribute("postId", postId);
-            return "contents/post/detail";
+            model.addAttribute("boardId", boardId);
+            return "contents/post/update";
         }else{
             return "error/403";
         }
     }
+
 
 }

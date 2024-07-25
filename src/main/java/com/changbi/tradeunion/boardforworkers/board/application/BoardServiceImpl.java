@@ -128,6 +128,11 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
+    public Long findAuthorIdByPostId(Long postId) {
+        return boardRepository.findAuthorIdByPostId(postId);
+    }
+
+    @Override
     public PostDetailDto findMostRecentNoticePost() {
         return boardRepository.findMostRecentNoticePost();
     }

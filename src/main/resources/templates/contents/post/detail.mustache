@@ -48,10 +48,10 @@
 
         <div class="row d-flex justify-content-end">
             <div class="col-auto">
-                <button class="btn btn-outline-dark" onclick="history.back();">뒤로 가기</button>
+                <button class="btn btn-outline-dark" id="goToPostListButton">목록으로</button>
             </div>
-            <div class="col-auto">
-                <button class="btn btn-primary" id="postUpdateButton">수정하기</button>
+            <div class="col-auto" id="postUpdateButtonDiv">
+
             </div>
         </div>
     </div>
@@ -63,7 +63,8 @@
     <script type="application/javascript">
         $(document).ready(function (){
             let postId = $("#postId").val();
-            main.findPostById(postId);
+            let postData = main.findPostById(postId);
+            main.renderPostDetailPage(postData);
         });
     </script>
 </main>

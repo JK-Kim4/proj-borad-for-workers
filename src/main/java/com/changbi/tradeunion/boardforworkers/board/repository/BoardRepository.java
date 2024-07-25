@@ -198,4 +198,12 @@ public class BoardRepository {
 
         return em.createQuery(query, PostDetailDto.class).getSingleResult();
     }
+
+    public Long findAuthorIdByPostId(Long postId) {
+        String query = "select p.memberId From Post p where p.id = :postId";
+
+        return em.createQuery(query, Long.class)
+                .setParameter("postId", postId)
+                .getSingleResult();
+    }
 }

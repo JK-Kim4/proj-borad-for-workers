@@ -26,6 +26,8 @@ public interface BoardService {
 
     public PostDetailDto findPostById(Long postId, String type);
 
+    public Long findAuthorIdByPostId(Long postId);
+
     public PostDetailDto findMostRecentNoticePost();
 
     public PostDetailDto findMostPopularPost();

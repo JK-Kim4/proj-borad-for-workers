@@ -25,11 +25,22 @@ let main = {
             main.updatePostRecommendCount(postId);
         });
 
+        $("#goToPostListButton").on("click", function (){
+            let boardId = $("#boardId").val();
+            location.href = "/board/"+boardId+"/post/list";
+        })
+
         $(document).on("click", ".post-list-content", function (){
             let postId = $(this).data("post-id");
             let boardId = $("#boardId").val();
             location.href = "/board/"+boardId+"/post/detail/"+postId;
-        })
+        });
+
+        $(document).on("click", "#postUpdateButton", function (){
+            let postId = $(this).data("post-id");
+            let boardId = $("#boardId").val()
+            location.href = "/board/"+boardId+"/post/update/"+postId;
+        });
     },
     savePost: function (jsonData, boardId){
 
@@ -46,8 +57,6 @@ let main = {
                     alert(result.resultMessage);
                     location.reload();
                 }
-
-
             },
             error: function (x,h,r){
                 console.error(x)
@@ -77,27 +86,19 @@ let main = {
         return boardDetail;
     },
     findPostById: function (postId){
+        let postData = {};
+
         $.ajax({
             url: "/api/board/post/"+postId,
             method: "GET",
             data: {
                 type: "client"
             },
+            async: false,
             contentType: "application/json; charset=utf-8",
             success: function (result){
                 if(RESULT_CODE.SUCCESS_DEFAULT === result.resultCode){
-                    let data = result.data;
-
-                    $("#postTitle").html(main.getPostHeadBadge(data.postHead) +" "+ data.postTitle);
-                    $("#postAuthor").html(data.memberNickName + " ("+ data.memberRealName + ")");
-                    $("#postContent").html(data.postContent);
-
-                    $("#readCount").html("조회수: "+data.readCount);
-                    $("#recommendButton").html("추천 " + data.recommendCount);
-
-                    $("#boardId").val(data.boardId)
-                    $("#memberId").val(data.memberId)
-                    console.log(data);
+                    postData = result.data;
                 }
             },
             error: function (x,h,r){
@@ -105,6 +106,8 @@ let main = {
                 alert(RESULT_MESSAGE.FAIL_SYSTEM);
             }
         });
+
+        return postData;
     },
     findBoardPostsForClients: function (boardId){
         $.ajax({
@@ -159,6 +162,29 @@ let main = {
                 return;
             }
         })
+    },
+    addUpdateButton: function (postId){
+        let html = "<button class='btn btn-success' id='postUpdateButton' data-post-id='"+postId+"'>수정</button>";
+
+        $("#postUpdateButtonDiv").html(html);
+    },
+    renderPostDetailPage: function (data){
+        $("#postTitle").html(main.getPostHeadBadge(data.postHead) +" "+ data.postTitle);
+        $("#postAuthor").html(data.memberNickName + " ("+ data.memberRealName + ")");
+        $("#postContent").html(data.postContent);
+
+        $("#readCount").html("조회수: "+data.readCount);
+        $("#recommendButton").html("추천 " + data.recommendCount);
+
+        $("#boardId").val(data.boardId)
+        $("#memberId").val(data.memberId)
+
+        if(data.memberId == $("#sessionMemberId").val()){
+            main.addUpdateButton(data.postId);
+        }
+    },
+    renderPostUpdatePage: function (data){
+
     },
     getPostHeadBadge: function (postHead){
         let badge = "";

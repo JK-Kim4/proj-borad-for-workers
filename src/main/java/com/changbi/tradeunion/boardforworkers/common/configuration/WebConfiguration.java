@@ -21,9 +21,11 @@ public class WebConfiguration implements WebMvcConfigurer {
                 .excludePathPatterns("/admin/**/**")
                 .addPathPatterns("/**");
 
+
+        /*TODO 페이지 읽기 권한 기능 협의 필요 사
         registry.addInterceptor(privateBoardAccessInterceptor)
                 .order(2)
-                .addPathPatterns("/board/private/**");
+                .addPathPatterns("/board/private/**");*/
     }
 
 
