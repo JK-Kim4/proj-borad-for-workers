@@ -1,6 +1,7 @@
 package com.changbi.tradeunion.boardforworkers.report.domain;
 
 import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.ReportStatus;
+import com.changbi.tradeunion.boardforworkers.report.presentation.dto.ReportSaveDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -47,7 +48,28 @@ public class Report {
         this.reportStatus = ReportStatus.valueOf(reportStatus);
         this.reportDescription = reportDescription;
         this.memberId = memberId;
+        this.appendDate = LocalDateTime.now();
+        this.updateDate = LocalDateTime.now();
 
     }
 
+    public void updateDescription(ReportSaveDto dto) {
+        this.reportDescription = dto.getReportDescription();
+        this.updateDate = LocalDateTime.now();
+    }
+
+    public void allocateInChargeAdmin(Long adminId){
+        this.inChargeAdminId = adminId;
+        this.updateDate = LocalDateTime.now();
+    }
+
+    public void updateReportStatus(String reportStatus){
+        this.reportStatus = ReportStatus.valueOf(reportStatus);
+        this.updateDate = LocalDateTime.now();
+    }
+
+    public void updateReasonForResult(String reasonForResult){
+        this.reasonForResult = reasonForResult;
+        this.updateDate = LocalDateTime.now();
+    }
 }

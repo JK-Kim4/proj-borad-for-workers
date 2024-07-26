@@ -1,44 +1,68 @@
 package com.changbi.tradeunion.boardforworkers.report.application;
 
+import com.changbi.tradeunion.boardforworkers.report.domain.Report;
+import com.changbi.tradeunion.boardforworkers.report.presentation.dto.ReportResponseDto;
 import com.changbi.tradeunion.boardforworkers.report.presentation.dto.ReportSaveDto;
+import com.changbi.tradeunion.boardforworkers.report.repository.ReportRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @Transactional(readOnly = false)
 @RequiredArgsConstructor
 public class ReportServiceImpl implements ReportService {
 
-    @Override
-    public void save(ReportSaveDto dto) {
+    private final ReportRepository reportRepository;
 
+    @Override
+    public Long save(ReportSaveDto dto) {
+        Report report = dto.toEntity();
+        return reportRepository.save(report);
     }
 
     @Override
-    public void update(ReportSaveDto dto) {
-
+    public void updateDescription(ReportSaveDto dto) {
+        Report report = reportRepository.findById(dto.getReportId());
+        report.updateDescription(dto);
     }
 
     @Override
-    public void delete(ReportSaveDto dto) {
-
+    public void delete(Long reportId) {
+        reportRepository.delete(reportId);
     }
 
     @Override
-    public Long allocateInChargeAdmin(Long reportId, Long adminId) {
-        return 0l;
+    public ReportResponseDto findById(Long reportId) {
+        return reportRepository.findResponseDtoById(reportId);
+    }
+
+    @Override
+    public List<ReportResponseDto> findAll() {
+        return reportRepository.findReports();
+    }
+
+    @Override
+    public LocalDateTime allocateInChargeAdmin(Long reportId, Long adminId) {
+        Report report = reportRepository.findById(reportId);
+        report.allocateInChargeAdmin(adminId);
+        return report.getUpdateDate();
     }
 
     @Override
     public LocalDateTime updateReportStatus(Long reportId, String reportStatus) {
-        return null;
+        Report report = reportRepository.findById(reportId);
+        report.updateReportStatus(reportStatus);
+        return report.getUpdateDate();
     }
 
     @Override
     public LocalDateTime registerReportReason(Long reportId, String reason) {
-        return null;
+        Report report = reportRepository.findById(reportId);
+        report.updateReasonForResult(reason);
+        return report.getUpdateDate();
     }
 }

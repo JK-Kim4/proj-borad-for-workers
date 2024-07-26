@@ -1,5 +1,8 @@
 package com.changbi.tradeunion.boardforworkers.common.domain.enum_type;
 
+import lombok.Getter;
+
+@Getter
 public enum ReportStatus {
 
     PROPOSE("접수"),

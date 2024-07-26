@@ -1,18 +1,24 @@
 package com.changbi.tradeunion.boardforworkers.report.application;
 
+import com.changbi.tradeunion.boardforworkers.report.presentation.dto.ReportResponseDto;
 import com.changbi.tradeunion.boardforworkers.report.presentation.dto.ReportSaveDto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public interface ReportService {
 
-    void save(ReportSaveDto dto);
+    Long save(ReportSaveDto dto);
 
-    void update(ReportSaveDto dto);
+    void updateDescription(ReportSaveDto dto);
 
-    void delete(ReportSaveDto dto);
+    void delete(Long reportId);
 
-    Long allocateInChargeAdmin(Long reportId, Long adminId);
+    ReportResponseDto findById(Long id);
+
+    List<ReportResponseDto> findAll();
+
+    LocalDateTime allocateInChargeAdmin(Long reportId, Long adminId);
 
     LocalDateTime updateReportStatus(Long reportId, String reportStatus);
 
