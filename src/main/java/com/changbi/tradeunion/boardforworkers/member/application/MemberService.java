@@ -41,4 +41,6 @@ public interface MemberService {
     void memberLogout(HttpSession session);
 
     void sendAuthNumber(HashMap authNumber);
+
+    Pagination getMemberPagingInfo(Integer pageNum, Integer pageSize);
 }

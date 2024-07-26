@@ -82,4 +82,10 @@ public class MemberRepository {
                 .setParameter("memberEmail", memberEmail)
                 .getSingleResult();
     }
+
+    public Long getMemberTotalCount() {
+        String query = "select count(*) from Member m";
+
+        return em.createQuery(query, Long.class).getSingleResult();
+    }
 }

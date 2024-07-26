@@ -139,6 +139,7 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
     @Transactional(readOnly = true)
     @Override
     public List<MemberListDto> findMembers(Pagination pagination) {
+
         return memberRepository.findMembers(pagination)
                 .stream()
                 .map(member -> MemberListDto.builder()
@@ -210,6 +211,15 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
     public void memberLogout(HttpSession session) {
         session.removeAttribute("member");
         session.invalidate();
+    }
+
+    @Override
+    public Pagination getMemberPagingInfo(Integer pageNum, Integer pageSize) {
+        return Pagination.builder()
+                .pageNum(pageNum)
+                .pageSize(pageSize)
+                .totalCount(memberRepository.getMemberTotalCount())
+                .build();
     }
 
     /*PRIVATE METHODS*/

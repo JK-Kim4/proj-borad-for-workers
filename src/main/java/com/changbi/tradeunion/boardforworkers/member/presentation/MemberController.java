@@ -63,11 +63,7 @@ public class MemberController {
     public ResponseEntity<ResultDto> findMembers(
             @NotNull @RequestParam(name = "pageNum") Integer pageNum,
             @NotNull @RequestParam(name = "pageSize") Integer pageSize){
-        Pagination pagination = Pagination.builder()
-                                                .pageNum(pageNum)
-                                                .pageSize(pageSize)
-                                            .build();
-
+        Pagination pagination = memberService.getMemberPagingInfo(pageNum, pageSize);
         ResultDto resultDto =
                 ResultDto.builder()
                     .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)

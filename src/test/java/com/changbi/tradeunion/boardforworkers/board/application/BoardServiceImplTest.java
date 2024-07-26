@@ -2,8 +2,10 @@ package com.changbi.tradeunion.boardforworkers.board.application;
 
 import com.changbi.tradeunion.boardforworkers.board.exception.BoardDuplicationException;
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.*;
+import com.changbi.tradeunion.boardforworkers.board.repository.BoardRepository;
 import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.Company;
 import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.PostHead;
+import com.changbi.tradeunion.boardforworkers.common.dto.Pagination;
 import com.changbi.tradeunion.boardforworkers.member.application.MemberServiceImpl;
 import com.changbi.tradeunion.boardforworkers.member.presentation.dto.LoginInformation;
 import com.changbi.tradeunion.boardforworkers.member.presentation.dto.SessionMember;
@@ -19,6 +21,9 @@ import java.util.List;
 @SpringBootTest
 @ActiveProfiles("loc")
 public class BoardServiceImplTest {
+
+    @Autowired
+    BoardRepository boardRepository;
 
     @Autowired
     BoardServiceImpl boardService;
@@ -294,7 +299,8 @@ public class BoardServiceImplTest {
             @DisplayName("등록되어있는 전체 게시글을 조회한다.")
             void post_select_post_test(){
                 //when
-                List<PostListDto> postListDtoList = boardService.findPosts(NOTICE_BOARD_ID);
+                Pagination pagination = boardService.getPostPagingInfo(0, 20);
+                List<PostListDto> postListDtoList = boardService.findPosts(NOTICE_BOARD_ID, pagination);
 
                 //then
                 Assertions.assertEquals(4, postListDtoList.size());

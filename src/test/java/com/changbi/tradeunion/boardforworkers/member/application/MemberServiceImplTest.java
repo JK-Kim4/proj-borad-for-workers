@@ -29,7 +29,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@ActiveProfiles("dev")
+@ActiveProfiles("loc")
 class MemberServiceImplTest {
 
     @Autowired
@@ -223,7 +223,7 @@ class MemberServiceImplTest {
             @DisplayName("등록된 회원 정보를 모두 조회한다.")
             public void member_select_all(){
                 //given
-                Pagination pagination = Pagination.builder().pageNum(0).pageSize(10).build();
+                Pagination pagination = memberService.getMemberPagingInfo(0,20);
                 //when
                 List<MemberListDto> memberList = memberService.findMembers(pagination);
                 //then
