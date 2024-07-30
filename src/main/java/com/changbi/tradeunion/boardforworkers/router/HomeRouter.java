@@ -18,6 +18,11 @@ public class HomeRouter {
         return "contents/about";
     }
 
+    @GetMapping("/report")
+    public String reportPage(){
+        return "contents/report/index";
+    }
+
     @GetMapping("/global-error")
     public String errorPage() throws Exception{
 

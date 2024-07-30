@@ -9,36 +9,22 @@
     <title>Blog Template · Bootstrap v5.0</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/blog/">
+    <link rel="stylesheet" href="/css/common.css">
 
     <!-- Bootstrap core CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
     <!-- JQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-
     <!-- Favicons -->
 
-
-    <style>
-        .bd-placeholder-img {
-            font-size: 1.125rem;
-            text-anchor: middle;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            user-select: none;
-        }
-
-        @media (min-width: 768px) {
-            .bd-placeholder-img-lg {
-                font-size: 3.5rem;
-            }
-        }
-    </style>
-
-
     <!-- Custom styles for this template -->
-    <link href="https://fonts.googleapis.com/css?family=Playfair&#43;Display:700,900&amp;display=swap" rel="stylesheet">
+    <!--<link href="https://fonts.googleapis.com/css?family=Playfair&#43;Display:700,900&amp;display=swap" rel="stylesheet">-->
     <!-- Custom styles for this template -->
+    <link href="/css/common.css" rel="stylesheet">
     <link href="/css/blog.css" rel="stylesheet">
 </head>
 <body>
@@ -71,7 +57,7 @@
         </div>
     </header>
 
-    <nav class="nav m-1 d-flex justify-content-center">
+    <nav class="nav mt-3 d-flex justify-content-center">
         <div>
             <a class="p-3 link-secondary" href="/about" style="font-size: 20px;"> 소개 </a>
         </div>
@@ -100,6 +86,11 @@
             {{^headers}}
                 생성된 게시판이 없습니다.
             {{/headers}}
+            <div>
+                <a class="p-3 link-secondary" style="font-size: 20px;" href="/report">
+                    의견 보내기
+                </a>
+            </div>
         </nav>
     </div>
 <script>
