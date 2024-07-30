@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Report {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "report_id")
     private Long id;
 
@@ -26,6 +26,9 @@ public class Report {
 
     @Column
     private String reasonForResult;
+
+    @Column
+    private boolean isAnonymous;
 
     @Column
     private Long memberId;
@@ -43,10 +46,11 @@ public class Report {
     public Report(
             String reportStatus,
             String reportDescription,
-            Long memberId){
+            boolean isAnonymous, Long memberId){
 
         this.reportStatus = ReportStatus.valueOf(reportStatus);
         this.reportDescription = reportDescription;
+        this.isAnonymous = isAnonymous;
         this.memberId = memberId;
         this.appendDate = LocalDateTime.now();
         this.updateDate = LocalDateTime.now();

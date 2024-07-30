@@ -46,6 +46,11 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
+    public List<ReportResponseDto> findByMemberId(Long memberId) {
+        return reportRepository.findReportsByMemberId(memberId);
+    }
+
+    @Override
     public LocalDateTime allocateInChargeAdmin(Long reportId, Long adminId) {
         Report report = reportRepository.findById(reportId);
         report.allocateInChargeAdmin(adminId);

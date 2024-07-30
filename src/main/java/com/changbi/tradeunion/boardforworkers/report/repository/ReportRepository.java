@@ -4,6 +4,7 @@ import com.changbi.tradeunion.boardforworkers.report.domain.Report;
 import com.changbi.tradeunion.boardforworkers.report.presentation.dto.ReportResponseDto;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -45,5 +46,23 @@ public class ReportRepository {
                             "new com.changbi.tradeunion.boardforworkers.report.presentation.dto.ReportResponseDto(r) " +
                         "from Report r";
         return em.createQuery(query, ReportResponseDto.class).getResultList();
+    }
+
+    public List<ReportResponseDto> findReportsByMemberId(Long memberId){
+        String query = "select " +
+                            "new com.changbi.tradeunion.boardforworkers.report.presentation.dto.ReportResponseDto(r) " +
+                        "from Report r ";
+
+        if(memberId != null){
+            query += "where r.memberId = :memberId";
+        }
+
+        TypedQuery<ReportResponseDto> typedQuery = em.createQuery(query, ReportResponseDto.class);
+
+        if(memberId != null){
+            typedQuery.setParameter("memberId", memberId);
+        }
+
+        return typedQuery.getResultList();
     }
 }

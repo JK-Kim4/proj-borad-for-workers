@@ -16,6 +16,7 @@ public class ReportResponseDto {
     private String reportStatus;
     private String reportDescription;
     private String reasonForResult;
+    private boolean isAnonymous;
     private Long memberId;
     private Long inChargeAdminId;
     private LocalDateTime appendDate;
@@ -27,6 +28,7 @@ public class ReportResponseDto {
         this.reportStatus = report.getReportStatus().getValue();
         this.reportDescription = report.getReportDescription();
         this.reasonForResult = report.getReasonForResult();
+        this.isAnonymous = report.isAnonymous();
         this.memberId = report.getMemberId();
         this.inChargeAdminId = report.getInChargeAdminId();
         this.appendDate = report.getAppendDate();

@@ -18,6 +18,8 @@ public interface ReportService {
 
     List<ReportResponseDto> findAll();
 
+    List<ReportResponseDto> findByMemberId(Long memberId);
+
     LocalDateTime allocateInChargeAdmin(Long reportId, Long adminId);
 
     LocalDateTime updateReportStatus(Long reportId, String reportStatus);

@@ -5,8 +5,8 @@ import lombok.Getter;
 @Getter
 public enum ReportStatus {
 
-    PROPOSE("접수"),
-    ACCEPT("승인"),
+    REGISTRATION("접수"),
+    INPROCESS("처리중"),
     REFUSE("반려"),
     PASS("처리 완료");
 
