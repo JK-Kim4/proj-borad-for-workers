@@ -21,7 +21,7 @@ public class ReportServiceTest {
 
     final String TEST_REPORT_DESCRIPTION = "테스트 리포트입니다.";
     final Long TEST_REPORT_MEMBER_ID = 1L;
-    final String TEST_REPORT_STATUS = ReportStatus.PROPOSE.name();
+    final String TEST_REPORT_STATUS = ReportStatus.PASS.name();
 
     @Nested
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -54,7 +54,7 @@ public class ReportServiceTest {
 
             final String FIND_REPORT_DESCRIPTION = "아이디로 리포트 찾기";
             final Long FIND_REPORT_MEMBER_ID = 99l;
-            final String FIND_REPORT_STATUS = ReportStatus.ACCEPT.name();
+            final String FIND_REPORT_STATUS = ReportStatus.REGISTRATION.name();
             Long reportId;
 
             @BeforeEach
@@ -103,12 +103,12 @@ public class ReportServiceTest {
 
             final String FIND_REPORT_DESCRIPTION = "아이디로 리포트 찾기";
             final Long FIND_REPORT_MEMBER_ID = 99l;
-            final String FIND_REPORT_STATUS = ReportStatus.ACCEPT.name();
+            final String FIND_REPORT_STATUS = ReportStatus.REGISTRATION.name();
             Long reportId;
 
             final Long UPDATE_ADMIN_ID = 90l;
             final String UPDATE_REPORT_DESCRIPTION = "";
-            final String UPDATE_REPORT_STATUS = ReportStatus.REFUSE.name();
+            final String UPDATE_REPORT_STATUS = ReportStatus.REGISTRATION.name();
 
             @BeforeEach
             void beforeEach(){

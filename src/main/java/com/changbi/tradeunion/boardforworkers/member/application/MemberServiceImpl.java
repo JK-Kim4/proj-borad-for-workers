@@ -2,7 +2,9 @@ package com.changbi.tradeunion.boardforworkers.member.application;
 
 import com.changbi.tradeunion.boardforworkers.common.CommonValues;
 import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.Role;
+import com.changbi.tradeunion.boardforworkers.common.dto.MailSenderDto;
 import com.changbi.tradeunion.boardforworkers.common.dto.Pagination;
+import com.changbi.tradeunion.boardforworkers.common.utility.ChangbiMailSender;
 import com.changbi.tradeunion.boardforworkers.member.domain.Member;
 import com.changbi.tradeunion.boardforworkers.member.domain.MemberDetail;
 import com.changbi.tradeunion.boardforworkers.member.domain.PreMember;
@@ -37,6 +39,7 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
     private final Logger logger = LoggerFactory.getLogger(MemberServiceImpl.class);
     private final HttpServletRequest request;
     private final MemberRepository memberRepository;
+    private final ChangbiMailSender mailSender;
 
     @Override
     public UserDetails loadUserByUsername(String memberEmail) throws UsernameNotFoundException {
@@ -177,7 +180,15 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
 
     @Override
     public void sendAuthNumber(HashMap authNumber) {
-        System.out.println(authNumber.toString());
+
+        MailSenderDto mailSenderDto = MailSenderDto.builder()
+                .body("회원 가입 페이지에서 인증번호 [" + authNumber.get("authNumber")+"] 를 입력 후 '확인' 버튼을 눌러주세요.")
+                .to((String) authNumber.get("email"))
+                .title("창비노조 커뮤니티 인증번호입니다.")
+                .from("jw.kim@changbi.com")
+                .build();
+
+        mailSender.sendMail(mailSenderDto);
     }
 
     @Override
