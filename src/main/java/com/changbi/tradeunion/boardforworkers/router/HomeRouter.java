@@ -18,9 +18,9 @@ public class HomeRouter {
         return "contents/about";
     }
 
-    @GetMapping("/report")
-    public String reportPage(){
-        return "contents/report/index";
+    @GetMapping("/complaint")
+    public String complaintPage(){
+        return "contents/complaint/index";
     }
 
     @GetMapping("/global-error")

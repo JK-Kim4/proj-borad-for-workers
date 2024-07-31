@@ -1,7 +1,7 @@
-package com.changbi.tradeunion.boardforworkers.report.domain;
+package com.changbi.tradeunion.boardforworkers.complaint.domain;
 
-import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.ReportStatus;
-import com.changbi.tradeunion.boardforworkers.report.presentation.dto.ReportSaveDto;
+import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.ComplaintStatus;
+import com.changbi.tradeunion.boardforworkers.complaint.presentation.dto.ComplaintSaveDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,17 +12,17 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Report {
+public class Complaint {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "report_id")
+    @Column(name = "complaint_id")
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private ReportStatus reportStatus;
+    private ComplaintStatus complaintStatus;
 
     @Column
-    private String reportDescription;
+    private String complaintDescription;
 
     @Column
     private String reasonForResult;
@@ -43,13 +43,13 @@ public class Report {
     private LocalDateTime updateDate;
 
     @Builder
-    public Report(
-            String reportStatus,
-            String reportDescription,
+    public Complaint(
+            String complaintStatus,
+            String complaintDescription,
             boolean isAnonymous, Long memberId){
 
-        this.reportStatus = ReportStatus.valueOf(reportStatus);
-        this.reportDescription = reportDescription;
+        this.complaintStatus = ComplaintStatus.valueOf(complaintStatus);
+        this.complaintDescription = complaintDescription;
         this.isAnonymous = isAnonymous;
         this.memberId = memberId;
         this.appendDate = LocalDateTime.now();
@@ -57,8 +57,8 @@ public class Report {
 
     }
 
-    public void updateDescription(ReportSaveDto dto) {
-        this.reportDescription = dto.getReportDescription();
+    public void updateDescription(ComplaintSaveDto dto) {
+        this.complaintDescription = dto.getComplaintDescription();
         this.updateDate = LocalDateTime.now();
     }
 
@@ -67,8 +67,8 @@ public class Report {
         this.updateDate = LocalDateTime.now();
     }
 
-    public void updateReportStatus(String reportStatus){
-        this.reportStatus = ReportStatus.valueOf(reportStatus);
+    public void updateComplaintStatus(String complaintStatus){
+        this.complaintStatus = ComplaintStatus.valueOf(complaintStatus);
         this.updateDate = LocalDateTime.now();
     }
 

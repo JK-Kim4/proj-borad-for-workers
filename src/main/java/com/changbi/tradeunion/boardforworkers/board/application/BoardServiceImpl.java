@@ -2,17 +2,22 @@ package com.changbi.tradeunion.boardforworkers.board.application;
 
 import com.changbi.tradeunion.boardforworkers.board.domain.Board;
 import com.changbi.tradeunion.boardforworkers.board.domain.Post;
+import com.changbi.tradeunion.boardforworkers.board.domain.Report;
+import com.changbi.tradeunion.boardforworkers.board.exception.AlreadyReportedPostException;
 import com.changbi.tradeunion.boardforworkers.board.exception.BoardDuplicationException;
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.*;
 import com.changbi.tradeunion.boardforworkers.board.repository.BoardRepository;
 import com.changbi.tradeunion.boardforworkers.common.CommonValues;
 import com.changbi.tradeunion.boardforworkers.common.dto.Pagination;
+import com.changbi.tradeunion.boardforworkers.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,6 +28,7 @@ public class BoardServiceImpl implements BoardService{
 
     private final Logger logger = LoggerFactory.getLogger(BoardServiceImpl.class);
     private final BoardRepository boardRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     public Long save(BoardSaveDto boardDto) {
@@ -153,7 +159,7 @@ public class BoardServiceImpl implements BoardService{
             this.updatePostReadCount(postId);
         }
 
-        return boardRepository.findPostById(postId);
+        return boardRepository.findPostDetailById(postId);
     }
 
     @Override
@@ -188,6 +194,20 @@ public class BoardServiceImpl implements BoardService{
                 .pageSize(pageSize)
                 .totalCount(boardRepository.getPostTotalCount())
                 .build();
+    }
+
+    @Override
+    public Long reportPost(HashMap<String, Long> reportParameter) {
+        Report report = Report.builder()
+                .post(boardRepository.findPostById(reportParameter.get("postId")))
+                .member(memberRepository.findById(reportParameter.get("memberId")))
+                .build();
+        try {
+            report = boardRepository.findReportById(report);
+            throw new AlreadyReportedPostException(report.getPostId(), report.getMemberId(), "한번 신고한 게시물은 다시 신고할 수 없습니다.");
+        }catch (EmptyResultDataAccessException e){
+            return boardRepository.reportPost(report);
+        }
     }
 
     /*private method*/

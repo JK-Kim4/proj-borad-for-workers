@@ -50,6 +50,15 @@ let main = {
             location.href = "/board/"+boardId+"/post/list";
         });
 
+        $("#reportButton").on("click", function (){
+            let data = {
+                postId: $("#postId").val(),
+                memberId: $("#sessionMemberId").val(),
+            }
+
+            main.reportPost(JSON.stringify(data));
+        });
+
         $(document).on("click", ".post-list-content", function (){
             let postId = $(this).data("post-id");
             let boardId = $("#boardId").val();
@@ -228,6 +237,22 @@ let main = {
                 console.error(x);
                 alert(RESULT_MESSAGE.FAIL_SYSTEM);
                 return;
+            }
+        })
+    },
+    reportPost: function (jsonData){
+        $.ajax({
+            url: "/api/board/report/post",
+            method: "POST",
+            data: jsonData,
+            contentType: "application/json; charset=utf-8",
+            success: function (result){
+                console.log(result)
+                alert(result.resultMessage);
+            },
+            error: function (x,h,r){
+                console.error(x)
+                alert(RESULT_MESSAGE.FAIL_SYSTEM);
             }
         })
     },

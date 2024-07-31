@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+
 @RestController
 @RequestMapping("/api/board")
 @RequiredArgsConstructor
@@ -166,6 +168,17 @@ public class BoardController {
                 .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
                 .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
                         .data(boardService.updatePostRecommendCount(postId))
+                .build());
+    }
+
+    @PostMapping("/report/post")
+    public ResponseEntity<ResultDto> reportPost(
+            @RequestBody HashMap<String, Long> reportParameter){
+
+        return ResponseEntity.ok(ResultDto.builder()
+                        .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
+                        .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
+                        .data(boardService.reportPost(reportParameter))
                 .build());
     }
 

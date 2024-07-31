@@ -1,5 +1,6 @@
 package com.changbi.tradeunion.boardforworkers.board.presentation;
 
+import com.changbi.tradeunion.boardforworkers.board.exception.AlreadyReportedPostException;
 import com.changbi.tradeunion.boardforworkers.board.exception.PostIllegalArgumentException;
 import com.changbi.tradeunion.boardforworkers.common.CommonValues;
 import com.changbi.tradeunion.boardforworkers.common.dto.ResultDto;
@@ -17,6 +18,20 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class BoardControllerAdvice {
 
     private final Logger logger = LoggerFactory.getLogger(BoardControllerAdvice.class);
+
+    @ExceptionHandler(AlreadyReportedPostException.class)
+    protected ResponseEntity<ResultDto> handleAlreadyReportedPostException(
+            final HttpServletRequest request,
+            final AlreadyReportedPostException ex) {
+
+        logger.error("[ERROR-]\t{} \t{} \t{}", request.getMethod(), request.getRequestURI(), ex.getMessage());
+        logger.error("[ERROR-POSTID-MEMBERID]\t{} \t{}",ex.getPostId(), ex.getMemberId());
+
+        return ResponseEntity.ok(ResultDto.builder()
+                        .resultCode(CommonValues.RESULT_CODE_FAIL_ALREADY_EXIST)
+                        .resultMessage(ex.getErrorMessage())
+                .build());
+    }
 
     @ExceptionHandler(PostIllegalArgumentException.class)
     protected ResponseEntity<Object> handlePostIllegalArgumentException(

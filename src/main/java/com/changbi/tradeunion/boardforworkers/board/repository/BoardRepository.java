@@ -2,6 +2,7 @@ package com.changbi.tradeunion.boardforworkers.board.repository;
 
 import com.changbi.tradeunion.boardforworkers.board.domain.Board;
 import com.changbi.tradeunion.boardforworkers.board.domain.Post;
+import com.changbi.tradeunion.boardforworkers.board.domain.Report;
 import com.changbi.tradeunion.boardforworkers.board.exception.PostIllegalArgumentException;
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostDetailDto;
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostListDto;
@@ -11,6 +12,7 @@ import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.PostHead;
 import com.changbi.tradeunion.boardforworkers.common.dto.Pagination;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -58,6 +60,10 @@ public class BoardRepository {
 
         return em.createQuery(query, Board.class)
                 .getResultList();
+    }
+
+    public Post findPostById(Long postId){
+        return em.find(Post.class, postId);
     }
 
     public List<PostListDto> findPosts(Long boardId){
@@ -120,7 +126,7 @@ public class BoardRepository {
         return post.getId();
     }
 
-    public PostDetailDto findPostById(Long postId) {
+    public PostDetailDto findPostDetailById(Long postId) {
         String query =  "select " +
                             "new com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostDetailDto" +
                             "(" +
@@ -251,4 +257,21 @@ public class BoardRepository {
     }
 
 
+    public Long reportPost(Report report) {
+        em.persist(report);
+        em.flush();
+        return report.getId();
+    }
+
+    public Report findReportById(Report report) throws EmptyResultDataAccessException {
+        String query = "select r " +
+                "from Report r " +
+                "where r.postId = :postId " +
+                "and r.memberId = :memberId";
+
+        return em.createQuery(query, Report.class)
+                .setParameter("postId", report.getPostId())
+                .setParameter("memberId", report.getMemberId())
+                .getSingleResult();
+    }
 }

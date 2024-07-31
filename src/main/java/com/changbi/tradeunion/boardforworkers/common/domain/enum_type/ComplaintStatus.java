@@ -3,7 +3,7 @@ package com.changbi.tradeunion.boardforworkers.common.domain.enum_type;
 import lombok.Getter;
 
 @Getter
-public enum ReportStatus {
+public enum ComplaintStatus {
 
     REGISTRATION("접수"),
     INPROCESS("처리중"),
@@ -12,7 +12,7 @@ public enum ReportStatus {
 
     private String value;
 
-    ReportStatus(String value) {
+    ComplaintStatus(String value) {
         this.value = value;
     }
 }

@@ -3,6 +3,7 @@ package com.changbi.tradeunion.boardforworkers.board.application;
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.*;
 import com.changbi.tradeunion.boardforworkers.common.dto.Pagination;
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface BoardService {
@@ -44,4 +45,6 @@ public interface BoardService {
     public int updatePostRecommendCount(Long postId);
 
     Pagination getPostPagingInfo(Integer pageNum, Integer pageSize);
+
+    Long reportPost(HashMap<String, Long> reportParameter);
 }
