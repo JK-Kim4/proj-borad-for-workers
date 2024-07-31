@@ -259,6 +259,9 @@ public class BoardRepository {
 
     public Long reportPost(Report report) {
         em.persist(report);
+        if( this.getReportCount(report.getPostId()) >= 5){
+            em.find(Post.class, report.getPostId()).updateUseYn();
+        }
         em.flush();
         return report.getId();
     }
@@ -272,6 +275,16 @@ public class BoardRepository {
         return em.createQuery(query, Report.class)
                 .setParameter("postId", report.getPostId())
                 .setParameter("memberId", report.getMemberId())
+                .getSingleResult();
+    }
+
+    /*private method*/
+    private Long getReportCount(Long postId) {
+        String query = "select count(r) from Report r " +
+                "where r.postId = :postId";
+
+        return em.createQuery(query, Long.class)
+                .setParameter("postId", postId)
                 .getSingleResult();
     }
 }

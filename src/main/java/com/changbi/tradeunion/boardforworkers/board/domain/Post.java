@@ -100,6 +100,11 @@ public class Post {
         //TODO attachment file
     }
 
+    public void updateUseYn(){
+        this.useYn = !this.useYn;
+        this.updateDate = LocalDateTime.now();
+    }
+
     public void updateReadCount() {
         this.readCount += 1;
     }
