@@ -1,5 +1,7 @@
 let main = {
     init: function (){
+        let _this = this;
+
         $("#movePostSavePage").on("click", function (){
             let boardId = $("#boardId").val();
             location.href = "/board/"+boardId+"/post/save"
@@ -17,12 +19,17 @@ let main = {
             data.postTitle = $("#inputPostTitle").val();
             data.postContent = editor.getHTML();
 
-            main.savePost(JSON.stringify(data), boardId);
+            if($("#attachmentFlag").val() === "true"){
+                _this.uploadAttachmentFile();
+                console.log("attachment board")
+            }
+
+            _this.savePost(JSON.stringify(data), boardId);
         });
 
         $("#postDeleteButton").on("click", function (){
             let postId = $("#postId").val(); let boardId = $("#boardId").val();
-            main.deletePost(postId, boardId);
+            _this.deletePost(postId, boardId);
         });
 
         $("#postUpdateButton").on("click", function (){
@@ -37,12 +44,12 @@ let main = {
             data.postTitle = $("#inputPostTitle").val();
             data.postContent = editor.getHTML();
 
-            main.updatePost(JSON.stringify(data), postId);
+            _this.updatePost(JSON.stringify(data), postId);
         });
 
         $("#recommendButton").on("click", function (){
             let postId = $("#postId").val();
-            main.updatePostRecommendCount(postId);
+            _this.updatePostRecommendCount(postId);
         });
 
         $("#goToPostListButton").on("click", function (){
@@ -56,7 +63,7 @@ let main = {
                 memberId: $("#sessionMemberId").val(),
             }
 
-            main.reportPost(JSON.stringify(data));
+            _this.reportPost(JSON.stringify(data));
         });
 
         $(document).on("click", ".post-list-content", function (){
@@ -93,8 +100,25 @@ let main = {
             }
         })
     },
-    saveAttachmentPost: function (jsonData, boardId){
+    uploadAttachmentFile: function (jsonData, boardId){
+        let formData = new FormData($('#fileForm')[0]);
+        console.log(formData)
 
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',	// 필수
+            url: '/api/board/upload/attachment',
+            data: formData,		// 필수
+            processData: false,	// 필수
+            contentType: false,	// 필수
+            cache: false,
+            success: function (result) {
+                console.log(result)
+            },
+            error: function (e) {
+                console.log(e)
+            }
+        });
     },
     updatePost: function (jsonData, postId){
 

@@ -1,5 +1,6 @@
 package com.changbi.tradeunion.boardforworkers.board.application;
 
+import com.changbi.tradeunion.boardforworkers.board.domain.Attachment;
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.*;
 import com.changbi.tradeunion.boardforworkers.common.dto.Pagination;
 
@@ -11,6 +12,8 @@ public interface BoardService {
     public Long save(BoardSaveDto boardDto);
 
     public Long savePost(PostSaveDto postSaveDto);
+
+    public Long saveAttachment(Attachment attachment);
 
     public void update(BoardSaveDto dto);
 

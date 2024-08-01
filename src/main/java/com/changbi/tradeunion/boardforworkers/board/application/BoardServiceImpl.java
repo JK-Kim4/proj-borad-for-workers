@@ -1,5 +1,6 @@
 package com.changbi.tradeunion.boardforworkers.board.application;
 
+import com.changbi.tradeunion.boardforworkers.board.domain.Attachment;
 import com.changbi.tradeunion.boardforworkers.board.domain.Board;
 import com.changbi.tradeunion.boardforworkers.board.domain.Post;
 import com.changbi.tradeunion.boardforworkers.board.domain.Report;
@@ -46,6 +47,11 @@ public class BoardServiceImpl implements BoardService{
     public Long savePost(PostSaveDto postSaveDto) {
         Post post = postSaveDto.toEntity();
         return boardRepository.savePost(post);
+    }
+
+    @Override
+    public Long saveAttachment(Attachment attachment) {
+        return 0l;
     }
 
     @Override

@@ -51,7 +51,7 @@
 
         <div class="row mb-4">
             <div class="col-auto align-self-center">
-                <label for="firstName" class=" ">제목 : </label>
+                <label for="firstName" class="">제목 : </label>
             </div>
             <div class="col-auto">
                 <select class="form-select" aria-label="Default select example" id="inputPostHead">
@@ -77,12 +77,16 @@
             </div>
         </div>
 
+        {{#boardDetail.attachmentAllowYn}}
         <div class="row mb-3">
             <div class="col-5">
-                <input type="file" class="form-control">
+                <form id="fileForm" method="post" enctype="multipart/form-data">
+                    <input type="hidden" id="attachmentId">
+                    <input type="file" class="form-control" name="file">
+                </form>
             </div>
         </div>
-
+        {{/boardDetail.attachmentAllowYn}}
         <div class="row d-flex justify-content-end">
             <div class="col-auto">
                 <button class="btn btn-outline-dark" id="goToPostListButton">목록으로</button>
