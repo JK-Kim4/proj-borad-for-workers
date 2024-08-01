@@ -18,13 +18,15 @@ let main = {
             data.postHead = $("#inputPostHead").val();
             data.postTitle = $("#inputPostTitle").val();
             data.postContent = editor.getHTML();
+            let formData = new FormData($('#fileForm')[0]);
+            console.log(formData)
 
-            if($("#attachmentFlag").val() === "true"){
+            /*if($("#attachmentFlag").val() === "true"){
                 _this.uploadAttachmentFile();
                 console.log("attachment board")
             }
 
-            _this.savePost(JSON.stringify(data), boardId);
+            _this.savePost(JSON.stringify(data), boardId);*/
         });
 
         $("#postDeleteButton").on("click", function (){
@@ -102,7 +104,9 @@ let main = {
     },
     uploadAttachmentFile: function (jsonData, boardId){
         let formData = new FormData($('#fileForm')[0]);
-        console.log(formData)
+        console.log(formData);
+        console.log(formData == null);
+        console.log(formData === undefined);
 
         $.ajax({
             type: "POST",
