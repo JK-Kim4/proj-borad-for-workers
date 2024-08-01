@@ -93,6 +93,9 @@ let main = {
             }
         })
     },
+    saveAttachmentPost: function (jsonData, boardId){
+
+    },
     updatePost: function (jsonData, postId){
 
         $.ajax({

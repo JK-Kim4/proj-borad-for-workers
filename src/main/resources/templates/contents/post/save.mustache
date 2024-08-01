@@ -4,7 +4,7 @@
 <main class="container col-10">
     <div class="p-4 p-md-5 mb-4 text-white rounded bg-dark">
         <div class="col-md-6 px-0">
-            <h1 class="display-4 fst-italic">{{boardId}}</h1>
+            <h1 class="display-4 fst-italic">{{boardDetail.boardId}}</h1>
             <p class="lead my-3">공지 사항 및 이벤트 등 캐러샐 추가 영역</p>
             <p class="lead mb-0"><a href="#" class="text-white fw-bold">Continue reading...</a></p>
         </div>
@@ -12,7 +12,8 @@
 
     <h3 class="my-3">새 글 쓰기</h3>
     <hr class="my-4">
-    <input type="hidden" id="boardId" value="{{boardId}}">
+    <input type="hidden" id="boardId" value="{{boardDetail.boardId}}">
+    <input type="hidden" id="attachmentFlag" value="{{boardDetail.attachmentAllowYn}}">
     <input type="hidden" id="memberId" value="{{member.memberId}}">
     <div class="row d-flex justify-content-center">
         <div class="row mb-4">

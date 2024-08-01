@@ -216,7 +216,7 @@ class MemberServiceImplTest {
                 memberService.save(dto2);
                 memberService.save(dto3);
 
-                memberSize = 3;
+                memberSize = 8;
             }
 
             @Test @Transactional

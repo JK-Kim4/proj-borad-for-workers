@@ -50,7 +50,7 @@ public class BoardRouter {
         BoardDetailDto boardDetailDto = boardService.findById(boardId);
 
         if(EnumUtility.isQualifiedRole(member.getRole(), boardDetailDto.getWriteRole())){
-            model.addAttribute("boardId", boardId);
+            model.addAttribute("boardDetail", boardDetailDto);
             return "contents/post/save";
         }else{
             return "error/403";

@@ -22,7 +22,7 @@ public class GlobalHtmlExceptionHandler {
             final IllegalAccessException ex) throws IOException {
 
         logger.error("[ERROR-]\t{} \t{} \t{}", request.getMethod(), request.getRequestURI(), ex.getMessage());
-        logger.error("{}", ex.getStackTrace());
+        logger.error("{}", ex);
 
         return "error/401";
     }

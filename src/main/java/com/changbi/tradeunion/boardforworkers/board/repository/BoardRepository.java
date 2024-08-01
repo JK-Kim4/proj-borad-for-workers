@@ -11,6 +11,8 @@ import com.changbi.tradeunion.boardforworkers.common.CommonValues;
 import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.PostHead;
 import com.changbi.tradeunion.boardforworkers.common.dto.Pagination;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.NonUniqueResultException;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
@@ -185,7 +187,7 @@ public class BoardRepository {
                 .getResultList();
     }
 
-    public PostDetailDto findMostRecentNoticePost() {
+    public PostDetailDto findMostRecentNoticePost() throws NoResultException, NonUniqueResultException {
         String query =  "select " +
                             "new com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostDetailDto" +
                             "(" +
@@ -205,7 +207,7 @@ public class BoardRepository {
                 .getSingleResult();
     }
 
-    public PostDetailDto findMostPopularPost() {
+    public PostDetailDto findMostPopularPost() throws NoResultException, NonUniqueResultException{
         String query =  "select " +
                             "new com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostDetailDto" +
                             "(" +
