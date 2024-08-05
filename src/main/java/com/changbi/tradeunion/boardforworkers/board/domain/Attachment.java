@@ -18,6 +18,12 @@ public class Attachment {
     private Long id;
 
     @Column
+    private Long postId;
+
+    @Column
+    private String fileOriginalName;
+
+    @Column
     private String fileName;
 
     @Column
@@ -31,4 +37,8 @@ public class Attachment {
 
     @Column
     private LocalDateTime updateDate;
+
+    public void updatePostId(Long postId){
+        this.postId = postId;
+    }
 }

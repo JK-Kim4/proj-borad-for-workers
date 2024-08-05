@@ -6,11 +6,13 @@ import com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostSaveDto
 import com.changbi.tradeunion.boardforworkers.common.CommonValues;
 import com.changbi.tradeunion.boardforworkers.common.dto.Pagination;
 import com.changbi.tradeunion.boardforworkers.common.dto.ResultDto;
+import com.changbi.tradeunion.boardforworkers.common.utility.FileUtility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 @RestController
@@ -42,13 +44,13 @@ public class BoardController {
 
     @PostMapping("/upload/attachment")
     public ResponseEntity<ResultDto> uploadAttachment(
-            @RequestParam(name = "file") MultipartFile file) {
+            @RequestParam(name = "file") MultipartFile file) throws IOException {
 
-        System.out.println(file);
-        //TODO do file upload and return attachment ID
-
-
-        return ResponseEntity.ok(ResultDto.builder().build());
+        return ResponseEntity.ok(ResultDto.builder()
+                        .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
+                        .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
+                        .data(FileUtility.uploadMultipartFile(file))
+                .build());
     }
 
     @PostMapping("/update/{boardId}")

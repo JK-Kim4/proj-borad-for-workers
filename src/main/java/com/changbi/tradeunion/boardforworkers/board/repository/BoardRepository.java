@@ -193,11 +193,12 @@ public class BoardRepository {
                             "(" +
                                 "p.id, b.id, b.boardName, m.id, m.memberRealName, m.memberNickName," +
                                 "p.postHead, p.postTitle, p.postContent, p.useYn, p.readCount, p.recommendCount," +
-                                "p.attachmentFileName, p.attachmentFilePath, p.appendDate, p.updateDate" +
+                                "p.attachmentId, a.fileName, a.filePath, a.fileSize, p.appendDate, p.updateDate" +
                             ") " +
                         "from Post p " +
                         "left outer join Board b on p.boardId = b.id " +
                         "left outer join Member m on p.memberId = m.id " +
+                        "left outer join Attachment a on p.attachmentId = a.id " +
                         "where p.boardId = 91 " +
                         "and p.postHead = :noticeHead " +
                         "order by p.appendDate desc limit 1";
@@ -213,11 +214,12 @@ public class BoardRepository {
                             "(" +
                                 "p.id, b.id, b.boardName, m.id, m.memberRealName, m.memberNickName," +
                                 "p.postHead, p.postTitle, p.postContent, p.useYn, p.readCount, p.recommendCount," +
-                                "p.attachmentFileName, p.attachmentFilePath, p.appendDate, p.updateDate" +
+                                "p.attachmentId, a.fileName, a.filePath, a.fileSize, p.appendDate, p.updateDate" +
                             ") " +
                         "from Post p " +
                         "left outer join Board b on p.boardId = b.id " +
                         "left outer join Member m on p.memberId = m.id " +
+                        "left outer join Attachment a on p.attachmentId = a.id " +
                         "where b.id not in (91, 93, 94) " +
                         "order by p.recommendCount desc, p.readCount desc, p.id desc limit 1";
 

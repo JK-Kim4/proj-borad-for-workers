@@ -21,12 +21,12 @@ let main = {
             let formData = new FormData($('#fileForm')[0]);
             console.log(formData)
 
-            /*if($("#attachmentFlag").val() === "true"){
+            if($("#attachmentFlag").val() === "true"
+                && $("#attachmentFile").val() !== ''){
                 _this.uploadAttachmentFile();
-                console.log("attachment board")
             }
 
-            _this.savePost(JSON.stringify(data), boardId);*/
+            //_this.savePost(JSON.stringify(data), boardId);
         });
 
         $("#postDeleteButton").on("click", function (){
@@ -102,11 +102,8 @@ let main = {
             }
         })
     },
-    uploadAttachmentFile: function (jsonData, boardId){
+    uploadAttachmentFile: function (){
         let formData = new FormData($('#fileForm')[0]);
-        console.log(formData);
-        console.log(formData == null);
-        console.log(formData === undefined);
 
         $.ajax({
             type: "POST",
@@ -116,6 +113,7 @@ let main = {
             processData: false,	// 필수
             contentType: false,	// 필수
             cache: false,
+            async: false,
             success: function (result) {
                 console.log(result)
             },

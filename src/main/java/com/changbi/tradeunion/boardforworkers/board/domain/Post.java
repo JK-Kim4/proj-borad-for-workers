@@ -51,10 +51,7 @@ public class Post {
     private int recommendCount;
 
     @Column
-    private String attachmentFileName;
-
-    @Column
-    private String attachmentFilePath;
+    private Long attachmentId;
 
     @Column
     private LocalDateTime appendDate;
@@ -71,7 +68,7 @@ public class Post {
     @Builder
     public Post (
             String postHead, String postTitle, String postContent,
-            String attachmentFileName, String attachmentFilePath,
+            Long attachmentId,
             Long boardId, Long memberId, boolean useYn) {
 
         this.boardId = boardId;
@@ -84,8 +81,7 @@ public class Post {
         this.postContent = postContent;
         this.readCount = 0;
         this.recommendCount = 0;
-        this.attachmentFileName = attachmentFileName;
-        this.attachmentFilePath = attachmentFilePath;
+        this.attachmentId = attachmentId;
         this.appendDate = LocalDateTime.now();
         this.updateDate = LocalDateTime.now();
 
