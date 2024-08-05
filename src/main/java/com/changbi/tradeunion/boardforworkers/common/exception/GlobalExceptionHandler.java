@@ -1,5 +1,6 @@
 package com.changbi.tradeunion.boardforworkers.common.exception;
 
+import com.changbi.tradeunion.boardforworkers.board.exception.FileUploadException;
 import com.changbi.tradeunion.boardforworkers.common.CommonValues;
 import com.changbi.tradeunion.boardforworkers.common.dto.ResultDto;
 import jakarta.persistence.NoResultException;
@@ -63,6 +64,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                         .resultCode(CommonValues.RESULT_CODE_FAIL_DEFAULT)
                         .resultMessage(CommonValues.RESULT_MESSAGE_FAIL_DEFAULT)
                     .build());
+    }
+
+    @ExceptionHandler(value = FileUploadException.class)
+    protected ResponseEntity<ResultDto> handleFileUploadException(
+            final HttpServletRequest request,
+            final FileUploadException ex) {
+
+        logger.error("[ERROR-]\t{} \t{} \t{}", request.getMethod(), request.getRequestURI(), ex.getMessage());
+        logger.error("{}", ex.getStackTrace());
+
+        return ResponseEntity.ok(ResultDto.builder()
+                        .resultCode(CommonValues.RESULT_CODE_FAIL_FILE_UPLOAD)
+                        .resultMessage(ex.getErrorMessage())
+                .build());
     }
 
     @ExceptionHandler(value = {NoResultException.class, NonUniqueResultException.class})

@@ -1,5 +1,6 @@
 package com.changbi.tradeunion.boardforworkers.common.utility;
 
+import com.changbi.tradeunion.boardforworkers.board.exception.FileUploadException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,22 +32,29 @@ public class FileUtility {
         FileUtility.fileUploadDirectory = fileUploadDirectory;
     }
 
-    public static Map<String, String> uploadMultipartFile(MultipartFile multipartFile) throws IOException {
+    public static Map<String, String> uploadMultipartFile(MultipartFile multipartFile) {
         Map<String, String> uploadResult = new HashMap<>();
 
+        try {
+            String fileDirectory = FileUtility.generateFileDirectory(LocalDate.now());
+            String originalFilename = multipartFile.getOriginalFilename();
+            String renameFileName = FileUtility.generateRenameFileName(originalFilename);
+            String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
 
-        String fileDirectory = FileUtility.generateFileDirectory(LocalDate.now());
-        String originalFilename = multipartFile.getOriginalFilename();
-        String renameFileName = FileUtility.generateRenameFileName(originalFilename);
-        String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
+            Path filePath = Paths.get(fileDirectory+"/"+renameFileName + ext);
+            Files.copy(multipartFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-        Path filePath = Paths.get(fileDirectory+"/"+renameFileName + ext);
-        Files.copy(multipartFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
-        uploadResult.put("originalFilename", originalFilename);
-        uploadResult.put("renameFileName", renameFileName);
-        uploadResult.put("fileSize", String.valueOf(multipartFile.getSize()));
-        uploadResult.put("filePath",filePath.toString());
+            uploadResult.put("originalFilename", originalFilename);
+            uploadResult.put("renameFileName", renameFileName);
+            uploadResult.put("fileSize", String.valueOf(multipartFile.getSize()));
+            uploadResult.put("filePath",filePath.toString());
+        }catch (IOException e){
+            logger.error("파일 업로드 오류", e);
+            throw new FileUploadException("파일 업로드 오류 발생", multipartFile.getOriginalFilename());
+        }catch (NullPointerException e){
+            logger.error("파일 업로드 오류", e);
+            throw new FileUploadException("파일이 존재하지 않습니다.");
+        }
 
         return uploadResult;
     }
