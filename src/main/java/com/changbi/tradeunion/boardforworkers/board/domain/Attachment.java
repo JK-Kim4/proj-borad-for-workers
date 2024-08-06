@@ -1,9 +1,8 @@
 package com.changbi.tradeunion.boardforworkers.board.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Attachment {
 
-    @Id @Getter
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "attachment_id")
     private Long id;
 
@@ -37,6 +36,16 @@ public class Attachment {
 
     @Column
     private LocalDateTime updateDate;
+
+    @Builder
+    public Attachment(
+            String fileOriginalName, String fileName,
+            String fileSize, String filePath){
+        this.fileOriginalName = fileOriginalName;
+        this.fileName = fileName;
+        this.fileSize = fileSize;
+        this.filePath = filePath;
+    }
 
     public void updatePostId(Long postId){
         this.postId = postId;

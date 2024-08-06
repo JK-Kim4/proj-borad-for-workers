@@ -10,6 +10,7 @@ import com.changbi.tradeunion.boardforworkers.board.presentation.dto.*;
 import com.changbi.tradeunion.boardforworkers.board.repository.BoardRepository;
 import com.changbi.tradeunion.boardforworkers.common.CommonValues;
 import com.changbi.tradeunion.boardforworkers.common.dto.Pagination;
+import com.changbi.tradeunion.boardforworkers.common.utility.FileUtility;
 import com.changbi.tradeunion.boardforworkers.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -17,9 +18,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Service
@@ -50,8 +53,18 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public Long saveAttachment(Attachment attachment) {
-        return 0l;
+    public Long saveAttachment(MultipartFile multipartFile) {
+
+        Map<String, String> uploadResultMap = FileUtility.uploadMultipartFile(multipartFile);
+
+        Attachment attachment = Attachment.builder()
+                .fileOriginalName(uploadResultMap.get("originalFilename"))
+                .fileName(uploadResultMap.get("renameFileName"))
+                .fileSize(uploadResultMap.get("fileSize"))
+                .filePath(uploadResultMap.get("filePath"))
+                .build();
+
+        return boardRepository.saveAttachment(attachment);
     }
 
     @Override

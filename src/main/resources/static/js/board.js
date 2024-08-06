@@ -24,9 +24,10 @@ let main = {
             if($("#attachmentFlag").val() === "true"
                 && $("#attachmentFile").val() !== ''){
                 _this.uploadAttachmentFile();
+                data.attachmentId = $("#attachmentId").val();
             }
 
-            //_this.savePost(JSON.stringify(data), boardId);
+            _this.savePost(JSON.stringify(data), boardId);
         });
 
         $("#postDeleteButton").on("click", function (){
@@ -115,10 +116,15 @@ let main = {
             cache: false,
             async: false,
             success: function (result) {
-                console.log(result)
+                if (RESULT_CODE.SUCCESS_DEFAULT === result.resultCode){
+                    $("#attachmentId").val(result.data);
+                }else {
+                    alert(result.resultMessage);
+                }
             },
             error: function (e) {
-                console.log(e)
+                console.error(e)
+                alert(RESULT_MESSAGE.FAIL_SYSTEM);
             }
         });
     },

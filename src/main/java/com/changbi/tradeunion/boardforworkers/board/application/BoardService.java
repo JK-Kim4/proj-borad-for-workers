@@ -1,8 +1,8 @@
 package com.changbi.tradeunion.boardforworkers.board.application;
 
-import com.changbi.tradeunion.boardforworkers.board.domain.Attachment;
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.*;
 import com.changbi.tradeunion.boardforworkers.common.dto.Pagination;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +13,7 @@ public interface BoardService {
 
     public Long savePost(PostSaveDto postSaveDto);
 
-    public Long saveAttachment(Attachment attachment);
+    public Long saveAttachment(MultipartFile multipartFile);
 
     public void update(BoardSaveDto dto);
 

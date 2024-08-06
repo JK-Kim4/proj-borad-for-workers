@@ -1,5 +1,6 @@
 package com.changbi.tradeunion.boardforworkers.board.repository;
 
+import com.changbi.tradeunion.boardforworkers.board.domain.Attachment;
 import com.changbi.tradeunion.boardforworkers.board.domain.Board;
 import com.changbi.tradeunion.boardforworkers.board.domain.Post;
 import com.changbi.tradeunion.boardforworkers.board.domain.Report;
@@ -28,6 +29,11 @@ public class BoardRepository {
     public Long save(Board board) {
         em.persist(board);
         return board.getId();
+    }
+
+    public Long saveAttachment(Attachment attachment) {
+        em.persist(attachment);
+        return attachment.getId();
     }
 
     public void delete(Long boardId) {
@@ -134,11 +140,12 @@ public class BoardRepository {
                             "(" +
                                 "p.id, b.id, b.boardName, m.id, m.memberRealName, m.memberNickName," +
                                 "p.postHead, p.postTitle, p.postContent, p.useYn, p.readCount, p.recommendCount," +
-                                "p.attachmentFileName, p.attachmentFilePath, p.appendDate, p.updateDate" +
+                                "p.attachmentId, a.fileOriginalName, a.fileSize, a.filePath, p.appendDate, p.updateDate" +
                             ") " +
                         "from Post p " +
                         "left outer join Board b on p.boardId = b.id " +
                         "left outer join Member m on p.memberId = m.id " +
+                        "left outer join Attachment a on p.attachmentId = a.id " +
                         "where p.id = :postId";
 
         return em.createQuery(query, PostDetailDto.class)

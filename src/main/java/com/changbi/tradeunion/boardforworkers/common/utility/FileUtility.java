@@ -38,10 +38,11 @@ public class FileUtility {
         try {
             String fileDirectory = FileUtility.generateFileDirectory(LocalDate.now());
             String originalFilename = multipartFile.getOriginalFilename();
-            String renameFileName = FileUtility.generateRenameFileName(originalFilename);
             String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
+            String renameFileName = FileUtility.generateRenameFileName(originalFilename) + ext;
 
-            Path filePath = Paths.get(fileDirectory+"/"+renameFileName + ext);
+
+            Path filePath = Paths.get(fileDirectory+"/"+renameFileName);
             Files.copy(multipartFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
             uploadResult.put("originalFilename", originalFilename);
