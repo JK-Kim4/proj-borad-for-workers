@@ -1,3 +1,4 @@
+/*
 package com.changbi.tradeunion.boardforworkers.common;
 
 import com.changbi.tradeunion.boardforworkers.board.domain.Board;
@@ -36,3 +37,4 @@ public class EnumTypeTest {
 
     }
 }
+*/

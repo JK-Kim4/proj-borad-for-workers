@@ -72,7 +72,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             final FileUploadException ex) {
 
         logger.error("[ERROR-]\t{} \t{} \t{}", request.getMethod(), request.getRequestURI(), ex.getMessage());
-        logger.error("{}", ex.getStackTrace());
+        logger.error("{}", ex);
 
         return ResponseEntity.ok(ResultDto.builder()
                         .resultCode(CommonValues.RESULT_CODE_FAIL_FILE_UPLOAD)
@@ -86,7 +86,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             final PersistenceException ex) {
 
         logger.error("[ERROR-]\t{} \t{} \t{}", request.getMethod(), request.getRequestURI(), ex.getMessage());
-        logger.error("{}", ex.getStackTrace());
+        logger.error("{}", ex);
 
         return ResponseEntity.ok(ResultDto.builder()
                         .resultCode(CommonValues.RESULT_CODE_FAIL_SINGLE_ENTITY_VIOLATION)
