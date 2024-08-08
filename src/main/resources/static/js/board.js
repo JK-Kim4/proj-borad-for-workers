@@ -297,6 +297,7 @@ let main = {
         $("#postUpdateButtonDiv").html(html);
     },
     renderPostDetailPage: function (data){
+
         $("#postTitle").html(main.getPostHeadBadge(data.postHead) +" "+ data.postTitle);
         $("#postAuthor").html(data.memberNickName + " ("+ data.memberRealName + ")");
         $("#postContent").html(data.postContent);
@@ -306,6 +307,10 @@ let main = {
 
         $("#boardId").val(data.boardId)
         $("#memberId").val(data.memberId)
+
+        if(data.attachmentId != null){
+            $("#postAttachment").html("<a class='btn btn-outline-dark' download href='"+data.attachmentFilePath+"'>"+ data.attachmentFileName+"</a>")
+        }
 
         if(data.memberId == $("#sessionMemberId").val()){
             main.addUpdateButton(data.postId);
