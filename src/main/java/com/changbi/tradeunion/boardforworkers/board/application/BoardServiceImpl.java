@@ -12,6 +12,7 @@ import com.changbi.tradeunion.boardforworkers.common.CommonValues;
 import com.changbi.tradeunion.boardforworkers.common.dto.Pagination;
 import com.changbi.tradeunion.boardforworkers.common.utility.FileUtility;
 import com.changbi.tradeunion.boardforworkers.member.repository.MemberRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -229,6 +235,50 @@ public class BoardServiceImpl implements BoardService{
         }
     }
 
+    public void downloadAttachment(Long attachmentId, HttpServletResponse response) {
+        Attachment attachment = boardRepository.findAttachmentById(attachmentId);
+
+        File file = new File(attachment.getFilePath());
+        try {
+            if(file.exists() && file.length() == Long.parseLong(attachment.getFileSize())){
+                String encodedFilename = "attachment; filename*=" + "UTF-8" + "''" + URLEncoder.encode(attachment.getFileOriginalName(), "UTF-8");
+
+                // ContentType 설정
+                response.setContentType("application/octet-stream; charset=utf-8");
+
+                // Header 설정
+                response.setHeader("Content-Disposition", encodedFilename);
+
+                // ContentLength 설정
+                response.setContentLengthLong(file.length());
+
+                BufferedInputStream in = null;
+                BufferedOutputStream out = null;
+
+                try {
+                    in = new BufferedInputStream(new FileInputStream(file));
+
+                    out = new BufferedOutputStream(response.getOutputStream());
+
+                    byte[] buffer = new byte[4096];
+                    int bytesRead=0;
+
+                    while ((bytesRead = in.read(buffer))!=-1) {
+                        out.write(buffer, 0, bytesRead);
+                    }
+
+                    // 버퍼에 남은 내용이 있다면, 모두 파일에 출력
+                    out.flush();
+                }finally {
+                    in.close();
+                    out.close();
+                }
+            }
+        }catch (Exception e){
+            logger.error("파일다운로드에러", e);
+        }
+    }
+
     /*private method*/
     private boolean isAlreadyExistBoardName(String boardName) {
         return boardRepository.isAlreadyExistBoardName(boardName);
@@ -237,6 +287,5 @@ public class BoardServiceImpl implements BoardService{
     private void updatePostReadCount(Long postId) {
         boardRepository.updatePostReadCount(postId);
     }
-
 
 }

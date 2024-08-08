@@ -291,6 +291,10 @@ let main = {
             }
         })
     },
+    downloadAttachment: function (attachmentId){
+        console.log(attachmentId)
+        location.href = "/api/attachment/download/"+attachmentId;
+    },
     addUpdateButton: function (postId){
         let html = "<button class='btn btn-success' id='goToPostUpdate' data-post-id='"+postId+"'>수정</button>";
 
@@ -309,7 +313,7 @@ let main = {
         $("#memberId").val(data.memberId)
 
         if(data.attachmentId != null){
-            $("#postAttachment").html("<a class='btn btn-outline-dark' download href='"+data.attachmentFilePath+"'>"+ data.attachmentFileName+"</a>")
+            $("#postAttachment").html("첨부파일: <button class='btn btn-outline-dark' onclick='main.downloadAttachment("+data.attachmentId+")'>"+data.attachmentFileName+"</button>")
         }
 
         if(data.memberId == $("#sessionMemberId").val()){
@@ -321,8 +325,6 @@ let main = {
         $("#inputPostHead").val(data.postHead).attr("selected", "selected");
         $("#inputPostTitle").val(data.postTitle);
         $("#editor").html(editor.setHTML(data.postContent));
-
-
     },
     getPostHeadBadge: function (postHead){
         let badge = "";

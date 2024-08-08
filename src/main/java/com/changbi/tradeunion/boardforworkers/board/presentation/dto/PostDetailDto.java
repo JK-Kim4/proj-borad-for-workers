@@ -73,8 +73,8 @@ public class PostDetailDto {
         this.recommendCount = recommendCount;
         this.attachmentId = attachmentId;
         this.attachmentFileName = fileOriginalName;
-        this.attachmentFilePath = filePath;
         this.attachmentFileSize = fileSize;
+        this.attachmentFilePath = filePath;
         this.appendDate = appendDate;
         this.updateDate = updateDate;
 

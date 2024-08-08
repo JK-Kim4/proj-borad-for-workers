@@ -298,4 +298,8 @@ public class BoardRepository {
                 .setParameter("postId", postId)
                 .getSingleResult();
     }
+
+    public Attachment findAttachmentById(Long attachmentId) {
+        return em.find(Attachment.class, attachmentId);
+    }
 }
