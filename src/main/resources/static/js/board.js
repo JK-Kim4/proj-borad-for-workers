@@ -69,6 +69,17 @@ let main = {
             _this.reportPost(JSON.stringify(data));
         });
 
+        //댓글 작성 버튼
+        $("#saveCommentButton").on("click", function (){
+            let data = {
+                postId: $("#postId").val(),
+                memberId: $("#sessionMemberId").val(),
+                comment: $("#inputComment").val()
+            }
+
+            console.log(data);
+        })
+
         $(document).on("click", ".post-list-content", function (){
             let postId = $(this).data("post-id");
             let boardId = $("#boardId").val();

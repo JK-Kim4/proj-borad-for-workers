@@ -13,6 +13,8 @@ public interface BoardService {
 
     public Long savePost(PostSaveDto postSaveDto);
 
+    public Long saveComment(CommentSaveDto commentSaveDto);
+
     public Long saveAttachment(MultipartFile multipartFile);
 
     public void update(BoardSaveDto dto);
@@ -44,6 +46,8 @@ public interface BoardService {
     public PostDetailDto findMostPopularPost();
 
     public BoardDetailDto findByBoardName(String boardName);
+
+    public CommentDetailDto findCommentById(Long commentId);
 
     public int updatePostRecommendCount(Long postId);
 

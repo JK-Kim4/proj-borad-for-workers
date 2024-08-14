@@ -1,9 +1,6 @@
 package com.changbi.tradeunion.boardforworkers.board.application;
 
-import com.changbi.tradeunion.boardforworkers.board.domain.Attachment;
-import com.changbi.tradeunion.boardforworkers.board.domain.Board;
-import com.changbi.tradeunion.boardforworkers.board.domain.Post;
-import com.changbi.tradeunion.boardforworkers.board.domain.Report;
+import com.changbi.tradeunion.boardforworkers.board.domain.*;
 import com.changbi.tradeunion.boardforworkers.board.exception.AlreadyReportedPostException;
 import com.changbi.tradeunion.boardforworkers.board.exception.BoardDuplicationException;
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.*;
@@ -56,6 +53,17 @@ public class BoardServiceImpl implements BoardService{
     public Long savePost(PostSaveDto postSaveDto) {
         Post post = postSaveDto.toEntity();
         return boardRepository.savePost(post);
+    }
+
+    @Override
+    public Long saveComment(CommentSaveDto commentSaveDto) {
+        Comment comment = commentSaveDto.toEntity();
+        Long commentId = boardRepository.saveComment(comment);
+
+        if(Objects.isNull(commentSaveDto.getParentCommentId())){comment.updateParentCommentId(commentId);}
+        else comment.updateParentCommentId(commentSaveDto.getParentCommentId());
+
+        return commentId;
     }
 
     @Override
@@ -205,6 +213,11 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public BoardDetailDto findByBoardName(String boardName) {
         return BoardDetailDto.builder().board(boardRepository.findByBoardName(boardName)).build();
+    }
+
+    @Override
+    public CommentDetailDto findCommentById(Long commentId) {
+        return boardRepository.findCommentById(commentId);
     }
 
     @Override

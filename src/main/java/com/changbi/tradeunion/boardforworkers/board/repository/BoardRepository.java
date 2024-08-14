@@ -1,10 +1,8 @@
 package com.changbi.tradeunion.boardforworkers.board.repository;
 
-import com.changbi.tradeunion.boardforworkers.board.domain.Attachment;
-import com.changbi.tradeunion.boardforworkers.board.domain.Board;
-import com.changbi.tradeunion.boardforworkers.board.domain.Post;
-import com.changbi.tradeunion.boardforworkers.board.domain.Report;
+import com.changbi.tradeunion.boardforworkers.board.domain.*;
 import com.changbi.tradeunion.boardforworkers.board.exception.PostIllegalArgumentException;
+import com.changbi.tradeunion.boardforworkers.board.presentation.dto.CommentDetailDto;
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostDetailDto;
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostListDto;
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostSaveDto;
@@ -267,7 +265,6 @@ public class BoardRepository {
         return em.createQuery(query, Long.class).getSingleResult();
     }
 
-
     public Long reportPost(Report report) {
         em.persist(report);
         if( this.getReportCount(report.getPostId()) >= 5){
@@ -289,6 +286,18 @@ public class BoardRepository {
                 .getSingleResult();
     }
 
+    public CommentDetailDto findCommentById(Long commentId) {
+        String query =  "select " +
+                            "new com.changbi.tradeunion.boardforworkers.board.presentation.dto.CommentDetailDto" +
+                            "(c.id, c.postId, c.memberId, c.parentCommentId, c.commentValue) " +
+                        "from Comment c " +
+                        "where c.id = :commentId";
+
+        return em.createQuery(query, CommentDetailDto.class)
+                .setParameter("commentId", commentId)
+                .getSingleResult();
+    }
+
     /*private method*/
     private Long getReportCount(Long postId) {
         String query = "select count(r) from Report r " +
@@ -302,4 +311,10 @@ public class BoardRepository {
     public Attachment findAttachmentById(Long attachmentId) {
         return em.find(Attachment.class, attachmentId);
     }
+
+    public Long saveComment(Comment comment) {
+        em.persist(comment);
+        return comment.getId();
+    }
+
 }
