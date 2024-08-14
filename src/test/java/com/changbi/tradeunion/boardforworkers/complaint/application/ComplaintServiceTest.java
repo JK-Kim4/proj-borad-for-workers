@@ -31,7 +31,7 @@ public class ComplaintServiceTest {
         @DisplayName("리포트 등록 테스트")
         class report_save_test{
 
-            /*@Test @Transactional
+            @Test @Transactional
             @DisplayName("리포트 엔티티를 등록한다.")
             void save_report_test(){
                 ComplaintSaveDto dto = new ComplaintSaveDto();
@@ -45,7 +45,7 @@ public class ComplaintServiceTest {
 
                 Assertions.assertNotNull(saveResult);
                 Assertions.assertEquals(ComplaintStatus.valueOf(dto.getComplaintStatus()).getValue(), saveResult.getComplaintStatus());
-            }*/
+            }
         }
 
         @Nested

@@ -3,13 +3,13 @@ package com.changbi.tradeunion.boardforworkers.member.application;
 import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.Company;
 import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.Department;
 import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.Role;
-import com.changbi.tradeunion.boardforworkers.member.presentation.dto.MemberSaveDto;
 import com.changbi.tradeunion.boardforworkers.common.dto.Pagination;
 import com.changbi.tradeunion.boardforworkers.member.domain.Member;
 import com.changbi.tradeunion.boardforworkers.member.domain.PreMember;
 import com.changbi.tradeunion.boardforworkers.member.exception.MemberDuplicateException;
 import com.changbi.tradeunion.boardforworkers.member.presentation.dto.MemberDetailDto;
 import com.changbi.tradeunion.boardforworkers.member.presentation.dto.MemberListDto;
+import com.changbi.tradeunion.boardforworkers.member.presentation.dto.MemberSaveDto;
 import com.changbi.tradeunion.boardforworkers.member.presentation.dto.PreMemberDto;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
@@ -46,16 +46,7 @@ class MemberServiceImplTest {
 
             @BeforeEach
             void setUpSessionAdmin() {
-                MemberSaveDto dto = new MemberSaveDto();
-                dto.setCompany(Company.CHANGBI.name());
-                dto.setDepartment(Department.HR.name());
-                dto.setMemberEmail("admin@changbi.com");
-                dto.setRole(Role.ADMIN.name());
-                dto.setMemberRealName("관리자1");
-                dto.setMemberPassword("1234");
-
-                Long adminId = memberService.save(dto);
-
+                Long adminId = 10L;
                 MockHttpSession session = new MockHttpSession();
                 session.setAttribute("admin", memberService.findById(adminId));
                 MockHttpServletRequest request = new MockHttpServletRequest();
@@ -145,7 +136,7 @@ class MemberServiceImplTest {
 
                 //given
                 PreMemberDto dto =  new PreMemberDto();
-                String email = "member1@changbi.com"; String password = "12345";
+                String email = "permember@changbi.com"; String password = "12345";
                 String realName = "tester";
                 String company = Company.MEDIA_CHANGBI.name();
                 String department = Department.HR.name();
@@ -158,6 +149,7 @@ class MemberServiceImplTest {
                 //when
                 Long preMemberId = memberService.savePreMember(dto);
                 PreMember preMember = memberService.findPreMemberById(preMemberId);
+
                 Long memberId = memberService.saveMemberByPreMember(preMember);
                 MemberDetailDto member = memberService.findById(memberId);
 
