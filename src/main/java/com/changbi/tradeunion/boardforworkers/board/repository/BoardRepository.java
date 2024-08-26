@@ -161,9 +161,14 @@ public class BoardRepository {
 
     }
 
-    public void updatePostReadCount(Long postId) {
+    /*public void updatePostReadCount(Long postId) {
         Post post = em.find(Post.class, postId);
         post.updateReadCount();
+    }*/
+
+    public void updatePostReadCount(Long postId){
+        String query = "update Post p set p.readCount = p.readCount + 1 where p.id = :postId";
+        em.createQuery(query).setParameter("postId", postId).executeUpdate();
     }
 
     public int updatePostRecommendCount(Long postId) {
