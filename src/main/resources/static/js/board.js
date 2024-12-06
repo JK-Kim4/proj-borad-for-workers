@@ -1,5 +1,7 @@
 let main = {
     init: function (){
+        let _this = this;
+
         $("#movePostSavePage").on("click", function (){
             let boardId = $("#boardId").val();
             location.href = "/board/"+boardId+"/post/save"
@@ -16,13 +18,21 @@ let main = {
             data.postHead = $("#inputPostHead").val();
             data.postTitle = $("#inputPostTitle").val();
             data.postContent = editor.getHTML();
+            let formData = new FormData($('#fileForm')[0]);
+            console.log(formData)
 
-            main.savePost(JSON.stringify(data), boardId);
+            if($("#attachmentFlag").val() === "true"
+                && $("#attachmentFile").val() !== ''){
+                _this.uploadAttachmentFile();
+                data.attachmentId = $("#attachmentId").val();
+            }
+
+            _this.savePost(JSON.stringify(data), boardId);
         });
 
         $("#postDeleteButton").on("click", function (){
             let postId = $("#postId").val(); let boardId = $("#boardId").val();
-            main.deletePost(postId, boardId);
+            _this.deletePost(postId, boardId);
         });
 
         $("#postUpdateButton").on("click", function (){
@@ -37,18 +47,38 @@ let main = {
             data.postTitle = $("#inputPostTitle").val();
             data.postContent = editor.getHTML();
 
-            main.updatePost(JSON.stringify(data), postId);
+            _this.updatePost(JSON.stringify(data), postId);
         });
 
         $("#recommendButton").on("click", function (){
             let postId = $("#postId").val();
-            main.updatePostRecommendCount(postId);
+            _this.updatePostRecommendCount(postId);
         });
 
         $("#goToPostListButton").on("click", function (){
             let boardId = $("#boardId").val();
             location.href = "/board/"+boardId+"/post/list";
         });
+
+        $("#reportButton").on("click", function (){
+            let data = {
+                postId: $("#postId").val(),
+                memberId: $("#sessionMemberId").val(),
+            }
+
+            _this.reportPost(JSON.stringify(data));
+        });
+
+        //댓글 작성 버튼
+        $("#saveCommentButton").on("click", function (){
+            let data = {
+                postId: $("#postId").val(),
+                memberId: $("#sessionMemberId").val(),
+                comment: $("#inputComment").val()
+            }
+
+            console.log(data);
+        })
 
         $(document).on("click", ".post-list-content", function (){
             let postId = $(this).data("post-id");
@@ -83,6 +113,31 @@ let main = {
                 alert(RESULT_MESSAGE.FAIL_SYSTEM);
             }
         })
+    },
+    uploadAttachmentFile: function (){
+        let formData = new FormData($('#fileForm')[0]);
+
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',	// 필수
+            url: '/api/board/upload/attachment',
+            data: formData,		// 필수
+            processData: false,	// 필수
+            contentType: false,	// 필수
+            cache: false,
+            async: false,
+            success: function (result) {
+                if (RESULT_CODE.SUCCESS_DEFAULT === result.resultCode){
+                    $("#attachmentId").val(result.data);
+                }else {
+                    alert(result.resultMessage);
+                }
+            },
+            error: function (e) {
+                console.error(e)
+                alert(RESULT_MESSAGE.FAIL_SYSTEM);
+            }
+        });
     },
     updatePost: function (jsonData, postId){
 
@@ -231,12 +286,33 @@ let main = {
             }
         })
     },
+    reportPost: function (jsonData){
+        $.ajax({
+            url: "/api/board/report/post",
+            method: "POST",
+            data: jsonData,
+            contentType: "application/json; charset=utf-8",
+            success: function (result){
+                console.log(result)
+                alert(result.resultMessage);
+            },
+            error: function (x,h,r){
+                console.error(x)
+                alert(RESULT_MESSAGE.FAIL_SYSTEM);
+            }
+        })
+    },
+    downloadAttachment: function (attachmentId){
+        console.log(attachmentId)
+        location.href = "/api/attachment/download/"+attachmentId;
+    },
     addUpdateButton: function (postId){
         let html = "<button class='btn btn-success' id='goToPostUpdate' data-post-id='"+postId+"'>수정</button>";
 
         $("#postUpdateButtonDiv").html(html);
     },
     renderPostDetailPage: function (data){
+
         $("#postTitle").html(main.getPostHeadBadge(data.postHead) +" "+ data.postTitle);
         $("#postAuthor").html(data.memberNickName + " ("+ data.memberRealName + ")");
         $("#postContent").html(data.postContent);
@@ -247,6 +323,10 @@ let main = {
         $("#boardId").val(data.boardId)
         $("#memberId").val(data.memberId)
 
+        if(data.attachmentId != null){
+            $("#postAttachment").html("첨부파일: <button class='btn btn-outline-dark' onclick='main.downloadAttachment("+data.attachmentId+")'>"+data.attachmentFileName+"</button>")
+        }
+
         if(data.memberId == $("#sessionMemberId").val()){
             main.addUpdateButton(data.postId);
         }
@@ -256,8 +336,6 @@ let main = {
         $("#inputPostHead").val(data.postHead).attr("selected", "selected");
         $("#inputPostTitle").val(data.postTitle);
         $("#editor").html(editor.setHTML(data.postContent));
-
-
     },
     getPostHeadBadge: function (postHead){
         let badge = "";

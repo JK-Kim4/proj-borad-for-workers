@@ -1,8 +1,8 @@
 package com.changbi.tradeunion.boardforworkers.board.repository;
 
-import com.changbi.tradeunion.boardforworkers.board.domain.Board;
-import com.changbi.tradeunion.boardforworkers.board.domain.Post;
+import com.changbi.tradeunion.boardforworkers.board.domain.*;
 import com.changbi.tradeunion.boardforworkers.board.exception.PostIllegalArgumentException;
+import com.changbi.tradeunion.boardforworkers.board.presentation.dto.CommentDetailDto;
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostDetailDto;
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostListDto;
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostSaveDto;
@@ -10,7 +10,10 @@ import com.changbi.tradeunion.boardforworkers.common.CommonValues;
 import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.PostHead;
 import com.changbi.tradeunion.boardforworkers.common.dto.Pagination;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.NonUniqueResultException;
 import jakarta.persistence.PersistenceContext;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -24,6 +27,11 @@ public class BoardRepository {
     public Long save(Board board) {
         em.persist(board);
         return board.getId();
+    }
+
+    public Long saveAttachment(Attachment attachment) {
+        em.persist(attachment);
+        return attachment.getId();
     }
 
     public void delete(Long boardId) {
@@ -58,6 +66,10 @@ public class BoardRepository {
 
         return em.createQuery(query, Board.class)
                 .getResultList();
+    }
+
+    public Post findPostById(Long postId){
+        return em.find(Post.class, postId);
     }
 
     public List<PostListDto> findPosts(Long boardId){
@@ -120,17 +132,18 @@ public class BoardRepository {
         return post.getId();
     }
 
-    public PostDetailDto findPostById(Long postId) {
+    public PostDetailDto findPostDetailById(Long postId) {
         String query =  "select " +
                             "new com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostDetailDto" +
                             "(" +
                                 "p.id, b.id, b.boardName, m.id, m.memberRealName, m.memberNickName," +
                                 "p.postHead, p.postTitle, p.postContent, p.useYn, p.readCount, p.recommendCount," +
-                                "p.attachmentFileName, p.attachmentFilePath, p.appendDate, p.updateDate" +
+                                "p.attachmentId, a.fileOriginalName, a.fileSize, a.filePath, p.appendDate, p.updateDate" +
                             ") " +
                         "from Post p " +
                         "left outer join Board b on p.boardId = b.id " +
                         "left outer join Member m on p.memberId = m.id " +
+                        "left outer join Attachment a on p.attachmentId = a.id " +
                         "where p.id = :postId";
 
         return em.createQuery(query, PostDetailDto.class)
@@ -148,9 +161,14 @@ public class BoardRepository {
 
     }
 
-    public void updatePostReadCount(Long postId) {
+    /*public void updatePostReadCount(Long postId) {
         Post post = em.find(Post.class, postId);
         post.updateReadCount();
+    }*/
+
+    public void updatePostReadCount(Long postId){
+        String query = "update Post p set p.readCount = p.readCount + 1 where p.id = :postId";
+        em.createQuery(query).setParameter("postId", postId).executeUpdate();
     }
 
     public int updatePostRecommendCount(Long postId) {
@@ -179,17 +197,18 @@ public class BoardRepository {
                 .getResultList();
     }
 
-    public PostDetailDto findMostRecentNoticePost() {
+    public PostDetailDto findMostRecentNoticePost() throws NoResultException, NonUniqueResultException {
         String query =  "select " +
                             "new com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostDetailDto" +
                             "(" +
                                 "p.id, b.id, b.boardName, m.id, m.memberRealName, m.memberNickName," +
                                 "p.postHead, p.postTitle, p.postContent, p.useYn, p.readCount, p.recommendCount," +
-                                "p.attachmentFileName, p.attachmentFilePath, p.appendDate, p.updateDate" +
+                                "p.attachmentId, a.fileName, a.filePath, a.fileSize, p.appendDate, p.updateDate" +
                             ") " +
                         "from Post p " +
                         "left outer join Board b on p.boardId = b.id " +
                         "left outer join Member m on p.memberId = m.id " +
+                        "left outer join Attachment a on p.attachmentId = a.id " +
                         "where p.boardId = 91 " +
                         "and p.postHead = :noticeHead " +
                         "order by p.appendDate desc limit 1";
@@ -199,17 +218,18 @@ public class BoardRepository {
                 .getSingleResult();
     }
 
-    public PostDetailDto findMostPopularPost() {
+    public PostDetailDto findMostPopularPost() throws NoResultException, NonUniqueResultException{
         String query =  "select " +
                             "new com.changbi.tradeunion.boardforworkers.board.presentation.dto.PostDetailDto" +
                             "(" +
                                 "p.id, b.id, b.boardName, m.id, m.memberRealName, m.memberNickName," +
                                 "p.postHead, p.postTitle, p.postContent, p.useYn, p.readCount, p.recommendCount," +
-                                "p.attachmentFileName, p.attachmentFilePath, p.appendDate, p.updateDate" +
+                                "p.attachmentId, a.fileName, a.filePath, a.fileSize, p.appendDate, p.updateDate" +
                             ") " +
                         "from Post p " +
                         "left outer join Board b on p.boardId = b.id " +
                         "left outer join Member m on p.memberId = m.id " +
+                        "left outer join Attachment a on p.attachmentId = a.id " +
                         "where b.id not in (91, 93, 94) " +
                         "order by p.recommendCount desc, p.readCount desc, p.id desc limit 1";
 
@@ -250,5 +270,56 @@ public class BoardRepository {
         return em.createQuery(query, Long.class).getSingleResult();
     }
 
+    public Long reportPost(Report report) {
+        em.persist(report);
+        if( this.getReportCount(report.getPostId()) >= 5){
+            em.find(Post.class, report.getPostId()).updateUseYn();
+        }
+        em.flush();
+        return report.getId();
+    }
+
+    public Report findReportById(Report report) throws EmptyResultDataAccessException {
+        String query = "select r " +
+                "from Report r " +
+                "where r.postId = :postId " +
+                "and r.memberId = :memberId";
+
+        return em.createQuery(query, Report.class)
+                .setParameter("postId", report.getPostId())
+                .setParameter("memberId", report.getMemberId())
+                .getSingleResult();
+    }
+
+    public CommentDetailDto findCommentById(Long commentId) {
+        String query =  "select " +
+                            "new com.changbi.tradeunion.boardforworkers.board.presentation.dto.CommentDetailDto" +
+                            "(c.id, c.postId, c.memberId, c.parentCommentId, c.commentValue) " +
+                        "from Comment c " +
+                        "where c.id = :commentId";
+
+        return em.createQuery(query, CommentDetailDto.class)
+                .setParameter("commentId", commentId)
+                .getSingleResult();
+    }
+
+    /*private method*/
+    private Long getReportCount(Long postId) {
+        String query = "select count(r) from Report r " +
+                "where r.postId = :postId";
+
+        return em.createQuery(query, Long.class)
+                .setParameter("postId", postId)
+                .getSingleResult();
+    }
+
+    public Attachment findAttachmentById(Long attachmentId) {
+        return em.find(Attachment.class, attachmentId);
+    }
+
+    public Long saveComment(Comment comment) {
+        em.persist(comment);
+        return comment.getId();
+    }
 
 }

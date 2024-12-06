@@ -17,14 +17,13 @@ public class PostSaveDto {
     private String postTitle;
     private String postContent;
     private String postHead;
-    private String attachmentFileName;
-    private String attachmentFilePath;
+    private Long attachmentId;
 
     @Builder
     public PostSaveDto(
             Long boardId, Long memberId, boolean useYn,
             String postHead, String postTitle, String postContent,
-            String attachmentFileName, String attachmentFilePath) {
+            Long attachmentId) {
 
         this.boardId = boardId;
         this.memberId = memberId;
@@ -32,8 +31,7 @@ public class PostSaveDto {
         this.postHead = postHead;
         this.postTitle = postTitle;
         this.postContent = postContent;
-        this.attachmentFileName = attachmentFileName;
-        this.attachmentFilePath = attachmentFilePath;
+        this.attachmentId = attachmentId;
 
     }
 
@@ -45,8 +43,7 @@ public class PostSaveDto {
                     .postTitle(this.postTitle)
                     .postContent(this.postContent)
                     .useYn(this.useYn)
-                    .attachmentFileName(this.attachmentFileName)
-                    .attachmentFilePath(this.attachmentFilePath)
+                    .attachmentId(this.attachmentId)
                 .build();
     }
 

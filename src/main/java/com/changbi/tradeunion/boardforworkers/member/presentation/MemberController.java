@@ -112,7 +112,7 @@ public class MemberController {
 
     @PostMapping("/send-auth")
     public ResponseEntity<ResultDto> sendAuth(
-            @RequestBody HashMap<String, String > requestParam){
+            @RequestBody HashMap<String, String> requestParam){
 
         memberService.sendAuthNumber(requestParam);
         return ResponseEntity.ok(ResultDto.builder()

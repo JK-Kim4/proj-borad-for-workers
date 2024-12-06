@@ -1,0 +1,57 @@
+{{>layout/header}}
+
+<main class="container col-10">
+    <div class="p-4 p-md-5 mb-4 text-white rounded bg-dark">
+        <div class="col-md-6 px-0">
+            <h1 class="display-4 fst-italic" id="boardName">의견 보내기</h1>
+            <p class="lead my-3">커뮤니티를 이용하면서 개선이 필요하다고 느끼는 사항 혹은 추가되었으면 하는 기능을 자유롭게 작성해주세요.</p>
+            <p class="lead my-3">작성 주신 의견은 관리자 외 사용자에게는 공개되지 않습니다.</p>
+        </div>
+    </div>
+
+    <div class="mt-3 row">
+        <div class="col-2">
+            <label data-toggle="tooltip" title="보내주신 의견은 관리자만 볼 수 있으며, 익명 선택 시 작성자 정보는 전달되지 않습니다."> 익명 여부 </label>
+            <select class="form-select" id="isAnonymous">
+                <option value="false">작성자 정보 포함</option>
+                <option value="true">익명으로 작성하기</option>
+            </select>
+        </div>
+        <div class="col-9">
+            <label > 의견 </label>
+            <input type="text" class="form-control" id="inputDescription">
+        </div>
+        <div class="col-auto mt-4">
+            <button class="btn btn-success" id="insertComplaintButton">제출</button>
+        </div>
+    </div>
+
+    <div class="table-responsive mt-5">
+        <h3>내가 작성한 의견</h3>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col" class="col-1 text-center">No</th>
+                <th scope="col" class="col-6 text-center">내용</th>
+                <th scope="col" class="col-auto text-center">익명 여부</th>
+                <th scope="col" class="col-auto text-center">작성일</th>
+                <th scope="col" class="col-auto text-center">처리 상태</th>
+            </tr>
+            </thead>
+            <tbody id="complaintListDiv">
+
+            </tbody>
+        </table>
+    </div>
+</main>
+<script src="/js/complaint.js"></script>
+<script>
+    $(document).ready(function (){
+        $('[data-toggle="tooltip"]').tooltip();
+        let memberId = $("#sessionMemberId").val();
+        main.findComplaintsByMemberId(memberId);
+    })
+</script>
+
+
+{{>layout/footer}}
