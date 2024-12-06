@@ -70,4 +70,9 @@ public class AdminRouter {
         model.addAttribute("postId", postId);
         return "admin/board/post/detail";
     }
+
+    @GetMapping("/sms/send")
+    public String sendSmsPage(){
+        return "admin/sms/send";
+    }
 }

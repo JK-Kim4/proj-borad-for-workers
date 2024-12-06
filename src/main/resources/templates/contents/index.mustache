@@ -50,7 +50,7 @@
                     <a class="stretched-link" id="goToRecentNotice">자세히 보기</a>
                 </div>
                 <div class="col-auto d-none d-lg-block align-self-center" id="recentNoticeThumbnail">
-                    <img src="/image/marx.png" width="160" height="200" alt="Thumbnail">
+                    <img src="/image/icon.jpg" width="160" height="200" alt="Thumbnail">
                 </div>
             </div>
         </div>
@@ -87,14 +87,26 @@
             });
 
             index.getIndexData();
-        });
 
-        document.addEventListener('DOMContentLoaded', function() {
-            var calendarEl = document.getElementById('calendar');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
+            let calendarEl = document.getElementById('calendar');
+            let calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth'
             });
             calendar.render();
+            calendar.addEvent(
+                [
+                    {
+                        title: 'my event',
+                        start: '2024-09-14',
+                        allDay: true
+                    },
+                    {
+                        title: 'my event2',
+                        start: '2024-09-24',
+                        allDay: true
+                    }
+                ]
+            );
         });
     </script>
 {{>layout/footer}}
