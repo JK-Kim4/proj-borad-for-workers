@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: board-for-workers
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: {database-url}
+    username: {username}
+    password: {passwrod}
+    hikari:
+      idle-timeout: 10000
+      maximum-pool-size: 30
+      minimum-idle: 5
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQLDialect
+  mustache:
+    servlet:
+      expose-session-attributes: true
+
+server:
+  servlet:
+    encoding:
+      charset: utf-8
+      force: true
+  file:
+    upload-directory:
+      path: {file-upload-directory}
+
+changbi:
+  mailsender:
+    username: {mailerusername}
+    password: {mailerpassword}
+
+cloud:
+  ncp:
+    end-point: https://kr.object.ncloudstorage.com
+    region-name: kr-standard
+    credentials:
+      access-key: {ncp-access-key}
+      secret-key: {ncp-secret-key}
+
+logging:
+  level:
+    root: debug
+
