@@ -75,4 +75,9 @@ public class AdminRouter {
     public String sendSmsPage(){
         return "admin/sms/send";
     }
+
+    @GetMapping("/news-letter/generate")
+    public String newsLetterGeneratePage(){
+        return "admin/news-letter/generate";
+    }
 }
