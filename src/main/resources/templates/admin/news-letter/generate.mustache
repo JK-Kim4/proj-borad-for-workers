@@ -76,6 +76,10 @@
     .news-letter-header-image {
         text-align: center; /* 이미지를 가운데 정렬 */
     }
+
+    .news-letter-header-image img {
+        max-width: 45%;
+    }
 </style>
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -126,7 +130,7 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <button id="generate-form-button">생성</button>
+                    <button class="btn btn-outline-dark" id="generate-form-button">생성</button>
                 </div>
             </div>
             <div class="card mt-3">
@@ -134,6 +138,10 @@
                     내용 입력
                 </div>
                 <div class="card-body" id="content-div">
+                </div>
+                <div class="card-footer" id="content-div-footer" >
+                    <button class="btn btn-outline-dark" id="show-news-letter-button"> 화면 보기 </button>
+                    <button class="btn btn-outline-warning" id="copy-news-letter-button"> 클립보드에 복사 </button>
                 </div>
             </div>
         </div>
@@ -147,33 +155,9 @@
                         <div class="news-letter-wrapper" >
                             <div class="news-letter-container">
                                 <section class="section news-letter-header-image">
-                                    <img src="https://i.imgur.com/T0bP1w3.png" alt="뉴스레터 제목 이미지">
+                                    <img src="/image/changbi_union_icon.jpg" alt="뉴스레터 제목 이미지">
                                 </section>
 
-                                <section class="news-letter-section" id="main-header">
-                                    <p>안녕하세요, [이름]님!</p>
-                                </section>
-
-                                <section class="news-letter-section" id="main-section-1">
-                                    <h2>새로운 기능 출시</h2>
-                                    <p>저희 서비스에 새로운 기능이 추가되었습니다! 이제 더욱 편리하게 서비스를 이용하실 수 있습니다.</p>
-                                    <ul>
-                                        <li>기능 1: 상세 설명</li>
-                                        <li>기능 2: 상세 설명</li>
-                                        <li>기능 3: 상세 설명</li>
-                                    </ul>
-                                </section>
-
-                                <section class="news-letter-section" id="main-section-2">
-                                    <h2>흥미로운 콘텐츠</h2>
-                                    <p>흥미로운 콘텐츠를 소개합니다. 재미있게 읽어보세요!</p>
-                                    <img src="https://via.placeholder.com/600x300" alt="콘텐츠 이미지">
-                                    <p>이미지에 대한 설명</p>
-                                </section>
-
-                                <section class="news-letter-section" id="main-footer">
-                                    <p>감사합니다.</p>
-                                </section>
                             </div>
                             <div class="news-letter-footer">
                                 <p>&copy; 2023 회사 이름. All rights reserved.</p>
@@ -288,6 +272,32 @@
         }
     }
 
+    function drawNewLetterSection(options){
+        let html = "";
+        if(options.header === "true"){
+            html += '<section class="news-letter-section" id="main-header">' +
+                        '<pre> Header 영역입니다.</pre>' +
+                    '</section>';
+        }
+
+        if(options.sections > 0){
+            for(let i = 1; i <= options.sections; i++){
+                html += '<section class="news-letter-section" id="main-section-'+i+'">' +
+                            '<pre> Section '+i+' 영역입니다.</pre>' +
+                        '</section>';
+            }
+        }
+
+        if(options.footer === "true"){
+            html += '<section class="news-letter-section" id="main-footer">' +
+                        '<pre> Footer 영역입니다. </pre>' +
+                    '</section>';
+        }
+
+        $(".news-letter-container").append(html);
+
+    }
+
     $(document).ready(function (){
         $("#generate-form-button").on("click", function (){
             let targetDiv = $("#content-div");
@@ -300,6 +310,7 @@
                 footer:$("input[name='footer-usage']:checked").val(),
                 sections:$("#section-number").val()
             }
+            drawNewLetterSection(options);
 
             html += generateHeaderArea(options.header);
             html += generateSectionArea(options.sections);
@@ -320,6 +331,8 @@
             targetDiv.html(html);
 
             activeSectionEditor(options.sections);
+
+
         });
     });
 </script>
