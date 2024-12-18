@@ -80,4 +80,10 @@ public class AdminRouter {
     public String newsLetterGeneratePage(){
         return "admin/news-letter/generate";
     }
+
+    @GetMapping("/news-letter/pre-view")
+    public String newsLetterPreViewPage(Model model){
+        model.addAttribute("html", "<h1> hello </h1>");
+        return "admin/news-letter/pre-view";
+    }
 }

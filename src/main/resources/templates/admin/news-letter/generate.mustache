@@ -139,10 +139,6 @@
                 </div>
                 <div class="card-body" id="content-div">
                 </div>
-                <div class="card-footer" id="content-div-footer" >
-                    <button class="btn btn-outline-dark" id="show-news-letter-button"> 화면 보기 </button>
-                    <button class="btn btn-outline-warning" id="copy-news-letter-button"> 클립보드에 복사 </button>
-                </div>
             </div>
         </div>
         <div class="col-6">
@@ -164,6 +160,10 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="card-footer" id="content-div-footer" >
+                    <button class="btn btn-outline-dark" id="show-news-letter-button"> 화면 보기 </button>
+                    <button class="btn btn-outline-warning" id="copy-news-letter-button"> 클립보드에 복사 </button>
                 </div>
             </div>
         </div>
@@ -215,7 +215,9 @@
                     $(document).on("input", section1Content, function (){
                         $("#main-section-1").html(editor1.getHTML());
                     });
-
+                    $(document).on("paste", section1Content, function (){
+                        $("#main-section-1").html(editor1.getHTML());
+                    });
                     break;
                 case 2:
                     editor2 = new toastui.Editor({
@@ -228,6 +230,9 @@
 
                     let section2Content = $(".section-2-div").find(".toastui-editor-contents");
                     $(document).on("input", section2Content, function (){
+                        $("#main-section-2").html(editor2.getHTML());
+                    });
+                    $(document).on("paste", section2Content, function (){
                         $("#main-section-2").html(editor2.getHTML());
                     });
                     break;
@@ -243,6 +248,9 @@
                     $(document).on("input", section3Content, function (){
                         $("#main-section-3").html(editor3.getHTML());
                     });
+                    $(document).on("paste", section3Content, function (){
+                        $("#main-section-3").html(editor3.getHTML());
+                    });
                     break;
                 case 4:
                     editor4 = new toastui.Editor({
@@ -254,6 +262,9 @@
                     });
                     let section4Content = $(".section-4-div").find(".toastui-editor-contents");
                     $(document).on("input", section4Content, function (){
+                        $("#main-section-4").html(editor4.getHTML());
+                    });
+                    $(document).on("paste", section4Content, function (){
                         $("#main-section-4").html(editor4.getHTML());
                     });
                     break;
