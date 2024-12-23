@@ -36,7 +36,8 @@ public class WebSecurityConfiguration {
                                     .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
                                     .requestMatchers("/", "/about", "/api/common/index-data",
                                             "/css/**", "/js/**", "/image/**", "/member/**", "/plugin/**",
-                                            "/api/member/send-auth", "/api/member/pre-member/save").permitAll()
+                                            "/api/member/send-auth", "/api/member/pre-member/save", "/api/board/post/**",
+                                            "/**").permitAll()
                                     .requestMatchers("/admin/**").hasAnyRole("SUPER_ADMIN", "ADMIN")
                                     .anyRequest().authenticated())
                 .formLogin(

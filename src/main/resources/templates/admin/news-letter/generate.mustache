@@ -1,0 +1,352 @@
+{{>layout/admin-header}}
+<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+<style>
+    /* 기본 스타일 */
+    .news-letter-body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
+
+    .news-letter-wrapper {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .news-letter-container {
+        padding: 20px;
+        background-color: #ffffff;
+    }
+
+    .news-letter-h1 {
+        color: #412B8D;
+    }
+
+    .news-letter-p {
+        line-height: 1.6;
+        color: #555555;
+    }
+
+    .news-letter-a {
+        color: #412B8D;
+        text-decoration: none;
+    }
+
+    .news-letter-footer {
+        text-align: center;
+        padding: 20px;
+        background-color: #412B8D;
+        color: #ffffff;
+        font-size: 12px;
+    }
+
+    /* 섹션 구분 스타일 */
+    .news-letter-section {
+        padding: 20px 0;
+        border-bottom: 1px solid #eeeeee;
+    }
+
+    .news-letter-section:last-child {
+        border-bottom: none;
+    }
+
+    /* 이미지 스타일 */
+    .news-letter-section img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* 모바일 반응형 스타일 */
+    @media screen and (max-width: 600px) {
+        .news-letter-wrapper {
+            width: 100%;
+        }
+
+        .news-letter-container {
+            padding: 10px;
+        }
+
+        .news-letter-h1 {
+            font-size: 24px;
+        }
+    }
+
+    /* 제목 이미지 스타일 */
+    .news-letter-header-image {
+        text-align: center; /* 이미지를 가운데 정렬 */
+    }
+
+    .news-letter-header-image img {
+        max-width: 45%;
+    }
+</style>
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">뉴스 레터 생성</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header">
+                    옵션 선택
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-3">
+                            <label for="" class="form-label">헤더 사용</label>
+                            <div>
+                                <input type="radio" name="header-usage" value="true" checked />
+                                <label for="huey">사용</label>
+                            </div>
+                            <div>
+                                <input type="radio" name="header-usage" value="false" />
+                                <label for="dewey">사용안함</label>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <label for="" class="form-label">추가 section 갯수</label>
+                            <div>
+                                <select name="section-number" id="section-number">
+                                    <option value="1" selected>1</option>
+                                    <option value="2" >2</option>
+                                    <option value="3" >3</option>
+                                    <option value="4" >4</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <label for="" class="form-label">푸터 사용 여부</label>
+                            <div>
+                                <input type="radio" id="footer-true" name="footer-usage" value="true" checked />
+                                <label for="footer-true">사용</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="footer-false" name="footer-usage" value="false" />
+                                <label for="footer-false">사용안함</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-outline-dark" id="generate-form-button">생성</button>
+                </div>
+            </div>
+            <div class="card mt-3">
+                <div class="card-header">
+                    내용 입력
+                </div>
+                <div class="card-body" id="content-div">
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header">
+                    미리 보기
+                </div>
+                <div class="card-body">
+                    <div class="news-letter-body">
+                        <div class="news-letter-wrapper" >
+                            <div class="news-letter-container">
+                                <section class="section news-letter-header-image">
+                                    <img src="/image/changbi_union_icon.jpg" alt="뉴스레터 제목 이미지">
+                                </section>
+
+                            </div>
+                            <div class="news-letter-footer">
+                                <p>&copy; 2023 회사 이름. All rights reserved.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer" id="content-div-footer" >
+                    <button class="btn btn-outline-dark" id="show-news-letter-button"> 화면 보기 </button>
+                    <button class="btn btn-outline-warning" id="copy-news-letter-button"> 클립보드에 복사 </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+<script type="application/javascript">
+    let editor1, editor2, editor3, editor4;
+    function generateHeaderArea(header){
+        if(header === "true"){
+
+            return  '<div class="row" id="header-div">' +
+                        '<label>헤더 내용</label>' +
+                        '<div>' +
+                            '<textarea id="header-textarea" class="form-control" cols="50" rows="5"></textarea>' +
+                        '</div>' +
+                    '</div>';
+        }
+    }
+
+    function generateSectionArea(sections){
+        let html = "";
+
+        for(let i = 1; i <= sections; i++){
+            let sectionId = "section-"+i+"-div";
+            html += '<div class="row mt-3">' +
+                    '<label>section' +i+ ' 내용</label>' +
+                    '<div id="'+sectionId+'" style="width: 100%"></div>' +
+                    '</div>';
+        }
+
+        return html;
+    }
+
+    function activeSectionEditor(sections){
+        for(let i = 1; i <= sections; i++){
+            let sectionId = "section-"+i+"-div";
+            switch (i){
+                case 1:
+                    editor1 = new toastui.Editor({
+                        el: document.querySelector('#'+sectionId),
+                        previewStyle: 'vertical',
+                        height: '500px',
+                        width: '80px',
+                        initialEditType: 'wysiwyg'
+                    });
+
+                    let section1Content = $(".section-1-div").find(".toastui-editor-contents");
+                    $(document).on("input", section1Content, function (){
+                        $("#main-section-1").html(editor1.getHTML());
+                    });
+                    $(document).on("paste", section1Content, function (){
+                        $("#main-section-1").html(editor1.getHTML());
+                    });
+                    break;
+                case 2:
+                    editor2 = new toastui.Editor({
+                        el: document.querySelector('#'+sectionId),
+                        previewStyle: 'vertical',
+                        height: '500px',
+                        width: '80px',
+                        initialEditType: 'wysiwyg'
+                    });
+
+                    let section2Content = $(".section-2-div").find(".toastui-editor-contents");
+                    $(document).on("input", section2Content, function (){
+                        $("#main-section-2").html(editor2.getHTML());
+                    });
+                    $(document).on("paste", section2Content, function (){
+                        $("#main-section-2").html(editor2.getHTML());
+                    });
+                    break;
+                case 3:
+                    editor3 = new toastui.Editor({
+                        el: document.querySelector('#'+sectionId),
+                        previewStyle: 'vertical',
+                        height: '500px',
+                        width: '80px',
+                        initialEditType: 'wysiwyg'
+                    });
+                    let section3Content = $(".section-3-div").find(".toastui-editor-contents");
+                    $(document).on("input", section3Content, function (){
+                        $("#main-section-3").html(editor3.getHTML());
+                    });
+                    $(document).on("paste", section3Content, function (){
+                        $("#main-section-3").html(editor3.getHTML());
+                    });
+                    break;
+                case 4:
+                    editor4 = new toastui.Editor({
+                        el: document.querySelector('#'+sectionId),
+                        previewStyle: 'vertical',
+                        height: '500px',
+                        width: '80px',
+                        initialEditType: 'wysiwyg'
+                    });
+                    let section4Content = $(".section-4-div").find(".toastui-editor-contents");
+                    $(document).on("input", section4Content, function (){
+                        $("#main-section-4").html(editor4.getHTML());
+                    });
+                    $(document).on("paste", section4Content, function (){
+                        $("#main-section-4").html(editor4.getHTML());
+                    });
+                    break;
+            }
+        }
+    }
+
+    function generateFooterArea(footer){
+        if(footer === "true"){
+            return  '<div class="row mt-3" id="footer-div">' +
+                        '<label>푸터 내용</label>' +
+                        '<div>' +
+                            '<textarea class="form-control" id="footer-textarea" cols="50" rows="5"></textarea>' +
+                        '</div>' +
+                    '</div>';
+        }
+    }
+
+    function drawNewLetterSection(options){
+        let html = "";
+        if(options.header === "true"){
+            html += '<section class="news-letter-section" id="main-header">' +
+                        '<pre> Header 영역입니다.</pre>' +
+                    '</section>';
+        }
+
+        if(options.sections > 0){
+            for(let i = 1; i <= options.sections; i++){
+                html += '<section class="news-letter-section" id="main-section-'+i+'">' +
+                            '<pre> Section '+i+' 영역입니다.</pre>' +
+                        '</section>';
+            }
+        }
+
+        if(options.footer === "true"){
+            html += '<section class="news-letter-section" id="main-footer">' +
+                        '<pre> Footer 영역입니다. </pre>' +
+                    '</section>';
+        }
+
+        $(".news-letter-container").append(html);
+
+    }
+
+    $(document).ready(function (){
+        $("#generate-form-button").on("click", function (){
+            let targetDiv = $("#content-div");
+
+            targetDiv.empty();
+            let html = "";
+
+            let options = {
+                header:$("input[name='header-usage']:checked").val(),
+                footer:$("input[name='footer-usage']:checked").val(),
+                sections:$("#section-number").val()
+            }
+            drawNewLetterSection(options);
+
+            html += generateHeaderArea(options.header);
+            html += generateSectionArea(options.sections);
+            html += generateFooterArea(options.footer);
+
+            /*header input*/
+            $(document).on("input", "#header-textarea", function (){
+                let html = "<pre>" + $("#header-textarea").val() + "</pre>";
+                $("#main-header").html(html);
+            });
+
+            /*footer input*/
+            $(document).on("input", "#footer-textarea", function (){
+                let html = "<pre>" + $("#footer-textarea").val() + "</pre>";
+                $("#main-footer").html(html);
+            });
+
+            targetDiv.html(html);
+
+            activeSectionEditor(options.sections);
+
+
+        });
+    });
+</script>
+</div>
+{{>layout/admin-footer}}
+

@@ -70,4 +70,20 @@ public class AdminRouter {
         model.addAttribute("postId", postId);
         return "admin/board/post/detail";
     }
+
+    @GetMapping("/sms/send")
+    public String sendSmsPage(){
+        return "admin/sms/send";
+    }
+
+    @GetMapping("/news-letter/generate")
+    public String newsLetterGeneratePage(){
+        return "admin/news-letter/generate";
+    }
+
+    @GetMapping("/news-letter/pre-view")
+    public String newsLetterPreViewPage(Model model){
+        model.addAttribute("html", "<h1> hello </h1>");
+        return "admin/news-letter/pre-view";
+    }
 }

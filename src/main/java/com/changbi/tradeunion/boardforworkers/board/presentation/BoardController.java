@@ -9,6 +9,9 @@ import com.changbi.tradeunion.boardforworkers.common.dto.ResultDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/board")
@@ -34,6 +37,17 @@ public class BoardController {
                         .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
                         .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
                         .data(boardService.savePost(dto))
+                .build());
+    }
+
+    @PostMapping("/upload/attachment")
+    public ResponseEntity<ResultDto> uploadAttachment(
+            @RequestParam(name = "file") MultipartFile file) {
+
+        return ResponseEntity.ok(ResultDto.builder()
+                        .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
+                        .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
+                        .data(boardService.saveAttachment(file))
                 .build());
     }
 
@@ -166,6 +180,17 @@ public class BoardController {
                 .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
                 .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
                         .data(boardService.updatePostRecommendCount(postId))
+                .build());
+    }
+
+    @PostMapping("/report/post")
+    public ResponseEntity<ResultDto> reportPost(
+            @RequestBody HashMap<String, Long> reportParameter){
+
+        return ResponseEntity.ok(ResultDto.builder()
+                        .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
+                        .resultMessage(CommonValues.RESULT_MESSAGE_SUCCESS_DEFAULT)
+                        .data(boardService.reportPost(reportParameter))
                 .build());
     }
 

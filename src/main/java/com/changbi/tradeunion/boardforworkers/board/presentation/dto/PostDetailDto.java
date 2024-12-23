@@ -23,7 +23,9 @@ public class PostDetailDto {
     private String postContent;
     private int readCount;
     private int recommendCount;
+    private Long attachmentId;
     private String attachmentFileName;
+    private String attachmentFileSize;
     private String attachmentFilePath;
     private LocalDateTime appendDate;
     private LocalDateTime updateDate;
@@ -42,8 +44,7 @@ public class PostDetailDto {
         this.postContent = post.getPostContent();
         this.readCount = post.getReadCount();
         this.recommendCount = post.getRecommendCount();
-        this.attachmentFileName = post.getAttachmentFileName();
-        this.attachmentFilePath = post.getAttachmentFilePath();
+        this.attachmentId = post.getAttachmentId();
         this.appendDate = post.getAppendDate();
         this.updateDate = post.getUpdateDate();
     }
@@ -53,7 +54,7 @@ public class PostDetailDto {
             Long memberId, String memberRealName, String memberNickName,
             PostHead postHead, String postTitle, String postContent,
             boolean useYn, int readCount, int recommendCount,
-            String attachmentFileName, String attachmentFilePath,
+            Long attachmentId, String fileOriginalName, String fileSize, String filePath,
             LocalDateTime appendDate, LocalDateTime updateDate) {
 
         this.postId = postId;
@@ -70,8 +71,10 @@ public class PostDetailDto {
         this.useYn = useYn;
         this.readCount = readCount;
         this.recommendCount = recommendCount;
-        this.attachmentFileName = attachmentFileName;
-        this.attachmentFilePath = attachmentFilePath;
+        this.attachmentId = attachmentId;
+        this.attachmentFileName = fileOriginalName;
+        this.attachmentFileSize = fileSize;
+        this.attachmentFilePath = filePath;
         this.appendDate = appendDate;
         this.updateDate = updateDate;
 

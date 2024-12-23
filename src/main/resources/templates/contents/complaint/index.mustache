@@ -22,7 +22,7 @@
             <input type="text" class="form-control" id="inputDescription">
         </div>
         <div class="col-auto mt-4">
-            <button class="btn btn-success" id="insertReportButton">제출</button>
+            <button class="btn btn-success" id="insertComplaintButton">제출</button>
         </div>
     </div>
 
@@ -38,18 +38,18 @@
                 <th scope="col" class="col-auto text-center">처리 상태</th>
             </tr>
             </thead>
-            <tbody id="reportListDiv">
+            <tbody id="complaintListDiv">
 
             </tbody>
         </table>
     </div>
 </main>
-<script src="/js/report.js"></script>
+<script src="/js/complaint.js"></script>
 <script>
     $(document).ready(function (){
         $('[data-toggle="tooltip"]').tooltip();
         let memberId = $("#sessionMemberId").val();
-        main.findReportsByMemberId(memberId);
+        main.findComplaintsByMemberId(memberId);
     })
 </script>
 

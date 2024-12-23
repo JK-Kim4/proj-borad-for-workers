@@ -31,7 +31,7 @@ public class ErrorResponse {
             final HttpServletRequest request,
             final Exception exception) {
         logger.error("[ERROR-]\t{}\t{}\t{}", request.getMethod(), request.getRequestURI(), exception.getMessage());
-        logger.error("{}", (Object) exception.getStackTrace());
+        logger.error("[ERROR RESPONSE INFO]",exception);
 
         return ErrorResponse.builder()
                 .errorMessage(exception.getMessage())

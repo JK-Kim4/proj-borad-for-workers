@@ -1,10 +1,10 @@
 let main = {
     init: function (){
 
-        $("#insertReportButton").on("click", function (){
+        $("#insertComplaintButton").on("click", function (){
             let data = {};
 
-            data.reportDescription = $("#inputDescription").val();
+            data.complaintDescription = $("#inputDescription").val();
             data.anonymous = $("#isAnonymous").val();
             data.memberId = $("#sessionMemberId").val();
 
@@ -15,7 +15,7 @@ let main = {
         console.log(jsonData)
 
         $.ajax({
-            url: "/api/report/save",
+            url: "/api/complaint/save",
             method: "POST",
             data: jsonData,
             contentType: "application/json; charset=utf-8;",
@@ -33,9 +33,9 @@ let main = {
             }
         });
     },
-    findReportsByMemberId: function (memberId){
+    findComplaintsByMemberId: function (memberId){
         $.ajax({
-            url: "/api/report/reports",
+            url: "/api/complaint/complaints",
             method: "GET",
             data: {
                 memberId : memberId
@@ -47,18 +47,18 @@ let main = {
                         console.log(result.data)
                         $.each(result.data, function (index,element){
                             html += "<tr>" +
-                                        "<td class='text-center'>"+element.reportId+"</td>" +
-                                        "<td class='text-center'>"+element.reportDescription+"</td>" +
+                                        "<td class='text-center'>"+element.complaintId+"</td>" +
+                                        "<td class='text-center'>"+element.complaintDescription+"</td>" +
                                         "<td class='text-center'>"+element.anonymous+"</td>" +
                                         "<td class='text-center'>"+dayjs(element.appendDate).format('YYYY.MM.DD')+"</td>" +
-                                        "<td class='text-center'>"+element.reportStatus+"</td>" +
+                                        "<td class='text-center'>"+element.complaintStatus+"</td>" +
                                     "</tr>"
                         });
                     }else{
                         html = "<tr><td colspan='5'> 등록된 게시글이 없습니다. </td></tr>"
                     }
 
-                    $("#reportListDiv").html(html);
+                    $("#complaintListDiv").html(html);
                 }
             },
             error: function (x,h,r){

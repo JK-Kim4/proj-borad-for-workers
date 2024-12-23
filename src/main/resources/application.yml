@@ -17,6 +17,7 @@ spring:
   mustache:
     servlet:
       expose-session-attributes: true
+
 server:
   servlet:
     encoding:
@@ -27,6 +28,9 @@ server:
     include-message: always
     include-binding-errors: always
     include-stacktrace: always
+  file:
+    upload-directory:
+      path: /home
 
 cloud:
   ncp:

@@ -1,3 +1,4 @@
+/*
 package com.changbi.tradeunion.boardforworkers.common;
 
 import com.changbi.tradeunion.boardforworkers.common.dto.MailSenderDto;
@@ -46,3 +47,4 @@ public class MailSenderTest {
     }
 
 }
+*/

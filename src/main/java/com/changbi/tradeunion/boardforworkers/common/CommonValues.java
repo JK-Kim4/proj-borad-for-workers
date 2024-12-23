@@ -24,6 +24,8 @@ public class CommonValues {
     /*RESULT CODE FAIL*/
     public static final String RESULT_CODE_FAIL_SYSTEM = "9999";
     public static final String RESULT_CODE_FAIL_SINGLE_ENTITY_VIOLATION = "9900";
+    public static final String RESULT_CODE_FAIL_ALREADY_EXIST = "9800";
+    public static final String RESULT_CODE_FAIL_FILE_UPLOAD = "9700";
     public static final String RESULT_CODE_FAIL_DEFAULT = "9000";
     public static final String RESULT_CODE_FAIL_MEMBER_DUPLICATION = "8000";
     public static final String RESULT_CODE_FAIL_MEMBER_LOGIN_VALIDATION = "8888";

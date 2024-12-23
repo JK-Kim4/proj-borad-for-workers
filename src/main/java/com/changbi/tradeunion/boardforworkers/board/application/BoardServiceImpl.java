@@ -1,19 +1,31 @@
 package com.changbi.tradeunion.boardforworkers.board.application;
 
-import com.changbi.tradeunion.boardforworkers.board.domain.Board;
-import com.changbi.tradeunion.boardforworkers.board.domain.Post;
+import com.changbi.tradeunion.boardforworkers.board.domain.*;
+import com.changbi.tradeunion.boardforworkers.board.exception.AlreadyReportedPostException;
 import com.changbi.tradeunion.boardforworkers.board.exception.BoardDuplicationException;
 import com.changbi.tradeunion.boardforworkers.board.presentation.dto.*;
 import com.changbi.tradeunion.boardforworkers.board.repository.BoardRepository;
 import com.changbi.tradeunion.boardforworkers.common.CommonValues;
 import com.changbi.tradeunion.boardforworkers.common.dto.Pagination;
+import com.changbi.tradeunion.boardforworkers.common.utility.FileUtility;
+import com.changbi.tradeunion.boardforworkers.member.repository.MemberRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Service
@@ -23,6 +35,7 @@ public class BoardServiceImpl implements BoardService{
 
     private final Logger logger = LoggerFactory.getLogger(BoardServiceImpl.class);
     private final BoardRepository boardRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     public Long save(BoardSaveDto boardDto) {
@@ -40,6 +53,32 @@ public class BoardServiceImpl implements BoardService{
     public Long savePost(PostSaveDto postSaveDto) {
         Post post = postSaveDto.toEntity();
         return boardRepository.savePost(post);
+    }
+
+    @Override
+    public Long saveComment(CommentSaveDto commentSaveDto) {
+        Comment comment = commentSaveDto.toEntity();
+        Long commentId = boardRepository.saveComment(comment);
+
+        if(Objects.isNull(commentSaveDto.getParentCommentId())){comment.updateParentCommentId(commentId);}
+        else comment.updateParentCommentId(commentSaveDto.getParentCommentId());
+
+        return commentId;
+    }
+
+    @Override
+    public Long saveAttachment(MultipartFile multipartFile) {
+
+        Map<String, String> uploadResultMap = FileUtility.uploadMultipartFile(multipartFile);
+
+        Attachment attachment = Attachment.builder()
+                .fileOriginalName(uploadResultMap.get("originalFilename"))
+                .fileName(uploadResultMap.get("renameFileName"))
+                .fileSize(uploadResultMap.get("fileSize"))
+                .filePath(uploadResultMap.get("filePath"))
+                .build();
+
+        return boardRepository.saveAttachment(attachment);
     }
 
     @Override
@@ -153,7 +192,7 @@ public class BoardServiceImpl implements BoardService{
             this.updatePostReadCount(postId);
         }
 
-        return boardRepository.findPostById(postId);
+        return boardRepository.findPostDetailById(postId);
     }
 
     @Override
@@ -177,6 +216,11 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
+    public CommentDetailDto findCommentById(Long commentId) {
+        return boardRepository.findCommentById(commentId);
+    }
+
+    @Override
     public int updatePostRecommendCount(Long postId) {
         return boardRepository.updatePostRecommendCount(postId);
     }
@@ -190,6 +234,64 @@ public class BoardServiceImpl implements BoardService{
                 .build();
     }
 
+    @Override
+    public Long reportPost(HashMap<String, Long> reportParameter) {
+        Report report = Report.builder()
+                .post(boardRepository.findPostById(reportParameter.get("postId")))
+                .member(memberRepository.findById(reportParameter.get("memberId")))
+                .build();
+        try {
+            report = boardRepository.findReportById(report);
+            throw new AlreadyReportedPostException(report.getPostId(), report.getMemberId(), "한번 신고한 게시물은 다시 신고할 수 없습니다.");
+        }catch (EmptyResultDataAccessException e){
+            return boardRepository.reportPost(report);
+        }
+    }
+
+    public void downloadAttachment(Long attachmentId, HttpServletResponse response) {
+        Attachment attachment = boardRepository.findAttachmentById(attachmentId);
+
+        File file = new File(attachment.getFilePath());
+        try {
+            if(file.exists() && file.length() == Long.parseLong(attachment.getFileSize())){
+                String encodedFilename = "attachment; filename*=" + "UTF-8" + "''" + URLEncoder.encode(attachment.getFileOriginalName(), "UTF-8");
+
+                // ContentType 설정
+                response.setContentType("application/octet-stream; charset=utf-8");
+
+                // Header 설정
+                response.setHeader("Content-Disposition", encodedFilename);
+
+                // ContentLength 설정
+                response.setContentLengthLong(file.length());
+
+                BufferedInputStream in = null;
+                BufferedOutputStream out = null;
+
+                try {
+                    in = new BufferedInputStream(new FileInputStream(file));
+
+                    out = new BufferedOutputStream(response.getOutputStream());
+
+                    byte[] buffer = new byte[4096];
+                    int bytesRead=0;
+
+                    while ((bytesRead = in.read(buffer))!=-1) {
+                        out.write(buffer, 0, bytesRead);
+                    }
+
+                    // 버퍼에 남은 내용이 있다면, 모두 파일에 출력
+                    out.flush();
+                }finally {
+                    in.close();
+                    out.close();
+                }
+            }
+        }catch (Exception e){
+            logger.error("파일다운로드에러", e);
+        }
+    }
+
     /*private method*/
     private boolean isAlreadyExistBoardName(String boardName) {
         return boardRepository.isAlreadyExistBoardName(boardName);
@@ -198,6 +300,5 @@ public class BoardServiceImpl implements BoardService{
     private void updatePostReadCount(Long postId) {
         boardRepository.updatePostReadCount(postId);
     }
-
 
 }

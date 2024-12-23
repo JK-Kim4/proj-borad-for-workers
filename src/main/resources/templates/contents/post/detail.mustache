@@ -15,22 +15,22 @@
         <div class="d-flex flex-row justify-content-start col-10">
             <h5 id="postTitle"></h5>
         </div>
-        <div class="d-flex flex-row justify-content-end col-auto">
-            😄<label for="firstName" class="form-label text-center" id="postAuthor"></label>
+
+        <div class="d-flex">
+            <div class="me-auto p-2">
+                😄<label for="firstName" class="form-label text-center" id="postAuthor"></label>
+            </div>
+            <div class="p-2">
+                <label id="readCount" style="color:gray;" class="form-label text-center"></label>
+            </div>
         </div>
     </div>
 
-
-    <hr class="my-4">
+    <hr class="my-3">
     <div class="row d-flex justify-content-center">
-        <div class="row">
-            <div class="d-flex flex-row justify-content-end col-12" style="color:gray;" id="readCount">
-                조회수: 0
-            </div>
-        </div>
-        <div class="row mb-4">
-            <div class="col-12" id="postContent">
-            </div>
+        <div class="row mb-5">
+            <div class="col-12" id="postContent"></div>
+            <div class="col-12 mb-3" id="postAttachment"></div>
             <div class="d-flex flex-row justify-content-center col-12">
                 <button class="btn btn-outline-primary" id="recommendButton">추천</button>
                 &nbsp;&nbsp;
@@ -38,14 +38,32 @@
             </div>
         </div>
 
-        <hr class="my-4">
 
-        <!--<div class="row mb-3">
-            <div class="col-12">
-                댓글 영역
+
+        <div class="row mb-3">
+            <div class="d-flex flex-row justify-content-start col-10">
+                <h6>전체 댓글: 0개</h6>
             </div>
-        </div>-->
 
+            <hr class="">
+            <div class="col-12" id="commentList">
+                <span class="badge badge-pill bg-secondary">{{member.memberNickName}} ({{member.memberRealName}})</span>
+                | 작성댓글
+            </div>
+        </div>
+        <div class="row mb-3">
+            <hr class="my-3" style="height:2px;border-width:0;color:#0d6efd;background-color:#0d6efd">
+            <div class="col-auto">
+                <span class="badge badge-pill bg-primary">{{member.memberNickName}} ({{member.memberRealName}})</span>
+            </div>
+            <div class="col-8">
+                <input class="form-control" type="text" id="inputComment">
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-outline-primary" id="saveCommentButton">댓글 작성</button>
+            </div>
+            <hr class="my-3" style="height:2px;border-width:0;color:#0d6efd;background-color:#0d6efd">
+        </div>
         <div class="row d-flex justify-content-end">
             <div class="col-auto">
                 <button class="btn btn-outline-dark" id="goToPostListButton">목록으로</button>
