@@ -13,10 +13,10 @@ spring:
     hibernate:
       ddl-auto: create-drop
     show-sql: true
+    defer-datasource-initialization: true
   mustache:
     servlet:
       expose-session-attributes: true
-
 server:
   servlet:
     encoding:
@@ -28,3 +28,15 @@ server:
     include-binding-errors: always
     include-stacktrace: always
 
+cloud:
+  ncp:
+    end-point: test
+    region-name: kr
+    credentials:
+      access-key: rDwa75mVrSUfMi5nA5D8
+      secret-key: WdaHc8n46XzYPGqaDmMhE2GtPe57LkEME5Ihl9kS
+
+changbi:
+  mailsender:
+    username: test
+    password: test
