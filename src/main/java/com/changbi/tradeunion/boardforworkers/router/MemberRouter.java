@@ -28,4 +28,9 @@ public class MemberRouter {
     public String signUpPage(){
         return "contents/member/sign-up";
     }
+
+    @GetMapping("/social/sign-in")
+    public String socialSignInPage(Model model){
+        return "contents/member/naver-login-exam";
+    }
 }

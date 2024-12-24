@@ -44,3 +44,9 @@ changbi:
   mailsender:
     username: test
     password: test
+
+naver:
+  oauth-uri: https://nid.naver.com/oauth2.0/authorize
+  redirect-uri: http://localhost:8080/oauth/login
+  client-id: B7sNNnvCmiUnSWtfHQfU
+  client-secret: N4Om6H6vTy
