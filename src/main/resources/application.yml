@@ -13,6 +13,7 @@ spring:
     hibernate:
       ddl-auto: create-drop
     show-sql: true
+    defer-datasource-initialization: true
   mustache:
     servlet:
       expose-session-attributes: true
@@ -31,15 +32,15 @@ server:
     upload-directory:
       path: /home
 
-changbi:
-  mailsender:
-    username: awetwet
-    password: awetawe
-
 cloud:
   ncp:
-    end-point: https://kr.object.ncloudstorage.com
-    region-name: kr-standard
+    end-point: test
+    region-name: kr
     credentials:
-      access-key: rtaetetewte
-      secret-key: awetwetawetawet
+      access-key: rDwa75mVrSUfMi5nA5D8
+      secret-key: WdaHc8n46XzYPGqaDmMhE2GtPe57LkEME5Ihl9kS
+
+changbi:
+  mailsender:
+    username: test
+    password: test
