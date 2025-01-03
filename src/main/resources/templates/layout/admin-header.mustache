@@ -35,6 +35,32 @@
                 font-size: 3.5rem;
             }
         }
+
+        /* page-loading */
+        #loading {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            position: fixed;
+            display: block;
+            opacity: 0.6;
+            background: #e4e4e4;
+            z-index: 99;
+            text-align: center;
+        }
+        #loading > img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            z-index: 100;
+        }
+        #loading > p {
+            position: absolute;
+            top: 57%;
+            left: 43%;
+            z-index: 101;
+        }
     </style>
 
 
@@ -42,7 +68,10 @@
     <link href="/css/dashboard.css" rel="stylesheet">
 </head>
 <body>
-
+<div id="loading" style="margin-left: 0px; display: none;">
+    <img src="/image/loading.gif">
+    <p>처리중입니다. 잠시만 기다려주세요.</p>
+</div>
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
     <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">창비그룹 노동조합</a>
     <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
@@ -61,6 +90,11 @@
             <div class="position-sticky pt-3">
                 <ul class="nav flex-column">
                     <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/admin/setting">
+                            <span data-feather="home"></span>
+                            설정
+                        </a>
+
                         <a class="nav-link active" aria-current="page" href="/admin/save">
                             <span data-feather="home"></span>
                             관리자 계정 생성

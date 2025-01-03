@@ -40,7 +40,10 @@
                 {{/isAdmin}}
             </div>
             <div class="col-4 text-center">
-                <a class="blog-header-logo text-dark" href="/"> 창비그룹 노동조합 </a>
+                <a class="blog-header-logo text-dark" href="/">
+                    {{#SERVICE_NAME}}{{SERVICE_NAME}}{{/SERVICE_NAME}}
+                    {{^SERVICE_NAME}}서비스명을 입력해주세요.{{/SERVICE_NAME}}
+                </a>
             </div>
             <div class="col-4 d-flex justify-content-end align-items-center">
                 <!--<a class="link-secondary" href="#" aria-label="Search">

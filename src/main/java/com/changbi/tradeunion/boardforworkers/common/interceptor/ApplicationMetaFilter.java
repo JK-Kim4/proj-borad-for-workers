@@ -1,6 +1,7 @@
 package com.changbi.tradeunion.boardforworkers.common.interceptor;
 
-import com.changbi.tradeunion.boardforworkers.application.service.ApplicationMetaService;
+import com.changbi.tradeunion.boardforworkers.application.domain.MetaType;
+import com.changbi.tradeunion.boardforworkers.application.service.ApplicationService;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -8,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.HandlerInterceptor;
 
 import java.io.IOException;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 public class ApplicationMetaFilter implements Filter {
 
     private final Logger logger = LoggerFactory.getLogger(ApplicationMetaFilter.class);
-    private final ApplicationMetaService service;
+    private final ApplicationService service;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -34,9 +34,14 @@ public class ApplicationMetaFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpSession session = request.getSession();
 
-        if(session.getAttribute("serverName") == null){
-            service.findAndSetMetaData(session);
+        if(session.getAttribute(MetaType.SERVICE_NAME.name()) == null){
+            service.setMetaInformation(session, MetaType.SERVICE_NAME);
         }
+
+        if(session.getAttribute(MetaType.SERVICE_ICON.name()) == null){
+            service.setMetaInformation(session, MetaType.SERVICE_ICON);
+        }
+
         filterChain.doFilter(servletRequest, servletResponse);
     }
 }

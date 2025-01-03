@@ -34,7 +34,7 @@ server:
 
 cloud:
   ncp:
-    end-point: test
+    end-point: https://kr.object.ncloudstorage.com
     region-name: kr
     credentials:
       access-key: rDwa75mVrSUfMi5nA5D8

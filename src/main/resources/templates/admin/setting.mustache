@@ -1,0 +1,54 @@
+{{>layout/admin-header}}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">환경 설정</h1>
+    </div>
+    <h4 class="mb-3">서비스 환경 설정</h4>
+    <div class="row d-flex justify-content-start">
+        <div class="col-md-12 col-lg-12">
+            <div class="row g-3 mt-2">
+                <div class="col-md-8 col-lg-8">
+                    <label for="">서비스 명</label>
+                    <div class="row">
+                        <div class="col-6">
+                            <input type="text" class="form-control" id="serviceName" placeholder="사용자 페이지 헤더에 노출할 서비스명을 입력해주세요.">
+                        </div>
+                        <div class="col-6">
+                            <button class="btn btn-warning" id="updateServiceNameButton">변경</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-3 mt-2">
+                <div class="col-md-8 col-lg-8">
+                    <label for="">대표 이미지</label>
+                    <div class="row">
+                        <div class="col-5">
+                            <form id="fileForm" method="post" enctype="multipart/form-data">
+                                <input type="hidden" id="attachmentId">
+                                <input type="file" class="form-control" name="serviceIconImage" id="serviceIconImage">
+                            </form>
+                        </div>
+                        <div class="col-5">
+                            <button class="btn btn-dark" id="uploadIconImageButton">이미지 업로드 / 변경</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="">업로드 이미지 미리보기</label>
+                        <div class="col-5" id="imgControl">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+
+
+            <button class="btn btn-outline-dark" onclick="history.back();">뒤로 가기</button>
+        </div>
+    </div>
+</main>
+<script src="/js/admin/setting.js"></script>
+<script type="application/javascript">
+
+</script>
+{{>layout/admin-footer}}

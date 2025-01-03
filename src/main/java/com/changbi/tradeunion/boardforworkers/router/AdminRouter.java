@@ -86,4 +86,9 @@ public class AdminRouter {
         model.addAttribute("html", "<h1> hello </h1>");
         return "admin/news-letter/pre-view";
     }
+
+    @GetMapping("/setting")
+    public String settingPage(){
+        return "admin/setting";
+    }
 }

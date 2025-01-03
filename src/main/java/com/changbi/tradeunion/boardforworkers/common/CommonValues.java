@@ -47,4 +47,17 @@ public class CommonValues {
     public static final String RESULT_MESSAGE_FAIL_MEMBER_LOGIN_VALIDATION = "아이디 혹은 비밀번호를 확인 후 다시 시도해주세요.";
 
     public static final String LOCAL_FILE_UPLOAD_PATH = "/Users/jongwan-air/Desktop/temp-upload";
+
+    public static final String NCP_OBJECT_STORAGE_BUCKET_NAME = "workers-cms";
+    public static final String NCP_OBJECT_STORAGE_FOLDER_NAME = "cover/";
+
+    public static final String NCP_OBJECT_STORAGE_AUTHORITY_PUBLIC = "public";
+    public static final String NCP_OBJECT_STORAGE_AUTHORITY_PRIVATE = "private";
+    public static final String NCP_OBJECT_STORAGE_FILE_TYPE_COVER = "cover";
+    public static final String NCP_OBJECT_STORAGE_FILE_TYPE_THUMBNAIL = "thumbnail";
+    public static final String NCP_OBJECT_STORAGE_FILE_TYPE_AUDIO = "audio";
+    public static final String NCP_OBJECT_STORAGE_FILE_TYPE_PRE_AUDIO = "pre_audio";
+    public static final String NCP_OBJECT_STORAGE_FILE_TYPE_VIDEO = "video";
+    public static final String NCP_OBJECT_STORAGE_FILE_TYPE_ETC = "etc";
+    public static final String NCP_OBJECT_STORAGE_FILE_TYPE_ICON = "icon";
 }

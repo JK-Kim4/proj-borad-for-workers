@@ -1,7 +1,5 @@
 package com.changbi.tradeunion.boardforworkers.member.application;
 
-import com.changbi.tradeunion.boardforworkers.common.domain.enum_type.Platform;
-import com.changbi.tradeunion.boardforworkers.member.domain.OAuthMember;
 import com.changbi.tradeunion.boardforworkers.member.presentation.dto.NaverTokenResponse;
 import com.changbi.tradeunion.boardforworkers.member.presentation.dto.NaverUserResponse;
 import lombok.RequiredArgsConstructor;

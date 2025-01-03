@@ -24,4 +24,8 @@ public class ApplicationMeta {
         this.metaType = type;
         this.metaValue = value;
     }
+
+    public void updateApplicationMetaValue(String newValue) {
+        this.metaValue = newValue;
+    }
 }

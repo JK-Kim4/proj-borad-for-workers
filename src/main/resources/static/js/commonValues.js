@@ -1,3 +1,14 @@
+const COMMON_VALUES = {
+    BUCKET_BASE_URL :"https://kr.object.ncloudstorage.com/",
+    BUCKET_NAME: "workers-cms"
+}
+
+const META_TYPE = {
+    SERVICE_NAME: "SERVICE_NAME",
+    SERVICE_ICON: "SERVICE_ICON"
+}
+
+
 const RESULT_CODE = {
     SUCCESS_DEFAULT: "0000",
     FAIL_DEFAULT: "9000",
