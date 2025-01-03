@@ -1,5 +1,6 @@
 package com.changbi.tradeunion.boardforworkers.common.exception;
 
+import com.changbi.tradeunion.boardforworkers.application.exception.MetaException;
 import com.changbi.tradeunion.boardforworkers.board.exception.FileUploadException;
 import com.changbi.tradeunion.boardforworkers.common.CommonValues;
 import com.changbi.tradeunion.boardforworkers.common.dto.ResultDto;
@@ -80,6 +81,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .build());
     }
 
+    @ExceptionHandler(value = {MetaException.class})
+    protected ResponseEntity<ErrorResponse> handleMetaException(
+            final HttpServletRequest request,
+            final MetaException ex) {
+
+        logger.error("[ERROR-]\t{} \t{} \t{}", request.getMethod(), request.getRequestURI(), ex.getMessage());
+        logger.error("{}", ex);
+
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ErrorResponse.from(request, ex));
+    }
     @ExceptionHandler(value = {NoResultException.class, NonUniqueResultException.class})
     protected ResponseEntity<ResultDto> handleNoResultException(
             final HttpServletRequest request,

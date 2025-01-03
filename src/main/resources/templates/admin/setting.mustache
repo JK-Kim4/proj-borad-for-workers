@@ -22,15 +22,16 @@
             <div class="row g-3 mt-2">
                 <div class="col-md-8 col-lg-8">
                     <label for="">대표 이미지</label>
+                    <input type="hidden" id="serviceIconImagePath">
                     <div class="row">
                         <div class="col-5">
                             <form id="fileForm" method="post" enctype="multipart/form-data">
-                                <input type="hidden" id="attachmentId">
                                 <input type="file" class="form-control" name="serviceIconImage" id="serviceIconImage">
                             </form>
                         </div>
                         <div class="col-5">
-                            <button class="btn btn-dark" id="uploadIconImageButton">이미지 업로드 / 변경</button>
+                            <button class="btn btn-dark" id="uploadIconImageButton">이미지 업로드</button>
+                            <button class="btn btn-dark" id="updateServiceIconButton">적용하기</button>
                         </div>
                     </div>
                     <div class="row">
@@ -49,6 +50,9 @@
 </main>
 <script src="/js/admin/setting.js"></script>
 <script type="application/javascript">
-
+    $(document).ready(function (){
+        $("#serviceName").val(main.getMetaValue(META_TYPE.SERVICE_NAME));
+        $("#imgControl").html(main.getImageControlHtml(main.getMetaValue(META_TYPE.SERVICE_ICON)));
+    });
 </script>
 {{>layout/admin-footer}}

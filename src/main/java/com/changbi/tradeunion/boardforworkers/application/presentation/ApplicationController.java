@@ -1,15 +1,15 @@
 package com.changbi.tradeunion.boardforworkers.application.presentation;
 
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.changbi.tradeunion.boardforworkers.application.domain.MetaType;
+import com.changbi.tradeunion.boardforworkers.application.service.ApplicationService;
+import com.changbi.tradeunion.boardforworkers.common.CommonValues;
 import com.changbi.tradeunion.boardforworkers.common.dto.ResultDto;
 import com.changbi.tradeunion.boardforworkers.common.utility.ObjectStorageUtility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
@@ -18,6 +18,24 @@ import org.springframework.web.multipart.MultipartFile;
 public class ApplicationController {
 
     private final ObjectStorageUtility objectStorageUtility;
+    private final ApplicationService applicationService;
+
+    @GetMapping("/meta/{type}")
+    public ResponseEntity<?> findMetaValue(
+            @PathVariable(name = "type") String type){
+        return ResponseEntity.ok(applicationService.findApplicationMetaByType(MetaType.valueOf(type)));
+    }
+
+    @PutMapping("/meta/{type}")
+    public ResponseEntity<?> updateMetaValue(
+            @PathVariable(name = "type") String type,
+            @RequestBody String metaValue){
+        return ResponseEntity.ok(
+                    ResultDto.builder()
+                        .resultCode(CommonValues.RESULT_CODE_SUCCESS_DEFAULT)
+                        .data(applicationService.updateApplicationMeta(MetaType.valueOf(type), metaValue))
+                    .build());
+    }
 
     @PostMapping("/upload/{fileType}/{accessControl}")
     public ResponseEntity<ResultDto> fileUpload(
