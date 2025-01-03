@@ -19,6 +19,9 @@ public class ApplicationMeta {
     @Column
     private String metaValue;
 
+    @Column
+    private Long version;       // 변경 이력 검증값
+
     @Builder
     public ApplicationMeta(MetaType type, String value) {
         this.metaType = type;

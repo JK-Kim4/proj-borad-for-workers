@@ -8,6 +8,7 @@ let main = {
             data.attachmentAllowYn = $("input[name='inputAttachmentAllowYn']:checked").val()
             data.readRole = $("#inputReadRole").val();
             data.writeRole = $("#inputWriteRole").val();
+            data.depth = 1;
 
             main.save(JSON.stringify(data));
         });
@@ -183,6 +184,8 @@ let main = {
             },
             contentType: "application/json; charset=utf-8",
             success: function (result){
+                console.log(result);
+
                 let html = "";
                 if(RESULT_CODE.SUCCESS_DEFAULT === result.resultCode){
                     if(result.data.length > 0){
